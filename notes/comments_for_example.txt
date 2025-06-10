@@ -1,5 +1,5 @@
 1. Possible to use specification of lessons (practical or theoretical)
-2. Prompt (RU):
+2. User Prompt (RU):
     Придумай мне курс по теме: `Название курса`.
     Моя цель: `Цель пользователя в обучении`
     Мой уровень знаний: `Знания пользователя по данной теме`
@@ -19,7 +19,7 @@
         }
       ]
     }
-3. Prompt (EN):
+   Prompt (EN):
     Create a course : `Course name`.
     My goal is: `Goal of a user`
     What I know about this topic: `Knowledge of a user`
@@ -40,3 +40,4 @@
             }
           ]
         }
+3.System prompt: You are a system that helps create a learning plan, ypur answers must be only jsons
