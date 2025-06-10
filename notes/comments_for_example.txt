@@ -1,0 +1,42 @@
+1. Possible to use specification of lessons (practical or theoretical)
+2. Prompt (RU):
+    Придумай мне курс по теме: `Название курса`.
+    Моя цель: `Цель пользователя в обучении`
+    Мой уровень знаний: `Знания пользователя по данной теме`
+    Курс должен быть рассчитан на `Число уроков` уроков, длительность каждого `Время одного урока`. Дай ответ в виде JSON без дополнительного текста по следующему шаблону:
+    {
+      "course_name": "Название курса",
+      "description": "Общее описание курса",
+      "lessons": [
+        {
+          "lesson_number": 1,
+          "title": "Название урока",
+          "subtopics": ["Подтемы для данного урока"],
+          "links": ["Полезные ссылки на документацию"]
+        },
+        {
+          "Аналогичный объект для каждого следующего урока": ""
+        }
+      ]
+    }
+3. Prompt (EN):
+    Create a course : `Course name`.
+    My goal is: `Goal of a user`
+    What I know about this topic: `Knowledge of a user`
+    Course duration: `Number of lessons` lessons, time for each lesson `Lesson time`.
+    Give an answer in JSON format without any other text:
+        {
+          "course_name": "Name of the course",
+          "description": "Optional",
+          "lessons": [
+            {
+              "lesson_number": 1,
+              "title": "Title of this lesson",
+              "subtopics": ["Subtopic of the lesson", "Another subtopic of the lesson", "etc."],
+              "links": ["Useful link for learning", "Another useful link for learning", "etc."]
+            },
+            {
+              "same type for each other lesson as in the lesson 1": ""
+            }
+          ]
+        }

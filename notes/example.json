@@ -1,0 +1,16 @@
+{
+  "course_name": "Name of the course",
+  "description": "Optional",
+  "lessons": [
+    {
+      "lesson_number": 1,
+      "title": "Title of this lesson",
+      "subtopics": ["Subtopic of the lesson", "Another subtopic of the lesson", "etc."],
+      "links": ["Useful link for learning", "Another useful link for learning", "etc."]
+    },
+    {
+      "same type for each other lesson as in the lesson 1": ""
+    }
+  ]
+}
+
