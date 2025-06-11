@@ -1,25 +1,5 @@
 1. Possible to use specification of lessons (practical or theoretical)
-2. User Prompt (RU):
-    Придумай мне курс по теме: `Название курса`.
-    Моя цель: `Цель пользователя в обучении`
-    Мой уровень знаний: `Знания пользователя по данной теме`
-    Курс должен быть рассчитан на `Число уроков` уроков, длительность каждого `Время одного урока`. Дай ответ в виде JSON без дополнительного текста по следующему шаблону:
-    {
-      "course_name": "Название курса",
-      "description": "Общее описание курса",
-      "lessons": [
-        {
-          "lesson_number": 1,
-          "title": "Название урока",
-          "subtopics": ["Подтемы для данного урока"],
-          "links": ["Полезные ссылки на документацию"]
-        },
-        {
-          "Аналогичный объект для каждого следующего урока": ""
-        }
-      ]
-    }
-   Prompt (EN):
+2. Prompt (EN):
     Create a course : `Course name`.
     My goal is: `Goal of a user`
     What I know about this topic: `Knowledge of a user`
@@ -28,16 +8,19 @@
         {
           "course_name": "Name of the course",
           "description": "Optional",
+          "books": "Useful books for the course",
           "lessons": [
             {
               "lesson_number": 1,
               "title": "Title of this lesson",
               "subtopics": ["Subtopic of the lesson", "Another subtopic of the lesson", "etc."],
-              "links": ["Useful link for learning", "Another useful link for learning", "etc."]
+              "links": ["Useful link for learning", "Another useful link for learning", "etc."],
+              "notes": ["", "", ""]
             },
             {
               "same type for each other lesson as in the lesson 1": ""
             }
           ]
         }
+
 3.System prompt: You are a system that helps create a learning plan, ypur answers must be only jsons
