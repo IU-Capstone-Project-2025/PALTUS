@@ -6,9 +6,15 @@
     {
       "lesson_number": 1,
       "title": "Title of this lesson",
-      "subtopics": ["Subtopic of the lesson", "Another subtopic of the lesson", "etc."],
+      "quiz": false,
+      "subtopics": [
+        {
+          "topic": "Subtopic of the lesson",
+          "notes": "",
+          "finished": false
+        }
+      ],
       "links": ["Useful link for learning", "Another useful link for learning", "etc."],
-      "notes": ["", "", ""]
     },
     {
       "same type for each other lesson as in the lesson 1": ""
