@@ -1,4 +1,6 @@
 <script setup>
+import {useAuthStore} from "../stores/auth.js";
+
 const courses = [
   {
     name: 'Introduction to ML',
@@ -76,7 +78,7 @@ const last_course = {
     </section>
     <section class="right">
       <div class="profile">
-        poeticlama
+        {{ useAuthStore().user.email }}
       </div>
       <div class="options">
         <ul>
