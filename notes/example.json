@@ -1,7 +1,7 @@
 {
   "course_name": "Name of the course",
   "description": "Optional",
-  "books": "Useful books for the course",
+  "books": ["Useful books for the course"],
   "lessons": [
     {
       "lesson_number": 1,
