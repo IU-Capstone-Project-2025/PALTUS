@@ -3,7 +3,9 @@ package com.paltus.backend.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paltus.backend.config.PromptProperties;
+import com.paltus.backend.model.Course;
 
 import chat.giga.client.GigaChatClient;
 import chat.giga.client.auth.AuthClient;
@@ -19,11 +21,11 @@ import chat.giga.model.completion.CompletionResponse;
 @Service
 public class ChatService {
     private final String apiKey;
-    private final PromptProperties gptProperties;
+    private final PromptProperties promptProperties;
     private final GigaChatClient client;
 
     public ChatService(PromptProperties properties, @Value("${ai.key}") String apiKey) {
-        this.gptProperties = properties;
+        this.promptProperties = properties;
         this.apiKey = apiKey;
     
         this.client = GigaChatClient.builder()
@@ -38,10 +40,10 @@ public class ChatService {
     }
 
     public String returnSomething() {
-        return gptProperties.getCourse() + apiKey;
+        return promptProperties.getCourse() + apiKey;
     }
 
-    public String createCourse() {
+    public Course createCourse() {
         CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2)
                 .message(ChatMessage.builder()
@@ -49,11 +51,17 @@ public class ChatService {
                         .role(ChatMessageRole.SYSTEM)
                         .build())
                 .message(ChatMessage.builder()
-                        .content("Hi!")
+                        .content(promptProperties.getCourse())
                         .role(ChatMessageRole.USER).build());
         try {
             CompletionRequest request = requestBuilder.build();
             CompletionResponse response1 = client.completions(request);
+
+            String json = response1.choices().get(0).message().content();
+
+            ObjectMapper mapper = new ObjectMapper();
+            Course course = mapper.readValue(json, Course.class);
+            return course;
             // System.out.println(response1.choices().get(0).message().content());
             // for (var choice : response1.choices()) {
             //     requestBuilder.message(choice.message().ofAssistantMessage());
@@ -63,9 +71,10 @@ public class ChatService {
 
             // request = requestBuilder.build();
             // response1 = client.completions(request);
-            return response1.choices().get(0).message().content();
         } catch (HttpClientException ex) {
-            return ex.statusCode() + " " + ex.bodyAsString();
+            throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
+        } catch (Exception ex) {
+            throw new RuntimeException("Ошибка при парсинге JSON", ex);
         }
     }
 }
