@@ -12,7 +12,7 @@ public class GptController {
     }
     @GetMapping()
     public String getSomething() {
-        return chatService.returnSomething();
+        return chatService.createCourse();
     }
     
 }

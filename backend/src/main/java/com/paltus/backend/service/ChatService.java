@@ -18,31 +18,30 @@ import chat.giga.model.completion.CompletionResponse;
 
 @Service
 public class ChatService {
+    private final String apiKey;
     private final PromptProperties gptProperties;
-    @Value("${ai.key}")
-    private String apiKey;
+    private final GigaChatClient client;
 
-
-    public ChatService(PromptProperties properties) {
+    public ChatService(PromptProperties properties, @Value("${ai.key}") String apiKey) {
         this.gptProperties = properties;
+        this.apiKey = apiKey;
+    
+        this.client = GigaChatClient.builder()
+            .verifySslCerts(false)
+            .authClient(AuthClient.builder()
+                .withOAuth(OAuthBuilder.builder()
+                    .scope(Scope.GIGACHAT_API_PERS)
+                    .authKey(apiKey)
+                    .build())
+                .build())
+            .build();
     }
 
     public String returnSomething() {
         return gptProperties.getCourse() + apiKey;
     }
 
-    public void draft() {
-        GigaChatClient client = GigaChatClient.builder()
-                .verifySslCerts(false)
-                .authClient(AuthClient.builder()
-                        .withOAuth(OAuthBuilder.builder()
-                                .scope(Scope.GIGACHAT_API_PERS)
-                                .authKey(
-                                        apiKey)
-                                .build())
-                        .build())
-                .build();
-
+    public String createCourse() {
         CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2)
                 .message(ChatMessage.builder()
@@ -55,20 +54,18 @@ public class ChatService {
         try {
             CompletionRequest request = requestBuilder.build();
             CompletionResponse response1 = client.completions(request);
-            System.out.println(response1.choices().get(0).message().content());
-            for (var choice : response1.choices()) {
-                requestBuilder.message(choice.message().ofAssistantMessage());
-            }
-            requestBuilder.message(ChatMessage.builder().content("Add one more lesson calles reflection")
-                    .role(ChatMessageRole.USER).build());
+            // System.out.println(response1.choices().get(0).message().content());
+            // for (var choice : response1.choices()) {
+            //     requestBuilder.message(choice.message().ofAssistantMessage());
+            // }
+            // requestBuilder.message(ChatMessage.builder().content("Add one more lesson calles reflection")
+            //         .role(ChatMessageRole.USER).build());
 
-            request = requestBuilder.build();
-            response1 = client.completions(request);
-
-            System.out.println(response1.choices().get(0).message().content());
+            // request = requestBuilder.build();
+            // response1 = client.completions(request);
+            return response1.choices().get(0).message().content();
         } catch (HttpClientException ex) {
-            System.out.println(ex.statusCode() + " " + ex.bodyAsString());
+            return ex.statusCode() + " " + ex.bodyAsString();
         }
-
     }
 }
