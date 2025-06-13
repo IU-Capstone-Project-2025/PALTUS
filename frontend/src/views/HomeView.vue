@@ -1,5 +1,6 @@
 <script setup>
 import {useAuthStore} from "../stores/auth.js";
+import Logo from "@/components/Logo.vue";
 
 const courses = [
   {
@@ -30,9 +31,7 @@ const last_course = {
 <template>
   <div class="main">
     <section class="left">
-      <div class="logo">
-        <h1>PALTUS</h1>
-      </div>
+      <Logo />
       <div class="my-courses">
         MY COURSES:
       </div>
@@ -104,10 +103,6 @@ const last_course = {
 </template>
 
 <style scoped>
-h1 {
-  font-weight: 800;
-  font-size: 36px;
-}
 ul{
   list-style-type: none;
   padding: 0;
@@ -159,14 +154,6 @@ button:hover {
 
 .left {
   width: 30vw
-}
-
-.logo {
-  width: 15vw;
-  height: 13vh;
-  justify-items: center;
-  align-content: center;
-  color: #42A5F5;
 }
 
 .my-courses {

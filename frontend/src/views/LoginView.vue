@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import Logo from '../components/Logo.vue'
 
 const email = ref('');
 const password = ref('');
@@ -20,9 +21,7 @@ async function loginUser() {
 
 <template>
   <div class="container">
-    <div class="logo">
-      <h1>PALTUS</h1>
-    </div>
+    <Logo />
     <form @submit.prevent="loginUser">
       <h3>Log In</h3>
       <input v-model="email" placeholder="Email" />
@@ -43,13 +42,6 @@ async function loginUser() {
   justify-content: center;
   align-items: center;
 }
-.logo {
-  width: 15vw;
-  height: 13vh;
-  justify-items: center;
-  align-content: center;
-  color: #42A5F5;
-}
 button {
   background-color: #48CFAD;
   border-style: none;
@@ -65,9 +57,6 @@ button {
 button:hover {
   background-color: #BBDEFB;
   color: #0D47A1;
-}
-h1 {
-  font-weight: 800;
 }
 h3 {
   font-size: 28px;
