@@ -21,9 +21,9 @@ async function loginUser() {
 <template>
   <form @submit.prevent="loginUser">
     <input v-model="email" placeholder="Email" />
-<!--    test@example.com-->
+    <!--    test@example.com-->
     <input v-model="password" type="password" placeholder="Password" />
-<!--    123-->
+    <!--    123-->
     <button type="submit">Log In</button>
   </form>
 </template>

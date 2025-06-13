@@ -20,7 +20,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const auth = useAuthStore();
-    auth.loadUser(); // загружаем из localStorage
+    auth.loadUser();
 
     if (to.meta.requiresAuth && !auth.isAuthenticated()) {
         next('/login');
