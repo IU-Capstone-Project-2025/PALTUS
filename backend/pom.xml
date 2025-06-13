@@ -51,6 +51,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+            <groupId>chat.giga</groupId>
+            <artifactId>gigachat-java</artifactId>
+            <version>0.1.10</version>
+        </dependency>
 	</dependencies>
 
 	<build>
