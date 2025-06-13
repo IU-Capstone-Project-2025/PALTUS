@@ -38,7 +38,7 @@ public class ChatService {
                         .withOAuth(OAuthBuilder.builder()
                                 .scope(Scope.GIGACHAT_API_PERS)
                                 .authKey(
-                                        "MTYxNzgxN2YtMzZjOS00MmZjLTg4NmItYTk3MzRlZTBmZWFkOjM5MDIwZWYzLWYwMjAtNDQxYS1hMGRhLTgxMWIwZjc0ZTU4OA==")
+                                        apiKey)
                                 .build())
                         .build())
                 .build();
