@@ -10,7 +10,7 @@ public class UserController {
     public UserController() { }
     @GetMapping("/hello")
     public String getMethodName() {
-        return "Hello test";
+        return "Hello test2";
     }
     
 }
