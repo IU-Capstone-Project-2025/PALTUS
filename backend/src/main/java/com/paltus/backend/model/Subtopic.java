@@ -1,15 +1,11 @@
 package com.paltus.backend.model;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,21 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-public class Lesson {
+public class Subtopic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int lesson_number;
-    private String title;
-    private boolean quiz;
+    private String topic;
+    private String notes;
+    private boolean finished;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
-    private List<Subtopic> subtopics;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
-    private List<Link> links;
+    @JoinColumn(name = "lesson_id")
+    private Lesson lesson;
 }
