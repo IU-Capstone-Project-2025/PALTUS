@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.service.CourseService;
 
+// TODO: change URL 
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
