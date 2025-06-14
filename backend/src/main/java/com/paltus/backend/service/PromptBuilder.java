@@ -3,6 +3,7 @@ package com.paltus.backend.service;
 import org.springframework.stereotype.Service;
 
 import com.paltus.backend.config.PromptProperties;
+import com.paltus.backend.model.CourseRequest;
 
 @Service
 public class PromptBuilder {
@@ -12,12 +13,12 @@ public class PromptBuilder {
         this.promptProperties = promptProperties;
     }
 
-    public String buildCoursePrompt(String courseName, String goal, String knowledge, String lessons, String time) {
+    public String buildCoursePrompt(CourseRequest courseRequest) {
         return promptProperties.getCourse()
-            .replace("{course_name}", courseName)
-            .replace("{goal}", goal)
-            .replace("{knowledge}", knowledge)
-            .replace("{lessons}", String.valueOf(lessons))
-            .replace("{time}", time);
+            .replace("{course_name}", courseRequest.getCourseName())
+            .replace("{goal}",  courseRequest.getGoal())
+            .replace("{knowledge}", courseRequest.getKnowledge())
+            .replace("{lessons}", String.valueOf(courseRequest.getLessons()))
+            .replace("{time}", courseRequest.getTime());
     }
 }

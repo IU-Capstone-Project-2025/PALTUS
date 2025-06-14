@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paltus.backend.config.PromptProperties;
 import com.paltus.backend.model.Course;
+import com.paltus.backend.model.CourseRequest;
 
 import chat.giga.client.GigaChatClient;
 import chat.giga.client.auth.AuthClient;
@@ -22,9 +23,11 @@ import chat.giga.model.completion.CompletionResponse;
 public class ChatService {
     private final String apiKey;
     private final PromptProperties promptProperties;
+    private final PromptBuilder promptBuilder;
     private final GigaChatClient client;
 
-    public ChatService(PromptProperties properties, @Value("${ai.key}") String apiKey) {
+    public ChatService(PromptProperties properties, PromptBuilder promptBuilder, @Value("${ai.key}") String apiKey) {
+        this.promptBuilder = promptBuilder;
         this.promptProperties = properties;
         this.apiKey = apiKey;
     
@@ -43,7 +46,7 @@ public class ChatService {
         return promptProperties.getCourse() + apiKey;
     }
 
-    public Course createCourse() {
+    public Course createCourse(CourseRequest courseRequest) {
         CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2)
                 .message(ChatMessage.builder()
@@ -51,7 +54,7 @@ public class ChatService {
                         .role(ChatMessageRole.SYSTEM)
                         .build())
                 .message(ChatMessage.builder()
-                        .content(promptProperties.getCourse())
+                        .content(promptBuilder.buildCoursePrompt(courseRequest))
                         .role(ChatMessageRole.USER).build());
         try {
             CompletionRequest request = requestBuilder.build();
