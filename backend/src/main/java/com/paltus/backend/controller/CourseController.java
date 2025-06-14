@@ -20,8 +20,8 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public Course getCourse(@PathVariable(name = "id") int id) {
-        return courseService.getCourse(id);
+    public Course getCourseById(@PathVariable(name = "id") int id) {
+        return courseService.getCourseById(id);
     }
 
 }

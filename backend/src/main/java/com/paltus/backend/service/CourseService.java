@@ -22,7 +22,7 @@ public class CourseService {
     }
 
     // TODO: Exception handling
-    public Course getCourse(long course_id) {
+    public Course getCourseById(long course_id) {
         return courseRepository.findById(course_id).get();
     }
 }
