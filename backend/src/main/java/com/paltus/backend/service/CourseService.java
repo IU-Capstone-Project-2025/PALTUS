@@ -20,4 +20,9 @@ public class CourseService {
         Course newCourse = courseRepository.save(course);
         return newCourse;
     }
+
+    // TODO: Exception handling
+    public Course getCourse(long course_id) {
+        return courseRepository.findById(course_id).get();
+    }
 }
