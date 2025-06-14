@@ -1,5 +1,7 @@
 package com.paltus.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,5 +26,6 @@ public class Link {
 
     @ManyToOne
     @JoinColumn(name = "lesson_id")
+    @JsonBackReference
     private Lesson lesson;
 }

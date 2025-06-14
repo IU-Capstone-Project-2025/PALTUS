@@ -2,6 +2,9 @@ package com.paltus.backend.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,11 +31,14 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @JsonBackReference
     private Course course;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
+    @JsonManagedReference
     private List<Subtopic> subtopics;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
+    @JsonManagedReference
     private List<Link> links;
 }
