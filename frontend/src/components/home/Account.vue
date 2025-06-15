@@ -1,21 +1,7 @@
 <script setup>
 import {useAuthStore} from "@/stores/auth.js";
 import AccountLink from "@/components/home/AccountLink.vue";
-
-const links = [
-  {
-    title: 'My Account',
-    link: '/account',
-  },
-  {
-    title: 'Settings',
-    link: '/settings',
-  },
-  {
-    title: 'Current Level',
-    link: '/level',
-  },
-]
+import {accountLinks} from "@/constants/accountLinks.js";
 </script>
 
 <template>
@@ -24,8 +10,8 @@ const links = [
   </div>
   <div class="options">
     <ul>
-      <li v-for="link in links">
-        <AccountLink :title="link.title" :link="link.link" />
+      <li v-for="accountLink in accountLinks">
+        <AccountLink :title="accountLink.title" :link="accountLink.link" />
       </li>
     </ul>
   </div>
