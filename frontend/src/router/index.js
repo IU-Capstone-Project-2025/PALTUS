@@ -1,8 +1,9 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue';
 import {useAuthStore} from "@/stores/auth.js";
+import CourseCreationView from "@/views/CourseCreationView.vue";
 
 const routes = [
     { path: '/login', component: LoginView },
@@ -11,10 +12,15 @@ const routes = [
         component: HomeView,
         meta: { requiresAuth: true }
     },
+    {
+        path: '/create_course',
+        component: CourseCreationView,
+        meta: { requiresAuth: true }
+    }
 ]
 
 const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes,
 })
 
