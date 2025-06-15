@@ -15,7 +15,7 @@ const name = ref('');
 const currentSkills = ref('');
 const goal = ref('');
 const lessonsNum = ref('');
-const durability = ref('');
+const duration = ref('');
 
 const inputs = ref([
       {
@@ -31,7 +31,7 @@ const inputs = ref([
         placeholder: 'I want to learn...',
         model: goal,
       }, {
-        question: 'How many lessons and which durability for a lesson?',
+        question: 'How many lessons and what is the duration of the lesson?',
         placeholder: 'Number of lessons',
         model: lessonsNum,
       }
@@ -53,11 +53,9 @@ const inputs = ref([
         <BaseInput :placeholder="inp.placeholder" v-model="inp.model"/>
       </div>
       <div class="question" style="margin-top: 1vh">
-        <BaseInput placeholder="Durability of a lesson" v-model="durability"/>
+        <BaseInput placeholder="Lesson duration (in minutes)" v-model="duration"/>
       </div>
-      <div class="get-course">
-        <ButtonGreen title="GET A COURSE" />
-      </div>
+      <ButtonGreen title="GET A COURSE" class="increased-size" />
     </section>
     <section class="right">
       <Account />
@@ -97,7 +95,8 @@ const inputs = ref([
   width: 30vw;
 }
 
-.get-course {
-  margin-top: 3vh;
+.increased-size {
+  margin-top: 2.5vh;
+  padding: 2vh 3vw;
 }
 </style>
