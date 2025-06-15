@@ -1,28 +1,14 @@
 <script setup>
 import {useAuthStore} from "@/stores/auth.js";
-import AccountLink from "@/components/home/AccountLink.vue";
-import {accountLinks} from "@/constants/accountLinks.js";
 </script>
 
 <template>
   <div class="profile">
     {{ useAuthStore().user.email }}
   </div>
-  <div class="options">
-    <ul>
-      <li v-for="accountLink in accountLinks">
-        <AccountLink :title="accountLink.title" :link="accountLink.link" />
-      </li>
-    </ul>
-  </div>
 </template>
 
 <style scoped>
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
 .profile {
   box-sizing: border-box;
   width: 23vw;

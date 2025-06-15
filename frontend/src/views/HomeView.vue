@@ -3,7 +3,7 @@ import Logo from "@/components/shared/Logo.vue";
 import MyCourses from "@/components/shared/MyCourses.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import ContinueStudying from "@/components/home/ContinueStudying.vue";
-import Account from "@/components/home/Account.vue";
+import Account from "@/components/shared/Account.vue";
 import {ref} from "vue";
 
 const courseName = ref('');
