@@ -21,12 +21,13 @@ const emit = defineEmits(['update:modelValue'])
 
 <style scoped>
 input {
+  box-sizing: border-box;
   font-family: Montserrat, Inter, sans-serif;
   color: #0D47A1;
   border-style: none;
   border-radius: 20px;
   height: 8vh;
-  width: 18vw;
+  width: 20vw;
   padding-left: 30px;
   padding-right: 10px;
   font-size: 18px;

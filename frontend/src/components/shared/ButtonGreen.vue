@@ -22,7 +22,7 @@ button {
   background-color: #48CFAD;
   border-style: none;
   border-radius: 20px;
-  padding: 10px 30px;
+  padding: 1.5vh 2vw;
   font-family: Montserrat, Inter, sans-serif;
   color: #F5F7FA;
   font-size: 14px;
