@@ -10,13 +10,6 @@ An AI-powered self-learning planner that helps users create personalized study p
 - **Flexible Scheduling**: Learn at your own pace, anytime
 - **Text-Based Lessons**: Clean, focused learning content
 
-##  Target Users
-
-- Self-learners seeking structured study plans
-- Busy professionals upgrading skills
-- Exam preparation candidates
-- Language and coding learners
-
 ##  Getting Started
 
 ### Prerequisites
@@ -33,12 +26,13 @@ Through Docker compose
 **Frontend**
 
 - Vue.js: Reactive framework for building intuitive interfaces
-- Vuetify: Material design component library for consistent UI
+- Pinia: To mantain a global state of a frontend app
+- Axios: For HTTP requests
 
 **Backend**
 
--Spring Boot: Robust backend framework for RESTful APIs
--PostgreSQL: Relational database for structured data storage
+- Spring Boot: Robust backend framework for RESTful APIs
+- PostgreSQL: Relational database for structured data storage
 
 ## Team Members 
 
