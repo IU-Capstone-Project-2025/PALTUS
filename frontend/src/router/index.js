@@ -1,9 +1,10 @@
 import { createWebHistory, createRouter } from 'vue-router'
-
+import {useAuthStore} from "@/stores/auth.js";
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue';
-import {useAuthStore} from "@/stores/auth.js";
 import CourseCreationView from "@/views/CourseCreationView.vue";
+import AccountView from "@/views/AccountView.vue";
+import SettingsView from "@/views/SettingsView.vue";
 
 const routes = [
     { path: '/login', component: LoginView },
@@ -16,6 +17,21 @@ const routes = [
         path: '/create_course',
         component: CourseCreationView,
         props: true,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/account',
+        component: AccountView,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/settings',
+        component: SettingsView,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/settings',
+        component: SettingsView,
         meta: { requiresAuth: true }
     }
 ]

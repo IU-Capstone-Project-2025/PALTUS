@@ -1,6 +1,21 @@
 <script setup>
-
 import {useAuthStore} from "@/stores/auth.js";
+import AccountLink from "@/components/home/AccountLink.vue";
+
+const links = [
+  {
+    title: 'My Account',
+    link: '/account',
+  },
+  {
+    title: 'Settings',
+    link: '/settings',
+  },
+  {
+    title: 'Current Level',
+    link: '/level',
+  },
+]
 </script>
 
 <template>
@@ -9,20 +24,8 @@ import {useAuthStore} from "@/stores/auth.js";
   </div>
   <div class="options">
     <ul>
-      <li>
-        <div class="setting">
-          My account
-        </div>
-      </li>
-      <li>
-        <div class="setting">
-          Settings
-        </div>
-      </li>
-      <li>
-        <div class="setting">
-          Current level
-        </div>
+      <li v-for="link in links">
+        <AccountLink :title="link.title" :link="link.link" />
       </li>
     </ul>
   </div>
@@ -45,18 +48,5 @@ ul {
   color: #F5F7FA;
   font-weight: bold;
   border-bottom-left-radius: 16px;
-}
-
-.setting {
-  box-sizing: border-box;
-  width: 14vw;
-  height: 10vh;
-  align-content: center;
-  background-color: #F5F7FA;
-  text-align: center;
-  border-style: solid;
-  border-width: 0 1px 1px 1px;
-  border-color: #BBDEFB;
-  color: #0D47A1;
 }
 </style>
