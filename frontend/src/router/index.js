@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue';
 import CourseCreationView from "@/views/CourseCreationView.vue";
 import AccountView from "@/views/AccountView.vue";
 import SettingsView from "@/views/SettingsView.vue";
+import CourseView from "@/views/CourseView.vue";
 
 const routes = [
     { path: '/login', component: LoginView },
@@ -32,6 +33,12 @@ const routes = [
     {
         path: '/settings',
         component: SettingsView,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/course/:id',
+        component: CourseView,
+        props: true,
         meta: { requiresAuth: true }
     }
 ]

@@ -30,7 +30,9 @@ const last_course = {
     </ul>
   </div>
   <div class="go-to-course">
-    <ButtonGreen title="Go to Course" />
+    <router-link to="/course/1">
+      <ButtonGreen title="Go to Course" />
+    </router-link>
   </div>
 </div>
 </template>

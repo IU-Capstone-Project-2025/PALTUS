@@ -12,12 +12,14 @@ defineProps({
 </script>
 
 <template>
-  <div class="course">
-    <h3>
-      {{ title }}
-    </h3>
-    <p>Lesson {{ lessons_passed + 1}}</p>
-  </div>
+    <div class="course">
+      <router-link to="/course/1">
+        <h3>
+          {{ title }}
+        </h3>
+        <p>Lesson {{ lessons_passed + 1}}</p>
+      </router-link>
+    </div>
 </template>
 
 <style scoped>
@@ -43,5 +45,14 @@ h3 {
 p {
   font-size: 12px;
   color: #48CFAD;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+a:hover {
+  text-decoration: none;
 }
 </style>
