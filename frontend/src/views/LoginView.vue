@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import Logo from '../components/Logo.vue'
+import Logo from '../components/shared/Logo.vue'
 
 const email = ref('');
 const password = ref('');
