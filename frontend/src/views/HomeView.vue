@@ -4,8 +4,9 @@ import MyCourses from "@/components/shared/MyCourses.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import ContinueStudying from "@/components/home/ContinueStudying.vue";
 import Account from "@/components/home/Account.vue";
+import {ref} from "vue";
 
-const courseName = '';
+const courseName = ref('');
 </script>
 
 <template>
@@ -20,7 +21,7 @@ const courseName = '';
             v-model="courseName"
             placeholder="Course topic..." />
         <div class="create-course-link">
-          <a> >> Create a new course</a>
+          <router-link to="/create_course"> >> Create a new course</router-link>
         </div>
       </div>
       <ContinueStudying />
@@ -35,6 +36,7 @@ const courseName = '';
 a {
   font-size: 16px;
   color: #42A5F5;
+  text-decoration: none;
 }
 a:hover {
   text-decoration: underline;
