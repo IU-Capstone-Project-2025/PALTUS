@@ -21,7 +21,12 @@ const courseName = ref('');
             v-model="courseName"
             placeholder="Course topic..." />
         <div class="create-course-link">
-          <router-link to="/create_course"> >> Create a new course</router-link>
+          <router-link
+              :to="{ path: '/create_course',
+              query: {
+                courseName: courseName
+              } }"
+          > >> Create a new course</router-link>
         </div>
       </div>
       <ContinueStudying />
