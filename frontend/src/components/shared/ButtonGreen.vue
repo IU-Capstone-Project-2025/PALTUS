@@ -3,12 +3,16 @@ defineProps({
   title: {
     type: String,
     required: true
+  },
+  type: {
+    type: String,
+    default: 'button',
   }
 })
 </script>
 
 <template>
-  <button>
+  <button :type="type">
     {{ title }}
   </button>
 </template>

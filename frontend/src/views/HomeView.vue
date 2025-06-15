@@ -1,9 +1,11 @@
 <script setup>
 import Logo from "@/components/shared/Logo.vue";
 import MyCourses from "@/components/shared/MyCourses.vue";
-import Input from "@/components/shared/Input.vue";
+import BaseInput from "@/components/shared/BaseInput.vue";
 import ContinueStudying from "@/components/home/ContinueStudying.vue";
 import Account from "@/components/home/Account.vue";
+
+const courseName = '';
 </script>
 
 <template>
@@ -14,7 +16,9 @@ import Account from "@/components/home/Account.vue";
     </section>
     <section class="center">
       <div class="new-course">
-        <Input placeholder="Course topic..." />
+        <BaseInput
+            v-model="courseName"
+            placeholder="Course topic..." />
         <div class="create-course-link">
           <a> >> Create a new course</a>
         </div>

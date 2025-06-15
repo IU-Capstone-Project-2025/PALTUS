@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
+import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import BaseInput from "@/components/shared/BaseInput.vue";
 
 const email = ref('');
 const password = ref('');
@@ -10,6 +12,7 @@ const auth = useAuthStore();
 const router = useRouter();
 
 async function loginUser() {
+  console.log("Trying login with:", email.value, password.value);
   try {
     await auth.login(email.value, password.value);
     await router.push('/');
@@ -24,13 +27,24 @@ async function loginUser() {
     <Logo />
     <form @submit.prevent="loginUser">
       <h3>Log In</h3>
-      <input v-model="email" placeholder="Email" />
+      <BaseInput
+          v-model="email"
+          placeholder="Email"
+          class="custom-input"
+      />
       <!--    test@example.com-->
-      <input v-model="password" type="password" placeholder="Password" />
+
+      <BaseInput
+          v-model="password"
+          placeholder="Password"
+          type="password"
+          class="custom-input"
+      />
       <!--    123-->
-      <button type="submit">Log In</button>
+
+      <ButtonGreen type="submit" title="Log In" />
       <p>Don't have an account?</p>
-      <button>Sign In</button>
+      <ButtonGreen title="Sign In" />
     </form>
   </div>
 </template>
@@ -41,22 +55,6 @@ async function loginUser() {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-button {
-  background-color: #48CFAD;
-  border-style: none;
-  border-radius: 20px;
-  padding: 10px 30px;
-  font-family: Montserrat, Inter, sans-serif;
-  color: #F5F7FA;
-  font-size: 14px;
-  transition: 500ms;
-  cursor: pointer;
-  width: 10vw;
-}
-button:hover {
-  background-color: #BBDEFB;
-  color: #0D47A1;
 }
 h3 {
   font-size: 28px;
@@ -75,24 +73,12 @@ form {
   margin-top: 10vh;
   border-radius: 16px;
 }
-input {
-  font-family: Montserrat, Inter, sans-serif;
-  color: #0D47A1;
-  border-style: none;
-  border-radius: 20px;
+.custom-input {
   height: 5vh;
-  width: 18vw;
-  padding-left: 30px;
-  padding-right: 10px;
   font-size: 16px;
   margin-bottom: 3vh;
 }
-textarea:focus, input:focus {
-  outline: none;
-}
-::placeholder {
-  color: #abd4f6;
-}
+
 p {
   font-size: 16px;
   color: #F5F7FA;
