@@ -1,5 +1,6 @@
 package com.paltus.backend.service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class CourseService {
 
     public Course saveCourse(Course course) {
         course.setupRelationships();
+        course.setLastActivityTime(Instant.now());
         Course newCourse = courseRepository.save(course);
         return newCourse;
     }

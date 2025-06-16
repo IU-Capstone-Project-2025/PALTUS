@@ -1,7 +1,9 @@
 package com.paltus.backend.model;
 
+import java.time.Instant;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -24,6 +26,9 @@ public class Course {
     private long id;
     private String course_name;
     private String description;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Moscow")
+    private Instant lastActivityTime;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     @JsonManagedReference
