@@ -22,13 +22,13 @@ public class GptController {
     }
     @PostMapping("/createCourse")
     public Course updateStudent( @RequestBody CourseRequest courseRequest) {
-        return chatService.createCourse(courseRequest);
+        Course course = chatService.createCourse(courseRequest);
+        courseService.saveCourse(course);
+        return course;
     }
     @GetMapping()
-    public Course getSomething() {
-        // return chatService.createCourse();
-        Course course = chatService.createCourse();
-        return courseService.saveCourse(course);
+    public String getSomething() {
+        return "Something on the way";
     }
     
 }
