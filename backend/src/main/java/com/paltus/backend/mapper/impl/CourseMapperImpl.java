@@ -3,13 +3,44 @@ package com.paltus.backend.mapper.impl;
 import org.springframework.stereotype.Component;
 
 import com.paltus.backend.dto.CourseSummaryDto;
+import com.paltus.backend.dto.LessonDto;
+import com.paltus.backend.dto.LinkDto;
+import com.paltus.backend.dto.SubtopicDto;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
+import com.paltus.backend.model.Lesson;
+import com.paltus.backend.model.Link;
+import com.paltus.backend.model.Subtopic;
 
 @Component
 public class CourseMapperImpl implements CourseMapper {
     @Override
     public CourseSummaryDto toCourseSummaryDto(Course course) {
         return new CourseSummaryDto(course.getId(), course.getCourse_name());
+    }
+
+    @Override
+    public LessonDto toLessonDto(Lesson lessonWithSubtopicsAndLinks) {
+
+        return new LessonDto(lessonWithSubtopicsAndLinks.getId(),
+                lessonWithSubtopicsAndLinks.getLesson_number(),
+                lessonWithSubtopicsAndLinks.getTitle(),
+                lessonWithSubtopicsAndLinks.isQuiz(),
+                lessonWithSubtopicsAndLinks.getSubtopics().stream().map(subtopic -> this.toSubtopicDto(subtopic))
+                        .toList(),
+                lessonWithSubtopicsAndLinks.getLinks().stream().map(link -> this.toLinkDto(link)).toList());
+    }
+
+    @Override
+    public LinkDto toLinkDto(Link link) {
+        return new LinkDto(link.getId(), link.getValue());
+    }
+
+    @Override
+    public SubtopicDto toSubtopicDto(Subtopic subtopic) {
+        return new SubtopicDto(subtopic.getId(),
+                subtopic.getTopic(),
+                subtopic.getNotes(),
+                subtopic.isFinished());
     }
 }
