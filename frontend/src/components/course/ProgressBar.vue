@@ -5,7 +5,7 @@ const props = defineProps({
   fraction_finished: {
     type: Number,
     required: true,
-    // validator: (value) => value >= 0 && value <= 100
+    // validator: (value) => value >= 0 && value <= 100,
   }
 })
 
