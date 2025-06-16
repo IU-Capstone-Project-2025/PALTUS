@@ -36,14 +36,14 @@ Through Docker compose
 
 ## Team Members 
 
-| Team Member             | Telegram Alias   | Email Address                     | Track                    | Responsibilities                                                                 |
-|-------------------------|------------------|-----------------------------------|--------------------------|----------------------------------------------------------------------------------|
-| Sergey Knyazkin (Lead)  | @poeticlama      | s.knyazkin@innopolis.university   | Frontend/Design/DevOps   | Creating UX/UI, designing frontend structure, assisting deployment               |
-| Aidar Sarvartdinov      | @aidar_sar       | a.sarvardinov@innopolis.university| Backend                  | Creating overall backend structure                                               |
-| Amir Fayzullin          | @HoriFa7z        | a.fayzullin@innopolis.university  | Fullstack                | Developing frontend components, assisting backend code                           |
-| Ramazan Gizamov         | @ramzeuus        | r.gizamov@innopolis.university    | DevOps/Tech communication| Application deployment, report/presentation writing                              |
-| Igor Dubrovsky          | @chomosuce       | i.dubrovsky@innopolis.university  | Backend                  | Writing logic for GPT interaction                                                |
-| Danil Demin             | @degradatorus    | da.demin@innopolis.university     | Frontend                 | Creating frontend components and views                                           |
+| Team Member             | Telegram Alias   | Email Address                     | Track                    |
+|-------------------------|------------------|-----------------------------------|--------------------------|
+| Sergey Knyazkin (Lead)  | @poeticlama      | s.knyazkin@innopolis.university   | Frontend/Design/DevOps   |
+| Aidar Sarvartdinov      | @aidar_sar       | a.sarvardinov@innopolis.university| Backend                  |
+| Amir Fayzullin          | @HoriFa7z        | a.fayzullin@innopolis.university  | Fullstack                |
+| Ramazan Gizamov         | @ramzeuus        | r.gizamov@innopolis.university    | DevOps/Tech communication|
+| Igor Dubrovsky          | @chomosuce       | i.dubrovsky@innopolis.university  | Backend                  |
+| Danil Demin             | @degradatorus    | da.demin@innopolis.university     | Frontend                 |
 
 ##  License
 
