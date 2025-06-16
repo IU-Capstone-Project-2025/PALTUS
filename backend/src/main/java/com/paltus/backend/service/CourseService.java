@@ -11,6 +11,8 @@ import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.repository.CourseRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class CourseService {
     private CourseRepository courseRepository;
@@ -40,5 +42,12 @@ public class CourseService {
             coursesDtos.add(courseMapper.toCourseSummaryDto(course));
         }
         return coursesDtos;
+    }
+
+    public void deleteCourse(long id) {
+        if (!courseRepository.existsById(id)) {
+            throw new EntityNotFoundException("Course not found with id " + id);
+        }
+        courseRepository.deleteById(id);
     }
 }
