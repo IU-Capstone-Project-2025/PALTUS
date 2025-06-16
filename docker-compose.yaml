@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   frontend-app:
     build: frontend
     ports:
@@ -8,7 +20,18 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+
   backend-app:
     build: backend
     ports:
       - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      GIGA_CHAT_API_KEY: ${GIGA_CHAT_API_KEY}
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
