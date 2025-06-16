@@ -1,0 +1,88 @@
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import Logo from '../components/shared/Logo.vue'
+import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import BaseInput from "@/components/shared/BaseInput.vue";
+
+const email = ref('');
+const password = ref('');
+const auth = useAuthStore();
+const router = useRouter();
+
+async function loginUser() {
+  console.log("Trying login with:", email.value, password.value);
+  try {
+    await auth.login(email.value, password.value);
+    await router.push('/');
+  } catch (err) {
+    alert(err.message);
+  }
+}
+</script>
+
+<template>
+  <div class="container">
+    <Logo />
+    <form @submit.prevent="loginUser">
+      <h3>Log In</h3>
+      <BaseInput
+          v-model="email"
+          placeholder="Email"
+          class="custom-input"
+      />
+      <!--    test@example.com-->
+
+      <BaseInput
+          v-model="password"
+          placeholder="Password"
+          type="password"
+          class="custom-input"
+      />
+      <!--    123-->
+
+      <ButtonGreen type="submit" title="Log In" />
+      <p>Don't have an account?</p>
+      <ButtonGreen title="Sign In" />
+    </form>
+  </div>
+</template>
+
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #F5F7FA;
+  text-align: center;
+  margin-bottom: 5vh;
+}
+form {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  background-color: #42A5F5;
+  padding: 3vh 1vw;
+  margin-top: 10vh;
+  border-radius: 16px;
+}
+.custom-input {
+  height: 5vh;
+  font-size: 16px;
+  margin-bottom: 3vh;
+}
+
+p {
+  font-size: 16px;
+  color: #F5F7FA;
+  margin-top: 5vh;
+  margin-bottom: 1vh;
+}
+</style>
