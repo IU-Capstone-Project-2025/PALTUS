@@ -4,18 +4,24 @@
     My goal is: `Goal of a user`
     What I know about this topic: `Knowledge of a user`
     Course duration: `Number of lessons` lessons, time for each lesson `Lesson time`.
-    Give an answer in JSON format without any other text:
+    Give an answer on english in JSON format without any other text, do not change boolean fields:
         {
           "course_name": "Name of the course",
           "description": "Optional",
-          "books": "Useful books for the course",
+          "books": ["Useful books for the course"],
           "lessons": [
             {
               "lesson_number": 1,
               "title": "Title of this lesson",
-              "subtopics": ["Subtopic of the lesson", "Another subtopic of the lesson", "etc."],
-              "links": ["Useful link for learning", "Another useful link for learning", "etc."],
-              "notes": ["", "", ""]
+              "quiz": false,
+              "subtopics": [
+                {
+                  "topic": "Subtopic of the lesson",
+                  "notes": "",
+                  "finished": false
+                }
+              ],
+              "links": ["Useful link for learning", "Another useful link for learning", "etc."]
             },
             {
               "same type for each other lesson as in the lesson 1": ""

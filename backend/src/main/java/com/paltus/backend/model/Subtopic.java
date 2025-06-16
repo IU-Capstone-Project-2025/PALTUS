@@ -1,18 +1,13 @@
 package com.paltus.backend.model;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,24 +16,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-public class Lesson {
+public class Subtopic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int lesson_number;
-    private String title;
-    private boolean quiz;
+    private String topic;
+    private String notes;
+    private boolean finished;
 
     @ManyToOne
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name = "lesson_id")
     @JsonBackReference
-    private Course course;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
-    @JsonManagedReference
-    private List<Subtopic> subtopics;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
-    @JsonManagedReference
-    private List<Link> links;
+    private Lesson lesson;
 }
