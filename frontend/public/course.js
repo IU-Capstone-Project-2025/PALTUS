@@ -39,12 +39,12 @@ const mock_course = {
                     "finished": false
                 },
                 {
-                    "topic": "Subtopic of the lesson",
+                    "topic": "Subtopic of the lesson 2",
                     "notes": "",
                     "finished": false
                 },
                 {
-                    "topic": "Subtopic of the lesson",
+                    "topic": "Subtopic of the lesson 3",
                     "notes": "",
                     "finished": false
                 }
@@ -57,17 +57,17 @@ const mock_course = {
             "quiz": false,
             "subtopics": [
                 {
-                    "topic": "Subtopic of the lesson",
+                    "topic": "Subtopic of the lesson 5",
                     "notes": "",
                     "finished": false
                 },
                 {
-                    "topic": "Subtopic of the lesson",
+                    "topic": "Subtopic of the lesson 9",
                     "notes": "",
                     "finished": false
                 },
                 {
-                    "topic": "Subtopic of the lesson",
+                    "topic": "Subtopic of the lesson 666",
                     "notes": "",
                     "finished": false
                 }
