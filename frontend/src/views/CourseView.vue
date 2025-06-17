@@ -3,6 +3,8 @@ import SideBar from "@/components/course/SideBar.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import {ref} from "vue";
 import mock_course from "../../public/course.js";
+import BaseInput from "@/components/shared/BaseInput.vue";
+import BaseCheckbox from "@/components/shared/BaseCheckbox.vue";
 
 const course = mock_course;
 
@@ -25,9 +27,10 @@ const progress = lessons_passed / lessons_num;
           <div class="field-name">
             Subtopics:
           </div>
-          <ul>
-            <li v-for="subtopic in course.lessons[chosenContent - 1].subtopics">
-              <p class="field-info">{{ subtopic.topic }}</p>
+          <ul class="subtopics-list">
+            <li v-for="subtopic in course.lessons[chosenContent - 1].subtopics" class="subtopic">
+              <BaseCheckbox :id="subtopic.topic" v-model="subtopic.finished" />
+              <label :for="subtopic.topic" class="field-info">{{ subtopic.topic }}</label>
             </li>
           </ul>
         </div>
@@ -108,5 +111,14 @@ ul {
 
 .subtopics {
   margin-bottom: 4vh;
+}
+
+.subtopics-list {
+  padding: 0;
+  list-style: none;
+}
+
+.subtopic {
+  display: flex;
 }
 </style>
