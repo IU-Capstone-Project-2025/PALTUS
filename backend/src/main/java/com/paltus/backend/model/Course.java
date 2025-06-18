@@ -1,10 +1,15 @@
 package com.paltus.backend.model;
 
+import java.time.Instant;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.paltus.backend.converter.StringListConverter;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,13 +30,17 @@ public class Course {
     private String course_name;
     private String description;
 
+    @Convert(converter = StringListConverter.class)
+    @Column(columnDefinition = "text")
+    private List<String> books;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Moscow")
+    private Instant lastActivityTime;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     @JsonManagedReference
     private List<Lesson> lessons;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
-    @JsonManagedReference
-    private List<Book> books;
 
     public void setupRelationships() {
         for (Lesson lesson : lessons) {
@@ -39,13 +48,6 @@ public class Course {
             for (Subtopic subtopic : lesson.getSubtopics()) {
                 subtopic.setLesson(lesson);
             }
-            for (Link link : lesson.getLinks()) {
-                link.setLesson(lesson);
-            }
-        }
-
-        for (Book book : books) {
-            book.setCourse(this);
         }
     }
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paltus.backend.dto.CoursePageDto;
 import com.paltus.backend.dto.CourseSummaryDto;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.service.CourseService;
@@ -31,7 +32,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public Course getCourseById(@PathVariable(name = "id") long id) {
+    public CoursePageDto getCourseById(@PathVariable(name = "id") long id) {
         return courseService.getCourseById(id);
     }
 

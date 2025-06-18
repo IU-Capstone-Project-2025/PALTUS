@@ -22,7 +22,6 @@ public class LessonService {
     public LessonDto getLessonById(long lesson_id) {
         Lesson lesson = this.lessonRepository.findById(lesson_id).get();
         lesson.getSubtopics().size();
-        lesson.getLinks().size();
         return this.courseMapper.toLessonDto(lesson);
     }
 }

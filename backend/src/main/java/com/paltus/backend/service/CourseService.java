@@ -1,11 +1,13 @@
 package com.paltus.backend.service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.paltus.backend.dto.CoursePageDto;
 import com.paltus.backend.dto.CourseSummaryDto;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
@@ -26,13 +28,17 @@ public class CourseService {
 
     public Course saveCourse(Course course) {
         course.setupRelationships();
+        course.setLastActivityTime(Instant.now());
         Course newCourse = courseRepository.save(course);
         return newCourse;
     }
 
     // TODO: Exception handling
-    public Course getCourseById(long course_id) {
-        return courseRepository.findById(course_id).get();
+    public CoursePageDto getCourseById(long course_id) {
+        Course course = courseRepository.findById(course_id).orElseThrow(
+            () -> new EntityNotFoundException("Course not found with id " + course_id)
+        );
+        return courseMapper.toCoursePageDto(course);
     }
 
     public List<CourseSummaryDto> getAllCoursesSummaries() {
