@@ -4,8 +4,11 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.paltus.backend.converter.StringListConverter;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +32,10 @@ public class Lesson {
     private String title;
     private boolean quiz;
 
+    @Convert(converter = StringListConverter.class)
+    @Column(columnDefinition = "text")
+    private List<String> links;
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     @JsonBackReference
@@ -37,8 +44,4 @@ public class Lesson {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
     @JsonManagedReference
     private List<Subtopic> subtopics;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
-    @JsonManagedReference
-    private List<Link> links;
 }

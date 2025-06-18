@@ -4,12 +4,10 @@ import org.springframework.stereotype.Component;
 
 import com.paltus.backend.dto.CourseSummaryDto;
 import com.paltus.backend.dto.LessonDto;
-import com.paltus.backend.dto.LinkDto;
 import com.paltus.backend.dto.SubtopicDto;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.Lesson;
-import com.paltus.backend.model.Link;
 import com.paltus.backend.model.Subtopic;
 
 @Component
@@ -26,14 +24,9 @@ public class CourseMapperImpl implements CourseMapper {
                 lessonWithSubtopicsAndLinks.getLesson_number(),
                 lessonWithSubtopicsAndLinks.getTitle(),
                 lessonWithSubtopicsAndLinks.isQuiz(),
+                lessonWithSubtopicsAndLinks.getLinks(),
                 lessonWithSubtopicsAndLinks.getSubtopics().stream().map(subtopic -> this.toSubtopicDto(subtopic))
-                        .toList(),
-                lessonWithSubtopicsAndLinks.getLinks().stream().map(link -> this.toLinkDto(link)).toList());
-    }
-
-    @Override
-    public LinkDto toLinkDto(Link link) {
-        return new LinkDto(link.getId(), link.getValue());
+                        .toList());
     }
 
     @Override

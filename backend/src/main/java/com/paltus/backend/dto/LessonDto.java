@@ -7,6 +7,6 @@ public record LessonDto (
     int lesson_number,
     String title,
     boolean quiz,
-    List<SubtopicDto> subtopics,
-    List<LinkDto> links
+    List<String> links,
+    List<SubtopicDto> subtopics
 ) {}
