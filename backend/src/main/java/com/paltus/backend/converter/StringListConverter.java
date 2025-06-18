@@ -11,6 +11,8 @@ import jakarta.persistence.Converter;
 @Converter
 public class StringListConverter implements AttributeConverter<List<String>, String> {
     private static final String SPLIT_CHAR = "\\|\\|\\|";
+    private static final String JOIN_CHAR = "|||";
+
 
     @Override
     public String convertToDatabaseColumn(List<String> attribute) {
@@ -20,7 +22,7 @@ public class StringListConverter implements AttributeConverter<List<String>, Str
 
         return attribute.stream()
                 .map(String::trim)
-                .collect(Collectors.joining(SPLIT_CHAR));
+                .collect(Collectors.joining(JOIN_CHAR));
     }
 
     @Override
