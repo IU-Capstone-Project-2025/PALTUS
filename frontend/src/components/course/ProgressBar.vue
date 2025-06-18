@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 
 const props = defineProps({
   fraction_finished: {
@@ -16,6 +16,13 @@ onMounted(() => {
     currentProgress.value = props.fraction_finished
   }, 100)
 })
+
+watch(
+    () => props.fraction_finished,
+    (newVal) => {
+      currentProgress.value = newVal;
+    }
+);
 </script>
 
 <template>

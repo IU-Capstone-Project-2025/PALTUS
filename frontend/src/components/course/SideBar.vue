@@ -2,7 +2,7 @@
 import ProgressBar from "@/components/course/ProgressBar.vue";
 import Logo from "@/components/shared/Logo.vue";
 
-defineProps({
+const props = defineProps({
   course: {
     type: Object,
     required: true,
@@ -15,7 +15,7 @@ defineProps({
     type: Number,
     required: true,
   }
-})
+});
 
 const emit = defineEmits(['update:modelValue'])
 </script>
