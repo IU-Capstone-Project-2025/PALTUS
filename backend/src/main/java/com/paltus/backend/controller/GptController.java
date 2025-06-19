@@ -2,7 +2,7 @@ package com.paltus.backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.model.Course;
-import com.paltus.backend.model.CourseRequest;
+import com.paltus.backend.model.requests.CourseRequest;
 import com.paltus.backend.service.ChatService;
 import com.paltus.backend.service.CourseService;
 

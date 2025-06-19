@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paltus.backend.config.PromptProperties;
 import com.paltus.backend.model.Course;
-import com.paltus.backend.model.CourseRequest;
+import com.paltus.backend.model.requests.CourseRequest;
 
 import chat.giga.client.GigaChatClient;
 import chat.giga.client.auth.AuthClient;

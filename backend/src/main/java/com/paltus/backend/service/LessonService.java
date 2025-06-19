@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.paltus.backend.dto.LessonDto;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Lesson;
+import com.paltus.backend.model.Subtopic;
 import com.paltus.backend.repository.LessonRepository;
 
 @Service
@@ -21,7 +22,7 @@ public class LessonService {
 
     public LessonDto getLessonById(long lesson_id) {
         Lesson lesson = this.lessonRepository.findById(lesson_id).get();
-        lesson.getSubtopics().size();
         return this.courseMapper.toLessonDto(lesson);
     }
+    
 }
