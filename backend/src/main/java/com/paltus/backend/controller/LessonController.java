@@ -34,7 +34,6 @@ public class LessonController {
 
     @PutMapping("subtopic/{id}")
     public void putMethodName(@PathVariable Long id, @RequestBody SubtopicSetStateRequest request) {
-        System.out.println(request.isState());
         subtopicService.setFinishedState(id, request.isState());
     }
 }

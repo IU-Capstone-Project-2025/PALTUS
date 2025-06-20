@@ -2,8 +2,9 @@ package com.paltus.backend.service;
 
 import org.springframework.stereotype.Service;
 
-import com.paltus.backend.model.Subtopic;
 import com.paltus.backend.repository.SubtopicRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class SubtopicService {
@@ -13,10 +14,9 @@ public class SubtopicService {
         this.subtopicRepository = subtopicRepository;
     }
 
+    @Transactional
     public void setFinishedState(Long id, boolean state) {
-        Subtopic subtopic = subtopicRepository.findById(id).get();
-        subtopic.setFinished(state);
-        subtopicRepository.save(subtopic);
+        subtopicRepository.updateState(id, state);
     }
 
 }
