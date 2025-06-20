@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.dto.CoursePageDto;
 import com.paltus.backend.dto.CourseSummaryDto;
-import com.paltus.backend.model.Course;
 import com.paltus.backend.service.CourseService;
 
 // TODO: change URL 
