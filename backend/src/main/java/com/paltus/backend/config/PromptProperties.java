@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "ai.prompt")
 public class PromptProperties {
     private String course;
+    private String system;
 
     public String getCourse() {
         return course;
@@ -13,5 +14,14 @@ public class PromptProperties {
 
     public void setCourse(String course) {
         this.course = course;
-    }    
+    }
+
+    public String getSystem() {
+        return system;
+    }
+
+    public void setSystem(String system) {
+        this.system = system;
+    }   
+
 }
