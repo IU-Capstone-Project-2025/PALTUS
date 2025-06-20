@@ -50,7 +50,7 @@ public class ChatService {
         CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2)
                 .message(ChatMessage.builder()
-                        .content("You are a system that helps create a learning plan, ypur answers must be only jsons")
+                        .content(promptProperties.getSystem())
                         .role(ChatMessageRole.SYSTEM)
                         .build())
                 .message(ChatMessage.builder()
