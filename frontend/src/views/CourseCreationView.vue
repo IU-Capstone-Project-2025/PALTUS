@@ -7,13 +7,10 @@ import BaseInput from "@/components/shared/BaseInput.vue";
 import {ref} from "vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import router from "@/router/index.js";
-import axios from "../plugins/axios.js";
+import { useRoute } from 'vue-router';
 
-const props = defineProps({
-  courseName: String,
-})
-
-const name = ref('');
+const route = useRoute();
+const name = ref(route.query.courseName || '');
 const currentSkills = ref('');
 const goal = ref('');
 const lessonsNum = ref('');
