@@ -80,7 +80,7 @@ form {
 }
 
 p {
-  font-size: 1rem;
+  font-size: 1rem ;
   color: #F5F7FA;
   margin-top: 5vh;
   margin-bottom: 1vh;
