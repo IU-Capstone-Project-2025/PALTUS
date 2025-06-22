@@ -9,13 +9,14 @@ import com.paltus.backend.model.Subtopic;
 import com.paltus.backend.model.dto.CoursePageDto;
 import com.paltus.backend.model.dto.CourseSummaryDto;
 import com.paltus.backend.model.dto.LessonDto;
+import com.paltus.backend.model.dto.NextLessonDto;
 import com.paltus.backend.model.dto.SubtopicDto;
 
 @Component
 public class CourseMapperImpl implements CourseMapper {
     @Override
-    public CourseSummaryDto toCourseSummaryDto(Course course) {
-        return new CourseSummaryDto(course.getId(), course.getCourse_name());
+    public CourseSummaryDto toCourseSummaryDto(Course course, int lastLesson) {
+        return new CourseSummaryDto(course.getId(), course.getCourse_name(), lastLesson);
     }
 
     @Override
@@ -42,9 +43,12 @@ public class CourseMapperImpl implements CourseMapper {
 
     @Override
     public SubtopicDto toSubtopicDto(Subtopic subtopic) {
-        return new SubtopicDto(subtopic.getId(),
-                subtopic.getTopic(),
-                subtopic.getNotes(),
-                subtopic.isFinished());
+        return new SubtopicDto(subtopic.getTopic());
+    }
+
+    @Override
+    public NextLessonDto toNextLessonDto(Lesson lesson, Course course) {
+        return new NextLessonDto(course.getId(), lesson.getTitle(), lesson.getSubtopics().stream().map(subtopic -> this.toSubtopicDto(subtopic))
+        .toList());
     }
 }
