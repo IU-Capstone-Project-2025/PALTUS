@@ -2,14 +2,14 @@ package com.paltus.backend.mapper.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.paltus.backend.dto.CoursePageDto;
-import com.paltus.backend.dto.CourseSummaryDto;
-import com.paltus.backend.dto.LessonDto;
-import com.paltus.backend.dto.SubtopicDto;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.Lesson;
 import com.paltus.backend.model.Subtopic;
+import com.paltus.backend.model.dto.CoursePageDto;
+import com.paltus.backend.model.dto.CourseSummaryDto;
+import com.paltus.backend.model.dto.LessonDto;
+import com.paltus.backend.model.dto.SubtopicDto;
 
 @Component
 public class CourseMapperImpl implements CourseMapper {

@@ -7,10 +7,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.paltus.backend.dto.CoursePageDto;
-import com.paltus.backend.dto.CourseSummaryDto;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
+import com.paltus.backend.model.dto.CoursePageDto;
+import com.paltus.backend.model.dto.CourseSummaryDto;
 import com.paltus.backend.repository.CourseRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -20,7 +20,6 @@ public class CourseService {
     private CourseRepository courseRepository;
     private CourseMapper courseMapper;
 
-    @Autowired
     public CourseService(CourseRepository courseRepository, CourseMapper courseMapper) {
         this.courseRepository = courseRepository;
         this.courseMapper = courseMapper;

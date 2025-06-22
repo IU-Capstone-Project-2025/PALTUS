@@ -2,7 +2,6 @@ package com.paltus.backend.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.aspect.annotation.UpdateLastActivityTime;
-import com.paltus.backend.dto.CoursePageDto;
-import com.paltus.backend.dto.CourseSummaryDto;
 import com.paltus.backend.model.Course;
+import com.paltus.backend.model.dto.CoursePageDto;
+import com.paltus.backend.model.dto.CourseSummaryDto;
 import com.paltus.backend.service.CourseService;
 
 // TODO: change URL 
@@ -24,7 +23,6 @@ import com.paltus.backend.service.CourseService;
 public class CourseController {
     private CourseService courseService;
 
-    @Autowired
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }

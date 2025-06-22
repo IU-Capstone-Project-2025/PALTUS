@@ -1,13 +1,12 @@
 package com.paltus.backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.aspect.annotation.UpdateLastActivityTime;
-import com.paltus.backend.dto.LessonDto;
+import com.paltus.backend.model.dto.LessonDto;
 import com.paltus.backend.model.requests.SubtopicSetStateRequest;
 import com.paltus.backend.service.LessonService;
 import com.paltus.backend.service.SubtopicService;
@@ -22,7 +21,6 @@ public class LessonController {
     private LessonService lessonService;
     private SubtopicService subtopicService;
 
-    @Autowired
     public LessonController(LessonService lessonService, SubtopicService subtopicService) {
         this.lessonService = lessonService;
         this.subtopicService = subtopicService;
