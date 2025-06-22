@@ -28,7 +28,7 @@ public class CourseService {
 
     public Course saveCourse(Course course) {
         course.setupRelationships();
-        course.setLastActivityTime(Instant.now());
+        // course.setLastActivityTime(Instant.now());
         Course newCourse = courseRepository.save(course);
         return newCourse;
     }

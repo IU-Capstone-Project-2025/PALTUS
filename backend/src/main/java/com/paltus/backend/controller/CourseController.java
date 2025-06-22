@@ -7,9 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paltus.backend.aspect.annotation.UpdateLastActivityTime;
 import com.paltus.backend.dto.CoursePageDto;
 import com.paltus.backend.dto.CourseSummaryDto;
 import com.paltus.backend.model.Course;
@@ -40,6 +43,13 @@ public class CourseController {
     public ResponseEntity<Void> deleteCourseById(@PathVariable long id) {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/saveCourse")
+    @UpdateLastActivityTime
+    public Course postMethodName(@RequestBody Course course) {
+        courseService.saveCourse(course);
+        return course;
     }
 
 }
