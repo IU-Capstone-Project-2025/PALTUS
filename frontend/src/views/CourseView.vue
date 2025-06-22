@@ -97,19 +97,19 @@ ul {
 
 .uppercase {
   text-transform: uppercase;
-  font-size: 36px;
+  font-size: 2.25rem;
   margin-bottom: 7vh;
 }
 
 .field-name {
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: bold;
   color: #0D47A1;
   margin-bottom: 1vh;
 }
 
 .field-info {
-  font-size: 20px;
+  font-size: 1.25rem;
   color: #0D47A1;
   margin-bottom: 1vh;
 }

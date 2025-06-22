@@ -13,7 +13,7 @@ import {useAuthStore} from "@/stores/auth.js";
   box-sizing: border-box;
   width: 23vw;
   height: 10vh;
-  font-size: 18px;
+  font-size: 1.125rem;
   padding-left: 5vw;
   background-color: #0D47A1;
   align-content: center;

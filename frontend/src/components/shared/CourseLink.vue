@@ -36,14 +36,14 @@ defineProps({
 }
 
 h3 {
-  font-size: 18px;
+  font-size: 1.125rem;
   padding-right: 10px;
   color: #1B5E20;
   margin-bottom: 0.5vh;
 }
 
 p {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #48CFAD;
 }
 

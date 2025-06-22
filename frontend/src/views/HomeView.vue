@@ -39,7 +39,7 @@ const courseName = ref('');
 
 <style scoped>
 a {
-  font-size: 16px;
+  font-size: 1rem;
   color: #42A5F5;
   text-decoration: none;
 }

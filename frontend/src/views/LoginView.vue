@@ -57,7 +57,7 @@ async function loginUser() {
   align-items: center;
 }
 h3 {
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 700;
   color: #F5F7FA;
   text-align: center;
@@ -75,12 +75,12 @@ form {
 }
 .custom-input {
   height: 5vh;
-  font-size: 16px;
+  font-size: 1rem;
   margin-bottom: 3vh;
 }
 
 p {
-  font-size: 16px;
+  font-size: 1rem;
   color: #F5F7FA;
   margin-top: 5vh;
   margin-bottom: 1vh;

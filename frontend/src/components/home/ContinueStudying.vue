@@ -47,7 +47,7 @@ const last_course = {
 }
 
 h3 {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #F5F7FA;
   margin-bottom: 5vh
