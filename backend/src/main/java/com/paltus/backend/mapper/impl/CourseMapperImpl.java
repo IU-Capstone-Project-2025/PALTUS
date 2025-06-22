@@ -1,5 +1,7 @@
 package com.paltus.backend.mapper.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.paltus.backend.mapper.CourseMapper;
@@ -8,6 +10,7 @@ import com.paltus.backend.model.Lesson;
 import com.paltus.backend.model.Subtopic;
 import com.paltus.backend.model.dto.CoursePageDto;
 import com.paltus.backend.model.dto.CourseSummaryDto;
+import com.paltus.backend.model.dto.DashboardDto;
 import com.paltus.backend.model.dto.LessonDto;
 import com.paltus.backend.model.dto.NextLessonDto;
 import com.paltus.backend.model.dto.SubtopicDto;
@@ -51,4 +54,10 @@ public class CourseMapperImpl implements CourseMapper {
         return new NextLessonDto(course.getId(), lesson.getTitle(), lesson.getSubtopics().stream().map(subtopic -> this.toSubtopicDto(subtopic))
         .toList());
     }
+
+    @Override
+    public DashboardDto toDashboardDto(List<CourseSummaryDto> courses, Lesson nextLesson) {
+        return new DashboardDto(courses, toNextLessonDto(nextLesson, nextLesson.getCourse()));
+    }
+
 }

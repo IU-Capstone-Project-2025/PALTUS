@@ -1,11 +1,9 @@
 package com.paltus.backend.service;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.paltus.backend.mapper.CourseMapper;
@@ -13,6 +11,7 @@ import com.paltus.backend.model.Course;
 import com.paltus.backend.model.Lesson;
 import com.paltus.backend.model.dto.CoursePageDto;
 import com.paltus.backend.model.dto.CourseSummaryDto;
+import com.paltus.backend.model.dto.DashboardDto;
 import com.paltus.backend.repository.CourseRepository;
 import com.paltus.backend.repository.LessonRepository;
 
@@ -51,16 +50,31 @@ public class CourseService {
         return lessons.get(0);
     }
 
-    public List<CourseSummaryDto> getAllCoursesSummaries() {
-        List<Course> courses = courseRepository.findAll();
-        courses.sort(Comparator.comparing(
-                    Course::getLastActivityTime,
-                    Comparator.nullsLast(Comparator.reverseOrder())));    
+    public List<CourseSummaryDto> getAllCoursesSummaries(List<Course> courses) {
+        // List<Course> courses = courseRepository.findAll();
+        // courses.sort(Comparator.comparing(
+        //             Course::getLastActivityTime,
+        //             Comparator.nullsLast(Comparator.reverseOrder())));    
         List<CourseSummaryDto> coursesDtos = new ArrayList<>();
         for (Course course: courses) {
             coursesDtos.add(courseMapper.toCourseSummaryDto(course, getNextLesson(course).getLesson_number()));
         }
         return coursesDtos;
+    }
+
+    public List<Course> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        courses.sort(Comparator.comparing(
+                    Course::getLastActivityTime,
+                    Comparator.nullsLast(Comparator.reverseOrder())));    
+        return courses;
+    }
+
+
+    public DashboardDto getDashboard() {
+        List<Course> courses = getAllCourses();
+        Lesson lesson = getNextLesson(courses.get(0));
+        return courseMapper.toDashboardDto(getAllCoursesSummaries(courses), lesson);
     }
 
     public void deleteCourse(long id) {

@@ -1,6 +1,5 @@
 package com.paltus.backend.controller;
 
-import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paltus.backend.aspect.annotation.UpdateLastActivityTime;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.dto.CoursePageDto;
-import com.paltus.backend.model.dto.CourseSummaryDto;
+import com.paltus.backend.model.dto.DashboardDto;
 import com.paltus.backend.service.CourseService;
+
 
 // TODO: change URL 
 @RestController
@@ -27,10 +27,16 @@ public class CourseController {
         this.courseService = courseService;
     }
 
+    // @GetMapping()
+    // public List<CourseSummaryDto> getAllCoursesSummaries() {
+    //     return courseService.getAllCoursesSummaries();
+    // }
+
     @GetMapping()
-    public List<CourseSummaryDto> getAllCoursesSummaries() {
-        return courseService.getAllCoursesSummaries();
+    public DashboardDto getDashboardDto() {
+        return courseService.getDashboard();
     }
+    
 
     @GetMapping("/{id}")
     public CoursePageDto getCourseById(@PathVariable(name = "id") long id) {

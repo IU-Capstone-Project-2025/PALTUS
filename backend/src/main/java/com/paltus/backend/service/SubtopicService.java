@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import com.paltus.backend.repository.SubtopicRepository;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class SubtopicService {
