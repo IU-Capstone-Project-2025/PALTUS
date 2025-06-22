@@ -14,7 +14,6 @@ public class SubtopicService {
         this.subtopicRepository = subtopicRepository;
     }
 
-    @Transactional
     public void setFinishedState(Long id, boolean state) {
         subtopicRepository.updateState(id, state);
     }

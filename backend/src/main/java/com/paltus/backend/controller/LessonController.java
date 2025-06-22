@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paltus.backend.aspect.annotation.UpdateLastActivityTime;
 import com.paltus.backend.dto.LessonDto;
 import com.paltus.backend.model.requests.SubtopicSetStateRequest;
 import com.paltus.backend.service.LessonService;
@@ -33,6 +34,7 @@ public class LessonController {
     }
 
     @PutMapping("subtopic/{id}")
+    @UpdateLastActivityTime
     public void putMethodName(@PathVariable Long id, @RequestBody SubtopicSetStateRequest request) {
         subtopicService.setFinishedState(id, request.isState());
     }

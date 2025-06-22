@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paltus.backend.aspect.annotation.UpdateLastActivityTime;
 import com.paltus.backend.dto.CoursePageDto;
 import com.paltus.backend.dto.CourseSummaryDto;
 import com.paltus.backend.model.Course;
@@ -45,6 +46,7 @@ public class CourseController {
     }
 
     @PostMapping("/saveCourse")
+    @UpdateLastActivityTime
     public Course postMethodName(@RequestBody Course course) {
         courseService.saveCourse(course);
         return course;
