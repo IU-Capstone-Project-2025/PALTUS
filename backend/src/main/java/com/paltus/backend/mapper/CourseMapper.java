@@ -10,7 +10,7 @@ import com.paltus.backend.model.dto.NextLessonDto;
 import com.paltus.backend.model.dto.SubtopicDto;
 
 public interface CourseMapper {
-    CourseSummaryDto toCourseSummaryDto(Course course, int lastLesson);
+    CourseSummaryDto toCourseSummaryDto(Course course, int nextLesson);
 
     CoursePageDto toCoursePageDto(Course course);
 

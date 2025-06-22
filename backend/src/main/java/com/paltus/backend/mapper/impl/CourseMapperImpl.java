@@ -15,8 +15,8 @@ import com.paltus.backend.model.dto.SubtopicDto;
 @Component
 public class CourseMapperImpl implements CourseMapper {
     @Override
-    public CourseSummaryDto toCourseSummaryDto(Course course, int lastLesson) {
-        return new CourseSummaryDto(course.getId(), course.getCourse_name(), lastLesson);
+    public CourseSummaryDto toCourseSummaryDto(Course course, int nextLesson) {
+        return new CourseSummaryDto(course.getId(), course.getCourse_name(), nextLesson);
     }
 
     @Override

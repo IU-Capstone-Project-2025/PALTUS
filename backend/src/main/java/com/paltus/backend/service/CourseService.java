@@ -45,7 +45,7 @@ public class CourseService {
         return courseMapper.toCoursePageDto(course);
     }
 
-    public Lesson getLastLesson(Course course) {
+    public Lesson getNextLesson(Course course) {
         List<Lesson> lessons = lessonRepository.findUnfinishedLessonsByCourseId(course.getId());
         lessons.sort(Comparator.comparing(Lesson::getId));
         return lessons.get(0);
@@ -58,7 +58,7 @@ public class CourseService {
                     Comparator.nullsLast(Comparator.reverseOrder())));    
         List<CourseSummaryDto> coursesDtos = new ArrayList<>();
         for (Course course: courses) {
-            coursesDtos.add(courseMapper.toCourseSummaryDto(course, getLastLesson(course).getLesson_number()));
+            coursesDtos.add(courseMapper.toCourseSummaryDto(course, getNextLesson(course).getLesson_number()));
         }
         return coursesDtos;
     }
