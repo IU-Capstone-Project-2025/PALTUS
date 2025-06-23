@@ -1,4 +1,4 @@
-package com.paltus.backend.model;
+package com.paltus.backend.model.requests;
 
 import lombok.Data;
 

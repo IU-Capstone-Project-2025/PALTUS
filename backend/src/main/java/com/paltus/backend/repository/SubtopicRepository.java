@@ -1,19 +1,17 @@
 package com.paltus.backend.repository;
 
-import java.time.Instant;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.paltus.backend.model.Course;
+import com.paltus.backend.model.Subtopic;
 
 import jakarta.transaction.Transactional;
 
-public interface CourseRepository extends JpaRepository<Course, Long> {
+public interface SubtopicRepository extends JpaRepository<Subtopic, Long> {
     @Modifying
     @Transactional
-    @Query("UPDATE Course c SET c.lastActivityTime = :time WHERE c.id = :id")
-    void updateLastActivityTime(@Param("id") long id, @Param("time") Instant instant);
+    @Query("UPDATE Subtopic s SET s.finished = :state WHERE s.id = :id")
+    void updateState(@Param("id") Long id, @Param("state") boolean state);
 }
