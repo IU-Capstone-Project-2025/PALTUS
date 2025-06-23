@@ -67,11 +67,16 @@ const getCourse = async () => {
     try {
       await axios.post(`createCourse`, newCourse).then((response) => {
         console.log(response);
+        try {
+          axios.post('courses/saveCourse', response)
+              .then((router.push('/')));
+        } catch (error) {
+          console.log(error);
+        }
       });
     } catch (error) {
       console.log(error);
     }
-    await router.push('/');
   } else {
     return 0;
   }
