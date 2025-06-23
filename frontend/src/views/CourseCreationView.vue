@@ -5,7 +5,7 @@ import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import router from "@/router/index.js";
 import { useRoute } from 'vue-router';
 import axios from "@/plugins/axios.js"
@@ -16,6 +16,16 @@ const currentSkills = ref('');
 const goal = ref('');
 const lessonsNum = ref('');
 const duration = ref('');
+const courses = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('courses');
+    courses.value = response.courses;
+  } catch (err) {
+    console.error('Request failed:', err);
+  }
+})
 
 const inputs = ref([
       {
@@ -87,7 +97,7 @@ const getCourse = async () => {
   <div class="main">
     <section class="left">
       <Logo />
-      <MyCourses />
+      <MyCourses :courses="courses"/>
     </section>
     <section class="center">
       <div
