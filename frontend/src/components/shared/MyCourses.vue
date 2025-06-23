@@ -15,7 +15,7 @@ const props = defineProps({
   </div>
   <ul class="courses">
     <li v-for="course in props.courses">
-      <CourseLink :title="course.course_name" :next_lesson="course.nextLesson" />
+      <CourseLink :title="course.course_name" :next_lesson="course.nextLesson" :id="course.id"/>
     </li>
   </ul>
 </template>

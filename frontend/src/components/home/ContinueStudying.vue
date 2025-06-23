@@ -8,9 +8,7 @@ const props = defineProps({
     required: true,
   }
 });
-
-const nextLesson = props.nextLesson;
-console.log(nextLesson);
+const link = `course/${props.nextLesson.courseId}`
 </script>
 
 <template>
@@ -18,17 +16,18 @@ console.log(nextLesson);
   <h3>Continue studying:</h3>
   <div class="course-info">
     <CourseLink
-        :title="nextLesson.lessonTitle"
+        :title="props.nextLesson.lessonTitle"
+        :id="props.nextLesson.courseId"
         class="course-link"
     />
     <ul class="subtopics">
-      <li v-for="subtopic in nextLesson.subtopics">
+      <li v-for="subtopic in props.nextLesson.subtopics">
         {{ subtopic.topicName }}
       </li>
     </ul>
   </div>
   <div class="go-to-course">
-    <router-link to="/course/1">
+    <router-link :to="link">
       <ButtonGreen title="Go to Course" />
     </router-link>
   </div>

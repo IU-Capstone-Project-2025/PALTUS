@@ -1,5 +1,5 @@
 <script setup>
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     required: true
@@ -7,17 +7,23 @@ defineProps({
   next_lesson: {
     type: Number,
     required: false
+  },
+  id: {
+    type: Number,
+    required: true
   }
 })
+
+const link = `course/${props.id}`;
 </script>
 
 <template>
     <div class="course">
-      <router-link to="/course/1">
+      <router-link :to="link">
         <h3>
-          {{ title }}
+          {{ props.title }}
         </h3>
-        <p v-if="next_lesson">Lesson {{ next_lesson }}</p>
+        <p v-if="next_lesson">Lesson {{ props.next_lesson }}</p>
         <p v-else >Next Lesson</p>
       </router-link>
     </div>
