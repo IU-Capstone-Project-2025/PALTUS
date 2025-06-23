@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paltus.backend.config.PromptProperties;
 import com.paltus.backend.model.Course;
-import com.paltus.backend.model.CourseRequest;
+import com.paltus.backend.model.requests.CourseRequest;
 
 import chat.giga.client.GigaChatClient;
 import chat.giga.client.auth.AuthClient;
@@ -50,7 +50,7 @@ public class ChatService {
         CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2)
                 .message(ChatMessage.builder()
-                        .content("You are a system that helps create a learning plan, ypur answers must be only jsons")
+                        .content(promptProperties.getSystem())
                         .role(ChatMessageRole.SYSTEM)
                         .build())
                 .message(ChatMessage.builder()
