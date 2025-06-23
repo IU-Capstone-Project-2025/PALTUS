@@ -4,16 +4,29 @@ import MyCourses from "@/components/shared/MyCourses.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import ContinueStudying from "@/components/home/ContinueStudying.vue";
 import Account from "@/components/shared/Account.vue";
-import {ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
+import axios from "@/plugins/axios.js";
 
+const courses = ref([]);
 const courseName = ref('');
+const nextLesson = reactive({});
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('courses');
+    courses.value = response.courses;
+    Object.assign(nextLesson, response.nextLesson);
+  } catch (err) {
+    console.error('Request failed:', err);
+  }
+})
 </script>
 
 <template>
   <div class="main">
     <section class="left">
       <Logo />
-      <MyCourses />
+      <MyCourses :courses="courses"/>
     </section>
     <section class="center">
       <div class="new-course">
@@ -29,7 +42,7 @@ const courseName = ref('');
           > >> Create a new course</router-link>
         </div>
       </div>
-      <ContinueStudying />
+      <ContinueStudying :nextLesson="nextLesson" />
     </section>
     <section class="right">
       <Account />

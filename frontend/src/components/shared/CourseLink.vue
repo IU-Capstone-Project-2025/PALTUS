@@ -4,9 +4,9 @@ defineProps({
     type: String,
     required: true
   },
-  lessons_passed: {
+  next_lesson: {
     type: Number,
-    required: true
+    required: false
   }
 })
 </script>
@@ -17,7 +17,8 @@ defineProps({
         <h3>
           {{ title }}
         </h3>
-        <p>Lesson {{ lessons_passed + 1}}</p>
+        <p v-if="next_lesson">Lesson {{ next_lesson }}</p>
+        <p v-else >Next Lesson</p>
       </router-link>
     </div>
 </template>

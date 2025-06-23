@@ -2,16 +2,15 @@
 import CourseLink from "@/components/shared/CourseLink.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 
-const last_course = {
-  name: 'Introduction to ML',
-  lessons_passed: 2,
-  last_lesson: 'Regression and model quality assessment',
-  subtopics: [
-    'Linear and polynomial regression',
-    'Measurement accuracy models: MSE, R²',
-    'Cross-validation and regularization'
-  ]
-}
+const props = defineProps({
+  nextLesson: {
+    type: Object,
+    required: true,
+  }
+});
+
+const nextLesson = props.nextLesson;
+console.log(nextLesson);
 </script>
 
 <template>
@@ -19,13 +18,12 @@ const last_course = {
   <h3>Continue studying:</h3>
   <div class="course-info">
     <CourseLink
-        :title="last_course.last_lesson"
-        :lessons_passed="last_course.lessons_passed"
+        :title="nextLesson.lessonTitle"
         class="course-link"
     />
     <ul class="subtopics">
-      <li v-for="subtopic in last_course.subtopics">
-        {{ subtopic }}
+      <li v-for="subtopic in nextLesson.subtopics">
+        {{ subtopic.topicName }}
       </li>
     </ul>
   </div>
