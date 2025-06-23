@@ -1,5 +1,7 @@
 FROM node:lts-alpine
 
+RUN apk add --no-cache curl    # DELETE ME
+
 WORKDIR /app
 
 COPY package*.json ./
