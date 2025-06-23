@@ -18,7 +18,7 @@ public class GptController {
         this.chatService = chatService;
     }
     @PostMapping("/createCourse")
-    public Course updateStudent( @RequestBody CourseRequest courseRequest) {
+    public Course createCourse( @RequestBody CourseRequest courseRequest) {
         Course course = chatService.createCourse(courseRequest);
         return course;
     }
