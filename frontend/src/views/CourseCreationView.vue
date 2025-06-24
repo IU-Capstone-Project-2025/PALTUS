@@ -4,18 +4,28 @@ import MyCourses from "@/components/shared/MyCourses.vue";
 import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
-import {ref} from "vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import {onMounted, ref} from "vue";
+import router from "@/router/index.js";
+import { useRoute } from 'vue-router';
+import axios from "@/plugins/axios.js"
 
-const props = defineProps({
-  courseName: String,
-})
-
-const name = ref('');
+const route = useRoute();
+const name = ref(route.query.courseName || '');
 const currentSkills = ref('');
 const goal = ref('');
 const lessonsNum = ref('');
 const duration = ref('');
+const courses = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('courses');
+    courses.value = response.courses;
+  } catch (err) {
+    console.error('Request failed:', err);
+  }
+})
 
 const inputs = ref([
       {
@@ -35,14 +45,59 @@ const inputs = ref([
         placeholder: 'Number of lessons',
         model: lessonsNum,
       }
-    ]);
+    ]
+);
+
+const validation = () => {
+  const lessonsNumInt = parseInt(lessonsNum.value);
+  const durationInt = parseInt(duration.value);
+  if (name.value.length > 0
+      && currentSkills.value.length > 0
+      && goal.value.length > 0
+      && lessonsNumInt
+      && durationInt
+      && lessonsNumInt >= 5
+      && lessonsNumInt <= 16
+      && durationInt >= 20
+      && durationInt <= 240) {
+    return 1;
+  }
+  return 0;
+}
+
+const getCourse = async () => {
+  if (validation()) {
+    const newCourse = {
+      courseName: name.value,
+      goal: goal.value,
+      knowledge: currentSkills.value,
+      lessons: lessonsNum.value,
+      time: duration.value,
+    };
+    try {
+      await axios.post(`createCourse`, newCourse).then((response) => {
+        console.log(response);
+        try {
+          axios.post('courses/saveCourse', response)
+              .then((router.push('/')));
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    return 0;
+  }
+}
 </script>
 
 <template>
   <div class="main">
     <section class="left">
       <Logo />
-      <MyCourses />
+      <MyCourses :courses="courses"/>
     </section>
     <section class="center">
       <div
@@ -55,7 +110,7 @@ const inputs = ref([
       <div class="question" style="margin-top: 1vh">
         <BaseInput placeholder="Lesson duration (in minutes)" v-model="duration"/>
       </div>
-      <ButtonGreen title="GET A COURSE" class="increased-size" />
+      <ButtonGreen title="GET A COURSE" class="increased-size" @click="getCourse"/>
     </section>
     <section class="right">
       <Account />

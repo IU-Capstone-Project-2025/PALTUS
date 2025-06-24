@@ -32,6 +32,7 @@ defineProps({
   border-color: #BBDEFB;
   color: #0D47A1;
   cursor: pointer;
+  font-size: 18px;
 }
 
 a {
