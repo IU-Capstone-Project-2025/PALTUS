@@ -61,7 +61,7 @@ h3 {
   font-weight: 700;
   color: #F5F7FA;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 5vh;
 }
 form {
   display: flex;
