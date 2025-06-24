@@ -1,5 +1,6 @@
 package com.paltus.backend.model.dto;
 
 public record SubtopicDto(
-    String topicName
+    String topicName,
+    boolean finished
 ) {}

@@ -48,7 +48,7 @@ const chosenContent = ref(0);
           <ul class="subtopics-list">
             <li v-for="subtopic in course.lessons[chosenContent - 1].subtopics" class="subtopic">
               <BaseCheckbox :id="subtopic.topicName" v-model="subtopic.finished" />
-              <label :for="subtopic.topic" class="field-info">{{ subtopic.topicName }}</label>
+              <label :for="subtopic.topicName" class="field-info">{{ subtopic.topicName }}</label>
             </li>
           </ul>
         </div>
