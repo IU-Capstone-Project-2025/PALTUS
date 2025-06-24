@@ -36,7 +36,6 @@ public class CourseService {
         return newCourse;
     }
 
-    // TODO: Exception handling
     public CoursePageDto getCourseById(long course_id) {
         Course course = courseRepository.findById(course_id).orElseThrow(
             () -> new EntityNotFoundException("Course not found with id " + course_id)
