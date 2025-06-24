@@ -17,6 +17,7 @@ const goal = ref('');
 const lessonsNum = ref('');
 const duration = ref('');
 const courses = ref([]);
+const waiting = ref(false);
 
 onMounted(async () => {
   try {
@@ -66,6 +67,7 @@ const validation = () => {
 }
 
 const getCourse = async () => {
+  waiting.value = true;
   if (validation()) {
     const newCourse = {
       courseName: name.value,
@@ -110,7 +112,18 @@ const getCourse = async () => {
       <div class="question" style="margin-top: 1vh">
         <BaseInput placeholder="Lesson duration (in minutes)" v-model="duration"/>
       </div>
-      <ButtonGreen title="GET A COURSE" class="increased-size" @click="getCourse"/>
+      <ButtonGreen
+          v-if="validation() && !waiting"
+          title="GET A COURSE"
+          class="increased-size"
+          @click="getCourse"
+      />
+      <ButtonGreen
+          v-if="!validation() && !waiting"
+          title="GET A COURSE"
+          class="inactive"
+      />
+      <BaseHeader v-if="waiting" text="Waiting for server response..." class="waiting" />
     </section>
     <section class="right">
       <Account />
@@ -153,5 +166,17 @@ const getCourse = async () => {
 .increased-size {
   margin-top: 2.5vh;
   padding: 2vh 3vw;
+}
+
+.inactive {
+  margin-top: 2.5vh;
+  padding: 2vh 3vw;
+  background-color: #BBDEFB;
+  color: #0D47A1;
+  cursor: not-allowed;
+}
+
+.waiting {
+  margin-top: 2.5vh;
 }
 </style>

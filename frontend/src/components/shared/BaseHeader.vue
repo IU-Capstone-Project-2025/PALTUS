@@ -16,7 +16,7 @@ defineProps({
 <style scoped>
 h1 {
   color: #42A5F5;
-  font-size: 24px;
+  font-size: 1.35rem;
   padding: 0.5vh 0;
   font-weight: bold;
 }

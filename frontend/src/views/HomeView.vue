@@ -45,6 +45,7 @@ onMounted(async () => {
       <ContinueStudying :courseId="nextLesson.courseId"
                         :lessonTitle="nextLesson.lessonTitle"
                         :subtopics="nextLesson.subtopics"
+                        v-if="courses.length > 0"
       />
     </section>
     <section class="right">
@@ -55,7 +56,7 @@ onMounted(async () => {
 
 <style scoped>
 a {
-  font-size: 16px;
+  font-size: 1rem;
   color: #42A5F5;
   text-decoration: none;
 }

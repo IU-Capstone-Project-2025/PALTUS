@@ -30,7 +30,7 @@ ul{
   box-sizing: border-box;
   width: 23vw;
   height: 10vh;
-  font-size: 20px;
+  font-size: 1.25rem;
   padding-left: 30px;
   background-color: #42A5F5;
   align-content: center;

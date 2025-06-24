@@ -1,19 +1,33 @@
 <script setup>
 import SideBar from "@/components/course/SideBar.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import {computed, onMounted, reactive, ref} from "vue";
-import mock_course from "../../public/course.js";
+import {computed, onMounted, ref, watch} from "vue";
 import BaseCheckbox from "@/components/shared/BaseCheckbox.vue";
 import {useCourseStore} from "@/stores/course.js";
-import {useRoute} from "vue-router";
+import {onBeforeRouteLeave, useRoute} from "vue-router";
+import ButtonRed from "@/components/shared/ButtonRed.vue";
+import axios from "@/plugins/axios.js"
+import router from "@/router/index.js";
+
 
 const route = useRoute();
 const course = useCourseStore();
 let progress = ref(0);
+let id = ref(0);
+let subtopicsChanged = [];
+
+const checkSubtopic = (id, finished) => {
+  const index = subtopicsChanged.findIndex(item => item.id === id);
+  if (index > -1) {
+    subtopicsChanged.splice(index, 1);
+  } else {
+    subtopicsChanged.push({ id, finished });
+  }
+};
 
 onMounted(() => {
-  const courseId = route.params.id;
-  course.loadCourse(courseId);
+  id = route.params.id;
+  course.loadCourse(id);
   console.log(course);
   const lessons_num = computed(() => course.lessons.length);
   const lessons_passed = computed(() => {
@@ -31,6 +45,35 @@ onMounted(() => {
 });
 
 const chosenContent = ref(0);
+
+watch(chosenContent, async (newValue, oldValue) => {
+  if (oldValue) {
+    for (const subtopicChanged of subtopicsChanged) {
+      await course.updateSubtopic(subtopicChanged);
+    }
+    subtopicsChanged = [];
+  }
+})
+
+onBeforeRouteLeave(async (to, from, next) => {
+  if (subtopicsChanged.length > 0) {
+    for (const subtopicChanged of subtopicsChanged) {
+      await course.updateSubtopic(subtopicChanged);
+    }
+    subtopicsChanged = [];
+  }
+  next();
+});
+
+const removeCourse = async () => {
+  try {
+    axios.delete(`courses/${id}`).then(() => {
+      router.push('/');
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
 </script>
 
 <template>
@@ -47,8 +90,12 @@ const chosenContent = ref(0);
           </div>
           <ul class="subtopics-list">
             <li v-for="subtopic in course.lessons[chosenContent - 1].subtopics" class="subtopic">
-              <BaseCheckbox :id="subtopic.topicName" v-model="subtopic.finished" />
-              <label :for="subtopic.topicName" class="field-info">{{ subtopic.topicName }}</label>
+              <BaseCheckbox
+                  :id="subtopic.topic"
+                  v-model="subtopic.finished"
+                  @update:modelValue="checkSubtopic(subtopic.id, subtopic.finished)"
+              />
+              <label :for="subtopic.topic" class="field-info">{{ subtopic.topic }}</label>
             </li>
           </ul>
         </div>
@@ -63,25 +110,30 @@ const chosenContent = ref(0);
           </ul>
         </div>
       </div>
-      <div class="lesson-content" v-if="!chosenContent">
-        <BaseHeader :text="course.course_name" class="uppercase" />
-        <div class="description">
-          <h1 class="field-name">
-            Description:
-          </h1>
-          <p class="field-info">{{ course.description }}</p>
-        </div>
-        <div class="books">
-          <div class="field-name">
-            Useful books for the course:
+      <section class="main-content">
+        <div class="lesson-content" v-if="!chosenContent">
+          <BaseHeader :text="course.course_name" class="uppercase" />
+          <div class="description">
+            <h1 class="field-name">
+              Description:
+            </h1>
+            <p class="field-info">{{ course.description }}</p>
           </div>
-          <ul>
-            <li v-for="book in course.books" class="field-info">
-              <p> {{ book }}</p>
-            </li>
-          </ul>
+          <div class="books">
+            <div class="field-name">
+              Useful books for the course:
+            </div>
+            <ul>
+              <li v-for="book in course.books" class="field-info">
+                <p> {{ book }}</p>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+        <div class="navigation" v-if="!chosenContent">
+          <ButtonRed title="REMOVE A COURSE" @click="removeCourse" />
+        </div>
+      </section>
     </section>
   </div>
 </template>
@@ -97,6 +149,12 @@ ul {
   box-sizing: border-box;
 }
 
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+}
+
 .lesson-content {
   box-sizing: border-box;
   display: flex;
@@ -106,19 +164,19 @@ ul {
 
 .uppercase {
   text-transform: uppercase;
-  font-size: 36px;
+  font-size: 2.25rem;
   margin-bottom: 7vh;
 }
 
 .field-name {
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: bold;
   color: #0D47A1;
   margin-bottom: 1vh;
 }
 
 .field-info {
-  font-size: 20px;
+  font-size: 1.25rem;
   color: #0D47A1;
   margin-bottom: 1vh;
 }
@@ -138,5 +196,9 @@ ul {
 
 .subtopic {
   display: flex;
+}
+
+.navigation {
+  padding-left: 8vw;
 }
 </style>

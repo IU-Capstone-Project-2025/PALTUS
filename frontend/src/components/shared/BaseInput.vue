@@ -30,7 +30,7 @@ input {
   width: 20vw;
   padding-left: 30px;
   padding-right: 10px;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 textarea:focus, input:focus {
