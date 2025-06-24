@@ -14,7 +14,8 @@ export const useAuthStore = defineStore('auth', {
                 localStorage.setItem('user', JSON.stringify(this.user));
                 localStorage.setItem('token', this.token);
             } else {
-                throw new Error('Wrong email or password!');
+                throw new Error('email - test@example.com\n' +
+                                'password - 123');
             }
         },
         logout() {
