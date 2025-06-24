@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import com.paltus.backend.repository.SubtopicRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 
 @Service
 public class SubtopicService {
@@ -14,6 +16,9 @@ public class SubtopicService {
     }
 
     public void setFinishedState(Long id, boolean state) {
+        if (!subtopicRepository.existsById(id)) {
+            throw new EntityNotFoundException("No subtopic with id " + id);
+        }
         subtopicRepository.updateState(id, state);
     }
 
