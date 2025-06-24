@@ -1,19 +1,23 @@
 <script setup>
 import SideBar from "@/components/course/SideBar.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import {computed, onMounted, reactive, ref} from "vue";
-import mock_course from "../../public/course.js";
+import {computed, onMounted, ref} from "vue";
 import BaseCheckbox from "@/components/shared/BaseCheckbox.vue";
 import {useCourseStore} from "@/stores/course.js";
 import {useRoute} from "vue-router";
+import ButtonRed from "@/components/shared/ButtonRed.vue";
+import axios from "@/plugins/axios.js"
+import router from "@/router/index.js";
+
 
 const route = useRoute();
 const course = useCourseStore();
 let progress = ref(0);
+let id = ref(0);
 
 onMounted(() => {
-  const courseId = route.params.id;
-  course.loadCourse(courseId);
+  id = route.params.id;
+  course.loadCourse(id);
   console.log(course);
   const lessons_num = computed(() => course.lessons.length);
   const lessons_passed = computed(() => {
@@ -31,6 +35,16 @@ onMounted(() => {
 });
 
 const chosenContent = ref(0);
+
+const removeCourse = async () => {
+  try {
+    axios.delete(`courses/${id}`).then(() => {
+      router.push('/');
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
 </script>
 
 <template>
@@ -63,25 +77,30 @@ const chosenContent = ref(0);
           </ul>
         </div>
       </div>
-      <div class="lesson-content" v-if="!chosenContent">
-        <BaseHeader :text="course.course_name" class="uppercase" />
-        <div class="description">
-          <h1 class="field-name">
-            Description:
-          </h1>
-          <p class="field-info">{{ course.description }}</p>
-        </div>
-        <div class="books">
-          <div class="field-name">
-            Useful books for the course:
+      <section class="main-content">
+        <div class="lesson-content" v-if="!chosenContent">
+          <BaseHeader :text="course.course_name" class="uppercase" />
+          <div class="description">
+            <h1 class="field-name">
+              Description:
+            </h1>
+            <p class="field-info">{{ course.description }}</p>
           </div>
-          <ul>
-            <li v-for="book in course.books" class="field-info">
-              <p> {{ book }}</p>
-            </li>
-          </ul>
+          <div class="books">
+            <div class="field-name">
+              Useful books for the course:
+            </div>
+            <ul>
+              <li v-for="book in course.books" class="field-info">
+                <p> {{ book }}</p>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+        <div class="navigation" v-if="!chosenContent">
+          <ButtonRed title="REMOVE A COURSE" @click="removeCourse" />
+        </div>
+      </section>
     </section>
   </div>
 </template>
@@ -95,6 +114,12 @@ ul {
 .main {
   display: flex;
   box-sizing: border-box;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
 }
 
 .lesson-content {
@@ -138,5 +163,9 @@ ul {
 
 .subtopic {
   display: flex;
+}
+
+.navigation {
+  padding-left: 8vw;
 }
 </style>
