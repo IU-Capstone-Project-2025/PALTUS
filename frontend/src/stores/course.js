@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import axios from "@/plugins/axios.js";
 
 export const useCourseStore = defineStore("course", {
     state: () => ({
@@ -11,7 +11,8 @@ export const useCourseStore = defineStore("course", {
     actions: {
         async loadCourse(id) {
             try {
-                const response = await axios.get(`/api/courses/${id}`);
+                const response = await axios.get(`courses/${id}`);
+                console.log(response);
                 this.course_name = response.course_name;
                 this.description = response.description;
                 this.books = response.books;
