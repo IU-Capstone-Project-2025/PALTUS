@@ -72,7 +72,12 @@ public class CourseService {
 
     public DashboardDto getDashboard() {
         List<Course> courses = getAllCourses();
-        Lesson lesson = getNextLesson(courses.get(0));
+        Lesson lesson;
+        if (courses.isEmpty()) {
+            lesson = null;
+        } else {
+            lesson = getNextLesson(courses.get(0));
+        }
         return courseMapper.toDashboardDto(getAllCoursesSummaries(courses), lesson);
     }
 
