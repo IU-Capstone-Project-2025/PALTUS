@@ -1,10 +1,10 @@
 <script setup>
 import SideBar from "@/components/course/SideBar.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import BaseCheckbox from "@/components/shared/BaseCheckbox.vue";
 import {useCourseStore} from "@/stores/course.js";
-import {useRoute} from "vue-router";
+import {onBeforeRouteLeave, useRoute} from "vue-router";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js"
 import router from "@/router/index.js";
@@ -14,6 +14,16 @@ const route = useRoute();
 const course = useCourseStore();
 let progress = ref(0);
 let id = ref(0);
+let subtopicsChanged = [];
+
+const checkSubtopic = (id, finished) => {
+  const index = subtopicsChanged.findIndex(item => item.id === id);
+  if (index > -1) {
+    subtopicsChanged.splice(index, 1);
+  } else {
+    subtopicsChanged.push({ id, finished });
+  }
+};
 
 onMounted(() => {
   id = route.params.id;
@@ -35,6 +45,25 @@ onMounted(() => {
 });
 
 const chosenContent = ref(0);
+
+watch(chosenContent, async (newValue, oldValue) => {
+  if (oldValue) {
+    for (const subtopicChanged of subtopicsChanged) {
+      await course.updateSubtopic(subtopicChanged);
+    }
+    subtopicsChanged = [];
+  }
+})
+
+onBeforeRouteLeave(async (to, from, next) => {
+  if (subtopicsChanged.length > 0) {
+    for (const subtopicChanged of subtopicsChanged) {
+      await course.updateSubtopic(subtopicChanged);
+    }
+    subtopicsChanged = [];
+  }
+  next();
+});
 
 const removeCourse = async () => {
   try {
@@ -61,8 +90,12 @@ const removeCourse = async () => {
           </div>
           <ul class="subtopics-list">
             <li v-for="subtopic in course.lessons[chosenContent - 1].subtopics" class="subtopic">
-              <BaseCheckbox :id="subtopic.topicName" v-model="subtopic.finished" />
-              <label :for="subtopic.topicName" class="field-info">{{ subtopic.topicName }}</label>
+              <BaseCheckbox
+                  :id="subtopic.topic"
+                  v-model="subtopic.finished"
+                  @update:modelValue="checkSubtopic(subtopic.id, subtopic.finished)"
+              />
+              <label :for="subtopic.topic" class="field-info">{{ subtopic.topic }}</label>
             </li>
           </ul>
         </div>
