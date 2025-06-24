@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.paltus.backend.exception.DuplicateCourseException;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.Lesson;
@@ -36,7 +37,6 @@ public class CourseService {
         return newCourse;
     }
 
-    // TODO: Exception handling
     public CoursePageDto getCourseById(long course_id) {
         Course course = courseRepository.findById(course_id).orElseThrow(
             () -> new EntityNotFoundException("Course not found with id " + course_id)

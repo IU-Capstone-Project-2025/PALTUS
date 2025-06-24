@@ -23,4 +23,15 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 request.getRequestURL().toString()));
     }
+
+    @ExceptionHandler(DuplicateCourseException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateCourse(DuplicateCourseException ex,
+            HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(
+                LocalDateTime.now().toString(),
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI().toString()));
+    }
 }
