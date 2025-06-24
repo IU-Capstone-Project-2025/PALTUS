@@ -36,7 +36,6 @@ public class CourseService {
         return newCourse;
     }
 
-    // TODO: Exception handling
     public CoursePageDto getCourseById(long course_id) {
         Course course = courseRepository.findById(course_id).orElseThrow(
             () -> new EntityNotFoundException("Course not found with id " + course_id)
@@ -73,7 +72,12 @@ public class CourseService {
 
     public DashboardDto getDashboard() {
         List<Course> courses = getAllCourses();
-        Lesson lesson = getNextLesson(courses.get(0));
+        Lesson lesson;
+        if (courses.isEmpty()) {
+            lesson = null;
+        } else {
+            lesson = getNextLesson(courses.get(0));
+        }
         return courseMapper.toDashboardDto(getAllCoursesSummaries(courses), lesson);
     }
 
