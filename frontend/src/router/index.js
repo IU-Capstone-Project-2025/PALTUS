@@ -18,8 +18,7 @@ const routes = [
     {
         path: '/create_course',
         component: CourseCreationView,
-        props: true,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true },
     },
     {
         path: '/account',

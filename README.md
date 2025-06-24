@@ -36,14 +36,13 @@ Through Docker compose
 
 ## Team Members 
 
-| Team Member             | Telegram Alias   | Email Address                     | Track                    |
-|-------------------------|------------------|-----------------------------------|--------------------------|
-| Sergey Knyazkin (Lead)  | @poeticlama      | s.knyazkin@innopolis.university   | Frontend/Design/DevOps   |
-| Aidar Sarvartdinov      | @aidar_sar       | a.sarvardinov@innopolis.university| Backend                  |
-| Amir Fayzullin          | @HoriFa7z        | a.fayzullin@innopolis.university  | Fullstack                |
-| Ramazan Gizamov         | @ramzeuus        | r.gizamov@innopolis.university    | DevOps/Tech communication|
-| Igor Dubrovsky          | @chomosuce       | i.dubrovsky@innopolis.university  | Backend                  |
-| Danil Demin             | @degradatorus    | da.demin@innopolis.university     | Frontend                 |
+| Team Member             | Telegram Alias   | Email Address                     | Track                       |
+|-------------------------|------------------|-----------------------------------|-----------------------------|
+| Sergey Knyazkin (Lead)  | @poeticlama      | s.knyazkin@innopolis.university   | Frontend/Design/DevOps      |
+| Aidar Sarvartdinov      | @aidar_sar       | a.sarvardinov@innopolis.university| Backend                     |
+| Amir Fayzullin          | @HoriFa7z        | a.fayzullin@innopolis.university  | Fullstack                   |
+| Ramazan Gizamov         | @ramzeuus        | r.gizamov@innopolis.university    | Frontend/Tech communication |
+| Igor Dubrovsky          | @chomosuce       | i.dubrovsky@innopolis.university  | Backend/DevOps              |
 
 ##  License
 

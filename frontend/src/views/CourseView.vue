@@ -1,24 +1,33 @@
 <script setup>
 import SideBar from "@/components/course/SideBar.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import {computed, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import mock_course from "../../public/course.js";
 import BaseCheckbox from "@/components/shared/BaseCheckbox.vue";
+import {useCourseStore} from "@/stores/course.js";
+import {useRoute} from "vue-router";
 
-const course = reactive(mock_course);
+const route = useRoute();
+const course = useCourseStore();
+let progress = ref(0);
 
-const lessons_num = computed(() => course.lessons.length);
-const lessons_passed = computed(() => {
-  let passed = 0;
-  course.lessons.forEach(lesson => {
-    if (lesson.subtopics.every(subtopic => subtopic.finished)) {
-      passed++;
-    }
+onMounted(() => {
+  const courseId = route.params.id;
+  course.loadCourse(courseId);
+  console.log(course);
+  const lessons_num = computed(() => course.lessons.length);
+  const lessons_passed = computed(() => {
+    let passed = 0;
+    course.lessons.forEach(lesson => {
+      if (lesson.subtopics.every(subtopic => subtopic.finished)) {
+        passed++;
+      }
+    });
+    return passed;
   });
-  return passed;
-});
-const progress = computed(() => {
-  return lessons_passed.value > 0 ? lessons_passed.value / lessons_num.value : lessons_passed.value;
+  progress = computed(() => {
+    return lessons_passed.value > 0 ? lessons_passed.value / lessons_num.value : lessons_passed.value;
+  });
 });
 
 const chosenContent = ref(0);
@@ -38,8 +47,8 @@ const chosenContent = ref(0);
           </div>
           <ul class="subtopics-list">
             <li v-for="subtopic in course.lessons[chosenContent - 1].subtopics" class="subtopic">
-              <BaseCheckbox :id="subtopic.topic" v-model="subtopic.finished" />
-              <label :for="subtopic.topic" class="field-info">{{ subtopic.topic }}</label>
+              <BaseCheckbox :id="subtopic.topicName" v-model="subtopic.finished" />
+              <label :for="subtopic.topic" class="field-info">{{ subtopic.topicName }}</label>
             </li>
           </ul>
         </div>
