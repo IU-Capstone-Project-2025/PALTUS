@@ -45,6 +45,7 @@ onMounted(async () => {
       <ContinueStudying :courseId="nextLesson.courseId"
                         :lessonTitle="nextLesson.lessonTitle"
                         :subtopics="nextLesson.subtopics"
+                        v-if="courses.length > 0"
       />
     </section>
     <section class="right">
