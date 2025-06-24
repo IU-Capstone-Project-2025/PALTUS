@@ -35,6 +35,16 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()));
     }
 
+    @ExceptionHandler(InvalidPromtInputException.class)
+    public ResponseEntity<ErrorResponse> handleJson(InvalidPromtInputException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(
+            LocalDateTime.now().toString(),
+            HttpStatus.BAD_REQUEST.value(),
+            HttpStatus.BAD_REQUEST.getReasonPhrase(),
+            "Invalid input",
+            request.getRequestURI()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneral(Exception ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(
