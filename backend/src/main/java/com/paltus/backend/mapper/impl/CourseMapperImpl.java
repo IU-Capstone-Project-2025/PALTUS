@@ -57,6 +57,9 @@ public class CourseMapperImpl implements CourseMapper {
 
     @Override
     public DashboardDto toDashboardDto(List<CourseSummaryDto> courses, Lesson nextLesson) {
+        if (nextLesson == null) {
+            return new DashboardDto(courses, null);
+        }
         return new DashboardDto(courses, toNextLessonDto(nextLesson, nextLesson.getCourse()));
     }
 
