@@ -40,8 +40,9 @@ public class CourseMapperImpl implements CourseMapper {
                 lessonWithSubtopicsAndLinks.getTitle(),
                 lessonWithSubtopicsAndLinks.isQuiz(),
                 lessonWithSubtopicsAndLinks.getLinks(),
-                lessonWithSubtopicsAndLinks.getSubtopics().stream().map(subtopic -> this.toSubtopicDto(subtopic))
-                        .toList());
+                lessonWithSubtopicsAndLinks.getSubtopics());
+                // lessonWithSubtopicsAndLinks.getSubtopics().stream().map(subtopic -> this.toSubtopicDto(subtopic))
+                //         .toList());
     }
 
     @Override
@@ -57,6 +58,9 @@ public class CourseMapperImpl implements CourseMapper {
 
     @Override
     public DashboardDto toDashboardDto(List<CourseSummaryDto> courses, Lesson nextLesson) {
+        if (nextLesson == null) {
+            return new DashboardDto(courses, null);
+        }
         return new DashboardDto(courses, toNextLessonDto(nextLesson, nextLesson.getCourse()));
     }
 
