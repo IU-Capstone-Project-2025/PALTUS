@@ -19,7 +19,7 @@ onMounted(async () => {
   } catch (err) {
     console.error('Request failed:', err);
   }
-})
+});
 </script>
 
 <template>
@@ -42,7 +42,10 @@ onMounted(async () => {
           > >> Create a new course</router-link>
         </div>
       </div>
-      <ContinueStudying :nextLesson="nextLesson" />
+      <ContinueStudying :courseId="nextLesson.courseId"
+                        :lessonTitle="nextLesson.lessonTitle"
+                        :subtopics="nextLesson.subtopics"
+      />
     </section>
     <section class="right">
       <Account />

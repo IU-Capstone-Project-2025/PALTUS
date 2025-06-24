@@ -1,14 +1,24 @@
 <script setup>
 import CourseLink from "@/components/shared/CourseLink.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import {computed} from "vue";
 
 const props = defineProps({
-  nextLesson: {
-    type: Object,
+  courseId: {
+    type: Number,
+    required: true,
+  },
+  lessonTitle: {
+    type: String,
+    required: true,
+  },
+  subtopics: {
+    type: Array,
     required: true,
   }
 });
-const link = `course/${props.nextLesson.courseId}`
+
+const link = computed(() => `course/${props.courseId}`);
 </script>
 
 <template>
@@ -16,12 +26,13 @@ const link = `course/${props.nextLesson.courseId}`
   <h3>Continue studying:</h3>
   <div class="course-info">
     <CourseLink
-        :title="props.nextLesson.lessonTitle"
-        :id="props.nextLesson.courseId"
+        v-if="props.courseId"
+        :title="props.lessonTitle"
+        :id="props.courseId"
         class="course-link"
     />
     <ul class="subtopics">
-      <li v-for="subtopic in props.nextLesson.subtopics">
+      <li v-for="subtopic in props.subtopics">
         {{ subtopic.topicName }}
       </li>
     </ul>
