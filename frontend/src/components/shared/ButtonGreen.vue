@@ -25,7 +25,7 @@ button {
   padding: 1.5vh 2vw;
   font-family: Montserrat, Inter, sans-serif;
   color: #F5F7FA;
-  font-size: 14px;
+  font-size: 0.875rem;
   transition: 500ms;
   cursor: pointer;
 }

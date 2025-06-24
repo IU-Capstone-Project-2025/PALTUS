@@ -77,7 +77,7 @@ ul {
   box-sizing: border-box;
   padding-left: 2vw;
   height: 12vh;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
   cursor: pointer;
   transition: 0.2s;
@@ -89,7 +89,7 @@ ul {
 .lesson {
   color: #F5F7FA;
   padding: 3vh 2vw;
-  font-size: 18px;
+  font-size: 1.125rem;
   background-color: #42A5F5;
   cursor: pointer;
   transition: 0.2s;
@@ -101,7 +101,7 @@ ul {
 .lesson-chosen {
   color: #F5F7FA;
   padding: 3vh 2vw;
-  font-size: 18px;
+  font-size: 1.125rem;
   background-color: #0D47A1;
   cursor: pointer;
   transition: 0.2s;
