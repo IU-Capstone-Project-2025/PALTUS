@@ -16,7 +16,7 @@ const goHome = () => {
 <style scoped>
 h1 {
   font-weight: 800;
-  font-size: 36px;
+  font-size: 2.25rem;
 }
 
 a {

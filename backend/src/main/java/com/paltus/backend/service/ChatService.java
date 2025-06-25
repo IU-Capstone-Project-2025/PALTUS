@@ -3,10 +3,12 @@ package com.paltus.backend.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paltus.backend.config.PromptProperties;
+import com.paltus.backend.exception.InvalidPromtInputException;
 import com.paltus.backend.model.Course;
-import com.paltus.backend.model.CourseRequest;
+import com.paltus.backend.model.requests.CourseRequest;
 
 import chat.giga.client.GigaChatClient;
 import chat.giga.client.auth.AuthClient;
@@ -50,7 +52,7 @@ public class ChatService {
         CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2)
                 .message(ChatMessage.builder()
-                        .content("You are a system that helps create a learning plan, ypur answers must be only jsons")
+                        .content(promptProperties.getSystem())
                         .role(ChatMessageRole.SYSTEM)
                         .build())
                 .message(ChatMessage.builder()
@@ -61,7 +63,6 @@ public class ChatService {
             CompletionResponse response1 = client.completions(request);
 
             String json = response1.choices().get(0).message().content();
-
             ObjectMapper mapper = new ObjectMapper();
             Course course = mapper.readValue(json, Course.class);
             return course;
@@ -74,6 +75,9 @@ public class ChatService {
 
             // request = requestBuilder.build();
             // response1 = client.completions(request);
+
+        } catch (JsonProcessingException ex) {
+            throw new InvalidPromtInputException("Invalid input");
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {

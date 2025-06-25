@@ -1,17 +1,24 @@
 <script setup>
 import CourseLink from "@/components/shared/CourseLink.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import {computed} from "vue";
 
-const last_course = {
-  name: 'Introduction to ML',
-  lessons_passed: 2,
-  last_lesson: 'Regression and model quality assessment',
-  subtopics: [
-    'Linear and polynomial regression',
-    'Measurement accuracy models: MSE, R²',
-    'Cross-validation and regularization'
-  ]
-}
+const props = defineProps({
+  courseId: {
+    type: Number,
+    required: true,
+  },
+  lessonTitle: {
+    type: String,
+    required: true,
+  },
+  subtopics: {
+    type: Array,
+    required: true,
+  }
+});
+
+const link = computed(() => `course/${props.courseId}`);
 </script>
 
 <template>
@@ -19,18 +26,19 @@ const last_course = {
   <h3>Continue studying:</h3>
   <div class="course-info">
     <CourseLink
-        :title="last_course.last_lesson"
-        :lessons_passed="last_course.lessons_passed"
+        v-if="props.courseId"
+        :title="props.lessonTitle"
+        :id="props.courseId"
         class="course-link"
     />
     <ul class="subtopics">
-      <li v-for="subtopic in last_course.subtopics">
-        {{ subtopic }}
+      <li v-for="subtopic in props.subtopics">
+        {{ subtopic.topicName }}
       </li>
     </ul>
   </div>
   <div class="go-to-course">
-    <router-link to="/course/1">
+    <router-link :to="link">
       <ButtonGreen title="Go to Course" />
     </router-link>
   </div>
@@ -47,7 +55,7 @@ const last_course = {
 }
 
 h3 {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #F5F7FA;
   margin-bottom: 5vh

@@ -1,6 +1,8 @@
-package com.paltus.backend.dto;
+package com.paltus.backend.model.dto;
 
 import java.util.List;
+
+import com.paltus.backend.model.Subtopic;
 
 public record LessonDto (
     long id,
@@ -8,5 +10,5 @@ public record LessonDto (
     String title,
     boolean quiz,
     List<String> links,
-    List<SubtopicDto> subtopics
+    List<Subtopic> subtopics
 ) {}

@@ -1,4 +1,4 @@
-package com.paltus.backend.dto;
+package com.paltus.backend.model.dto;
 
 import java.util.List;
 

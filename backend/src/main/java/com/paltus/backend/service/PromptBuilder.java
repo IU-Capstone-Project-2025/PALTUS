@@ -3,7 +3,7 @@ package com.paltus.backend.service;
 import org.springframework.stereotype.Service;
 
 import com.paltus.backend.config.PromptProperties;
-import com.paltus.backend.model.CourseRequest;
+import com.paltus.backend.model.requests.CourseRequest;
 
 @Service
 public class PromptBuilder {
