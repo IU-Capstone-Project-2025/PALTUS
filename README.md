@@ -19,7 +19,7 @@ An AI-powered self-learning planner that helps users create personalized study p
 
 ### Running
 
-Through Docker compose
+Run project via `docker compose up`. You should get [GigaChat API key](https://developers.sber.ru/portal/gigachat-and-api) to run the application. See [.env.example](https://github.com/IU-Capstone-Project-2025/PALTUS/tree/main/.env.example) for configuration.
 
 ### Tech Stack
 
