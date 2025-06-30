@@ -5,12 +5,25 @@ import ProfileTab from "@/components/shared/ProfileTab.vue";
 import {ref} from "vue";
 
 let showLinks = ref(true);
+
+const hideLinks = () => {
+  const links = document.querySelectorAll("li");
+  links.forEach((link, index) => {
+    if (showLinks) {
+      link.style.top = `${(index + 1) * -10}vh`
+    }
+    else {
+      link.style.top = '0';
+    }
+  })
+  showLinks = !showLinks;
+}
 </script>
 
 <template>
-  <ProfileTab @click="showLinks = !showLinks" />
+  <ProfileTab @click="hideLinks" />
   <ul>
-    <li v-for="accountLink in accountLinks" v-if="showLinks">
+    <li v-for="accountLink in accountLinks">
       <AccountLink :title="accountLink.title" :link="accountLink.link" />
     </li>
   </ul>
@@ -20,5 +33,11 @@ let showLinks = ref(true);
 ul {
   list-style-type: none;
   padding: 0;
+}
+li {
+  position: relative;
+  z-index: -1;
+  transition: 300ms;
+  top: 0;
 }
 </style>
