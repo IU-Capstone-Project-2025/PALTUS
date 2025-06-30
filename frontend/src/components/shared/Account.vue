@@ -2,7 +2,7 @@
 import AccountLink from "@/components/shared/AccountLink.vue";
 import {accountLinks} from "@/constants/accountLinks.js";
 import ProfileTab from "@/components/shared/ProfileTab.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 let showLinks = ref(true);
 
@@ -18,6 +18,10 @@ const hideLinks = () => {
   })
   showLinks = !showLinks;
 }
+
+onMounted(() => {
+  hideLinks();
+})
 </script>
 
 <template>
