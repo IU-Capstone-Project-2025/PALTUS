@@ -105,7 +105,7 @@ const removeCourse = async () => {
           </div>
           <ul>
             <li v-for="link in course.lessons[chosenContent - 1].links" class="field-info">
-              <p> {{ link }}</p>
+              <a target="_blank" :href="link"> {{ link }}</a>
             </li>
           </ul>
         </div>
@@ -142,6 +142,13 @@ const removeCourse = async () => {
 ul {
   padding-left: 1.5vw;
   color: #0D47A1;
+}
+
+a {
+  word-break: break-all;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .main {
