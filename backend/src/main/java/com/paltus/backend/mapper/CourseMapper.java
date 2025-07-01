@@ -6,6 +6,7 @@ import com.paltus.backend.model.Course;
 import com.paltus.backend.model.Lesson;
 import com.paltus.backend.model.Subtopic;
 import com.paltus.backend.model.dto.CoursePageDto;
+import com.paltus.backend.model.dto.CourseResponceDto;
 import com.paltus.backend.model.dto.CourseSummaryDto;
 import com.paltus.backend.model.dto.DashboardDto;
 import com.paltus.backend.model.dto.LessonDto;
@@ -27,4 +28,6 @@ public interface CourseMapper {
     DashboardDto toDashboardDto(List<CourseSummaryDto> courses, Lesson nextLesson);
 
     SubtopicForNextLessonDto toSubtopicForNextLessonDto(Subtopic subtopic);
+
+    CourseResponceDto toCourseResponceDto(Course course, String sessionId);
 }
