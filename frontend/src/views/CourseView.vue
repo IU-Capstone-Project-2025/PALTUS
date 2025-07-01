@@ -64,6 +64,7 @@ onBeforeRouteLeave(async (to, from, next) => {
         :course="course"
         :chosenContent="chosenContent"
         :subtopicsChanged="subtopicsChanged"
+        class="course-content"
       />
     </section>
   </div>
@@ -77,6 +78,15 @@ ul {
 
 .main {
   display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.left {
+  height: 100%;
+  overflow-y: scroll;
+  scrollbar-width: none;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 </style>
