@@ -14,6 +14,8 @@ import com.paltus.backend.aspect.annotation.UpdateLastActivityTime;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.dto.CoursePageDto;
 import com.paltus.backend.model.dto.DashboardDto;
+import com.paltus.backend.model.requests.SaveCourseRequest;
+import com.paltus.backend.service.ChatService;
 import com.paltus.backend.service.CourseService;
 
 
@@ -22,8 +24,10 @@ import com.paltus.backend.service.CourseService;
 @RequestMapping("/courses")
 public class CourseController {
     private CourseService courseService;
+    private ChatService chatService;
 
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService, ChatService chatService) {
+        this.chatService = chatService;
         this.courseService = courseService;
     }
 
@@ -51,9 +55,10 @@ public class CourseController {
 
     @PostMapping("/saveCourse")
     @UpdateLastActivityTime
-    public Course postMethodName(@RequestBody Course course) {
-        courseService.saveCourse(course);
-        return course;
+    public Course postMethodName(@RequestBody SaveCourseRequest request) {
+        courseService.saveCourse(request.getCourse());
+        chatService.deleteSession(request.getSessionId());
+        return request.getCourse();
     }
 
 }
