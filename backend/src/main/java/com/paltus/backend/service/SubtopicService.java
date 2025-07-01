@@ -22,4 +22,11 @@ public class SubtopicService {
         subtopicRepository.updateState(id, state);
     }
 
+    public void setNotes(Long id, String note) {
+        if (!subtopicRepository.existsById(id)) {
+            throw new EntityNotFoundException("No subtopic with id " + id);
+        }
+        subtopicRepository.updateNotes(id, note);
+    }
+
 }

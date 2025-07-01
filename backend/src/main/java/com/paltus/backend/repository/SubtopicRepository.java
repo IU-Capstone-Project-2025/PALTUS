@@ -10,8 +10,14 @@ import com.paltus.backend.model.Subtopic;
 import jakarta.transaction.Transactional;
 
 public interface SubtopicRepository extends JpaRepository<Subtopic, Long> {
+
     @Modifying
     @Transactional
     @Query("UPDATE Subtopic s SET s.finished = :state WHERE s.id = :id")
     void updateState(@Param("id") Long id, @Param("state") boolean state);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Subtopic s SET s.notes = :notes WHERE s.id = :id")
+    void updateNotes(@Param("id") Long id, @Param("notes") String notes);
 }

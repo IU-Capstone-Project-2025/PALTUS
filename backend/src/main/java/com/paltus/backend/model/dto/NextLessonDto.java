@@ -5,5 +5,5 @@ import java.util.List;
 public record NextLessonDto(
     Long courseId,
     String lessonTitle,
-    List<SubtopicDto> subtopics
+    List<SubtopicForNextLessonDto> subtopics
 ){}
