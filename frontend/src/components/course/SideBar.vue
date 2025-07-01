@@ -63,6 +63,10 @@ ul {
   width: 23vw;
   height: 100vh;
   background-color: #42A5F5;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .courses-logo {
