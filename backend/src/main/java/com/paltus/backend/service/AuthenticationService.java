@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.paltus.backend.exception.EmailException;
 import com.paltus.backend.model.User;
 import com.paltus.backend.model.dto.LoginUserDto;
 import com.paltus.backend.model.dto.RegisterUserDto;
@@ -36,7 +37,7 @@ public class AuthenticationService {
         this.encoder = encoder;
     }
 
-    public void register(RegisterUserDto userDto) throws MessagingException {
+    public void register(RegisterUserDto userDto) {
         if (userRepo.existsByEmail(userDto.email())) {
             throw new EntityExistsException("User already exists");
         }
@@ -83,7 +84,7 @@ public class AuthenticationService {
         }
     }
 
-    public void resendVerificationCode(String email) throws MessagingException {
+    public void resendVerificationCode(String email) {
         Optional<User> optionalUser = userRepo.findByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -99,7 +100,7 @@ public class AuthenticationService {
         }
     }
 
-    public void sendVerificationEmail(User user) throws MessagingException {
+    public void sendVerificationEmail(User user) {
         String subject = "Account Verification";
         String verificationCode = user.getVerificationCode();
         String htmlMessage = "<html>"
@@ -115,8 +116,12 @@ public class AuthenticationService {
                 + "</body>"
                 + "</html>";
 
+        try {
+            emailService.sendVerificationEmail(user.getEmail(), subject, htmlMessage);
+        } catch (MessagingException ex) {
+            throw new EmailException("Sending verification email failed");
+        }
         
-        emailService.sendVerificationEmail(user.getEmail(), subject, htmlMessage);
 
     }
 

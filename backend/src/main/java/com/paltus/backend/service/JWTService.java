@@ -22,7 +22,7 @@ import io.jsonwebtoken.security.Keys;
 public class JWTService {
 
     private String secretKey = "";
-    private long expirationTime = 100*60*30; // 30 minutes
+    private long expirationTime = 1000*60*30; // 30 minutes
 
     public JWTService() throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
