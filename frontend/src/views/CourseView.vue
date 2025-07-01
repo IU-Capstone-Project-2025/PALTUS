@@ -8,8 +8,6 @@ import Content from "@/components/course/Content.vue";
 
 const route = useRoute();
 const course = useCourseStore();
-let progress = ref(0);
-let id = ref(0);
 let subtopicsChanged = [];
 
 const lessons_num = computed(() => course.lessons.length);
@@ -24,7 +22,7 @@ const lessons_passed = computed(() => {
   return passed;
 });
 
-progress = computed(() => {
+let progress = computed(() => {
   return lessons_passed.value > 0 ? lessons_passed.value / lessons_num.value : lessons_passed.value;
 });
 

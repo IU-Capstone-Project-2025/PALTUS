@@ -42,6 +42,9 @@ watch(
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #42A5F5;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #42A5F5;
   overflow: hidden;
 }
 
