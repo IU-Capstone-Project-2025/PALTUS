@@ -22,6 +22,7 @@ public class Subtopic {
     private long id;
     private String topic;
     private String notes;
+    private String content;
     private boolean finished;
 
     @ManyToOne
