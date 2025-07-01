@@ -11,6 +11,7 @@ import com.paltus.backend.model.dto.DashboardDto;
 import com.paltus.backend.model.dto.LessonDto;
 import com.paltus.backend.model.dto.NextLessonDto;
 import com.paltus.backend.model.dto.SubtopicDto;
+import com.paltus.backend.model.dto.SubtopicForNextLessonDto;
 
 public interface CourseMapper {
     CourseSummaryDto toCourseSummaryDto(Course course, int nextLesson);
@@ -24,4 +25,6 @@ public interface CourseMapper {
     NextLessonDto toNextLessonDto(Lesson lesson, Course course);
 
     DashboardDto toDashboardDto(List<CourseSummaryDto> courses, Lesson nextLesson);
+
+    SubtopicForNextLessonDto toSubtopicForNextLessonDto(Subtopic subtopic);
 }

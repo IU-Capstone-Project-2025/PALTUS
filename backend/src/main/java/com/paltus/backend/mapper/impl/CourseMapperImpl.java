@@ -14,6 +14,7 @@ import com.paltus.backend.model.dto.DashboardDto;
 import com.paltus.backend.model.dto.LessonDto;
 import com.paltus.backend.model.dto.NextLessonDto;
 import com.paltus.backend.model.dto.SubtopicDto;
+import com.paltus.backend.model.dto.SubtopicForNextLessonDto;
 
 @Component
 public class CourseMapperImpl implements CourseMapper {
@@ -47,12 +48,17 @@ public class CourseMapperImpl implements CourseMapper {
 
     @Override
     public SubtopicDto toSubtopicDto(Subtopic subtopic) {
-        return new SubtopicDto(subtopic.getTopic(), subtopic.isFinished());
+        return new SubtopicDto(subtopic.getTopic(), subtopic.isFinished(), subtopic.getContent(), subtopic.getNotes());
+    }
+
+    @Override
+    public SubtopicForNextLessonDto toSubtopicForNextLessonDto(Subtopic subtopic) {
+        return new SubtopicForNextLessonDto(subtopic.getTopic());
     }
 
     @Override
     public NextLessonDto toNextLessonDto(Lesson lesson, Course course) {
-        return new NextLessonDto(course.getId(), lesson.getTitle(), lesson.getSubtopics().stream().map(subtopic -> this.toSubtopicDto(subtopic))
+        return new NextLessonDto(course.getId(), lesson.getTitle(), lesson.getSubtopics().stream().map(subtopic -> this.toSubtopicForNextLessonDto(subtopic))
         .toList());
     }
 
