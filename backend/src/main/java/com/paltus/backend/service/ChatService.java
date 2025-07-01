@@ -66,22 +66,13 @@ public class ChatService {
             ObjectMapper mapper = new ObjectMapper();
             Course course = mapper.readValue(json, Course.class);
             return course;
-            // System.out.println(response1.choices().get(0).message().content());
-            // for (var choice : response1.choices()) {
-            //     requestBuilder.message(choice.message().ofAssistantMessage());
-            // }
-            // requestBuilder.message(ChatMessage.builder().content("Add one more lesson calles reflection")
-            //         .role(ChatMessageRole.USER).build());
-
-            // request = requestBuilder.build();
-            // response1 = client.completions(request);
 
         } catch (JsonProcessingException ex) {
             throw new InvalidPromtInputException("Invalid input");
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {
-            throw new RuntimeException("Ошибка при парсинге JSON", ex);
+            throw new RuntimeException("Ошибка при парсинге JSON; " + ex.getMessage(), ex);
         }
     }
 }
