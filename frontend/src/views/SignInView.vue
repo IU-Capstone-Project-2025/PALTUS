@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
@@ -8,28 +7,28 @@ import BaseInput from "@/components/shared/BaseInput.vue";
 
 const email = ref('');
 const password = ref('');
+const name = ref('');
 const auth = useAuthStore();
-const router = useRouter();
 
-async function loginUser() {
-  console.log("Trying login with:", email.value, password.value);
-  try {
-    await auth.login(email.value, password.value);
-    await router.push('/');
-  } catch (err) {
-    alert(err.message);
-  }
+const signIn = async () => {
+
 }
 </script>
 
 <template>
   <div class="container">
     <Logo />
-    <form @submit.prevent="loginUser">
-      <h3>Log In</h3>
+    <form @submit.prevent="signIn">
+      <h3>Sign In</h3>
       <BaseInput
           v-model="email"
           placeholder="Email"
+          class="custom-input"
+      />
+
+      <BaseInput
+          v-model="name"
+          placeholder="Your Name"
           class="custom-input"
       />
 
@@ -40,11 +39,7 @@ async function loginUser() {
           class="custom-input"
       />
 
-      <ButtonGreen type="submit" title="Log In" />
-      <p>Don't have an account?</p>
-      <router-link to="/sign_in">
-        <ButtonGreen title="Sign In" />
-      </router-link>
+      <ButtonGreen type="submit" title="Sign In" />
     </form>
   </div>
 </template>

@@ -7,9 +7,11 @@ import AccountView from "@/views/AccountView.vue";
 import SettingsView from "@/views/SettingsView.vue";
 import CourseView from "@/views/CourseView.vue";
 import LevelView from "@/views/LevelView.vue";
+import SignInView from "@/views/SignInView.vue";
 
 const routes = [
     { path: '/login', component: LoginView },
+    { path: '/sign_in', component: SignInView},
     {
         path: '/',
         component: HomeView,
