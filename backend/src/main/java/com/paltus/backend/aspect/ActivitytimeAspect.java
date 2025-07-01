@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import com.paltus.backend.model.Course;
+import com.paltus.backend.model.requests.SaveCourseRequest;
 import com.paltus.backend.model.requests.SubtopicSetStateRequest;
 import com.paltus.backend.repository.CourseRepository;
 
@@ -32,8 +33,8 @@ public class ActivitytimeAspect {
             if (arg instanceof SubtopicSetStateRequest subtopicSetStateRequest) {
                 handleActivity(subtopicSetStateRequest.getCourseId());
 
-            } else if (arg instanceof Course course) {
-                handleActivity(course.getId());
+            } else if (arg instanceof SaveCourseRequest request) {
+                handleActivity(request.getCourse().getId());
             }  else if (arg instanceof Map map && map.containsKey("courseId")) {
                 handleActivity(Long.parseLong(map.get("courseId").toString()));
                 // Probably dont work properly
