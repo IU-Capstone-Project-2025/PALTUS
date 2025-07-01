@@ -9,5 +9,4 @@ public class CourseRequest {
     String knowledge;
     int lessons;
     String time;
-    String sessionId;
 }

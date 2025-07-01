@@ -57,7 +57,6 @@ public class ChatService {
 
     public CourseResponceDto generateInitialCourse(CourseRequest courseRequest) {
         String sessionId = UUID.randomUUID().toString();
-        courseRequest.setSessionId(sessionId);
 
         List<ChatMessage> messages = new ArrayList<>();
         chatHistory.put(sessionId, messages);
@@ -115,6 +114,7 @@ public class ChatService {
             return courseMapper.toCourseResponceDto(course, sessionId);
 
         } catch (JsonProcessingException ex) {
+            System.out.println(ex.getMessage());
             throw new InvalidPromtInputException("Invalid input");
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
@@ -122,4 +122,12 @@ public class ChatService {
             throw new RuntimeException("Ошибка при парсинге JSON", ex);
         }
     }
+
+    public void deleteSession(String sessionId) {
+        if (sessionId == null || !chatHistory.containsKey(sessionId)) {
+            throw new IllegalArgumentException("Session not found or not passed");
+        }
+        chatHistory.remove(sessionId);
+    }
+    
 }
