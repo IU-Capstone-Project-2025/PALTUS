@@ -1,7 +1,6 @@
 package com.paltus.backend.controller;
 
-import com.paltus.backend.dto.CoursePageDto;
-import com.paltus.backend.dto.CourseSummaryDto;
+import com.paltus.backend.model.dto.CoursePageDto;
 import com.paltus.backend.service.CourseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
