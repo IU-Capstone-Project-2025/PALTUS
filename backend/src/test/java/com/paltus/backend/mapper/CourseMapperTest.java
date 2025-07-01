@@ -8,14 +8,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.paltus.backend.dto.CoursePageDto;
-import com.paltus.backend.dto.CourseSummaryDto;
-import com.paltus.backend.dto.LessonDto;
+import com.paltus.backend.model.dto.CoursePageDto;
+import com.paltus.backend.model.dto.CourseSummaryDto;
+import com.paltus.backend.model.dto.LessonDto;
+import com.paltus.backend.model.dto.SubtopicDto;
 import com.paltus.backend.mapper.impl.CourseMapperImpl;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.Lesson;
 import com.paltus.backend.model.Subtopic;
-import com.paltus.backend.dto.SubtopicDto;
 
 public class CourseMapperTest {
     private final CourseMapper mapper = new CourseMapperImpl();
@@ -24,28 +24,29 @@ public class CourseMapperTest {
     void toCourseSummaryDto_MapsCorrectly() {
         Course course = new Course();
         course.setId(1);
-        course.setCourse_name("1");
+        course.setCourse_name("Test Course");
 
-        CourseSummaryDto dto = mapper.toCourseSummaryDto(course);
+        CourseSummaryDto dto = mapper.toCourseSummaryDto(course, 1);
 
         assertEquals(1, dto.id());
-        assertEquals("1", dto.course_name());
+        assertEquals("Test Course", dto.course_name());
+        assertEquals(1, dto.nextLesson());
     }
 
     @Test
     void toCoursePageDto_MapsAllFields() {
         Course course = new Course();
         course.setId(1);
-        course.setCourse_name("1");
-        course.setDescription("2");
-        course.setBooks(List.of("Book1", "Book2"));
+        course.setCourse_name("Test Course");
+        course.setDescription("Course Description");
+        course.setBooks(List.of("Book 1", "Book 2"));
         
         Lesson lesson = new Lesson();
         lesson.setId(10);
         lesson.setLesson_number(1);
-        lesson.setTitle("1.1");
+        lesson.setTitle("Lesson 1");
         lesson.setQuiz(false);
-        lesson.setLinks(Collections.emptyList());
+        lesson.setLinks(List.of("link1", "link2"));
         lesson.setSubtopics(Collections.emptyList());
         
         course.setLessons(List.of(lesson));
@@ -53,37 +54,27 @@ public class CourseMapperTest {
         CoursePageDto dto = mapper.toCoursePageDto(course);
 
         assertEquals(1, dto.id());
-        assertEquals("1", dto.course_name());
-        assertEquals("2", dto.description());
-        assertEquals(List.of("Book1", "Book2"), dto.books());
+        assertEquals("Test Course", dto.course_name());
+        assertEquals("Course Description", dto.description());
+        assertEquals(List.of("Book 1", "Book 2"), dto.books());
         assertEquals(1, dto.lessons().size());
         assertEquals(10, dto.lessons().get(0).id());
     }
-
-    // @Test
-    // void toCoursePageDto_NullLessons_ReturnsEmptyList() {
-    //     Course course = new Course();
-    //     course.setId(1);
-    //     course.setLessons(null); 
-
-    //     CoursePageDto dto = mapper.toCoursePageDto(course);
-
-    //     assertTrue(dto.lessons().isEmpty());
-    // }
 
     @Test
     void toLessonDto_MapsSubtopicsCorrectly() {
         Lesson lesson = new Lesson();
         lesson.setId(1);
         lesson.setLesson_number(1);
-        lesson.setTitle("1");
+        lesson.setTitle("Introduction");
         lesson.setQuiz(true);
-        lesson.setLinks(List.of("link1", "link2"));
+        lesson.setLinks(List.of("https://example.com"));
         
         Subtopic subtopic = new Subtopic();
         subtopic.setId(100);
-        subtopic.setTopic("1.1");
-        subtopic.setNotes("1.2");
+        subtopic.setTopic("Subtopic 1");
+        subtopic.setContent("Content");
+        subtopic.setNotes("Notes");
         subtopic.setFinished(false);
         
         lesson.setSubtopics(List.of(subtopic));
@@ -92,27 +83,26 @@ public class CourseMapperTest {
         
         assertEquals(1, dto.id());
         assertEquals(1, dto.lesson_number());
-        assertEquals("1", dto.title());
+        assertEquals("Introduction", dto.title());
         assertTrue(dto.quiz());
-        assertEquals(List.of("link1", "link2"), dto.links());
+        assertEquals(List.of("https://example.com"), dto.links());
         assertEquals(1, dto.subtopics().size());
-        assertEquals(100, dto.subtopics().get(0).id());
-        assertEquals("1.1", dto.subtopics().get(0).topic());
+        assertEquals("Subtopic 1", dto.subtopics().get(0).getTopic());
     }
 
     @Test
     void toSubtopicDto_MapsCorrectly() {
         Subtopic subtopic = new Subtopic();
-        subtopic.setId(1);
-        subtopic.setTopic("1");
-        subtopic.setNotes("2");
+        subtopic.setTopic("Data Structures");
         subtopic.setFinished(true);
+        subtopic.setContent("Content about data structures");
+        subtopic.setNotes("Important notes");
         
         SubtopicDto dto = mapper.toSubtopicDto(subtopic);
         
-        assertEquals(1, dto.id());
-        assertEquals("1", dto.topic());
-        assertEquals("2", dto.notes());
+        assertEquals("Data Structures", dto.topicName());
         assertTrue(dto.finished());
+        assertEquals("Content about data structures", dto.content());
+        assertEquals("Important notes", dto.notes());
     }
 }
