@@ -1,8 +1,9 @@
 package com.paltus.backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.paltus.backend.model.Course;
+import com.paltus.backend.model.dto.CourseResponceDto;
 import com.paltus.backend.model.requests.CourseRequest;
+import com.paltus.backend.model.requests.EditCourseRequest;
 import com.paltus.backend.service.ChatService;
 
 
@@ -18,10 +19,14 @@ public class GptController {
         this.chatService = chatService;
     }
     @PostMapping("/createCourse")
-    public Course createCourse( @RequestBody CourseRequest courseRequest) {
-        Course course = chatService.createCourse(courseRequest);
-        return course;
+    public CourseResponceDto createCourse( @RequestBody CourseRequest courseRequest) {
+        return chatService.generateInitialCourse(courseRequest);
     }
+    @PostMapping("/editCourse")
+    public CourseResponceDto postMethodName(@RequestBody EditCourseRequest request) {
+        return chatService.editCourse(request);
+    }
+    
     @GetMapping()
     public String getSomething() {
         return "Something on the way";
