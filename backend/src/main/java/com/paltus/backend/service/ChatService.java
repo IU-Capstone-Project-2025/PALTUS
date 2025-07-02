@@ -1,14 +1,23 @@
 package com.paltus.backend.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paltus.backend.config.PromptProperties;
-import com.paltus.backend.exception.InvalidPromtInputException;
+import com.paltus.backend.exception.InvalidResponseException;
+import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
+import com.paltus.backend.model.dto.CourseResponceDto;
 import com.paltus.backend.model.requests.CourseRequest;
+import com.paltus.backend.model.requests.EditCourseRequest;
 
 import chat.giga.client.GigaChatClient;
 import chat.giga.client.auth.AuthClient;
@@ -21,67 +30,111 @@ import chat.giga.model.completion.ChatMessageRole;
 import chat.giga.model.completion.CompletionRequest;
 import chat.giga.model.completion.CompletionResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class ChatService {
-    private final String apiKey;
     private final PromptProperties promptProperties;
     private final PromptBuilder promptBuilder;
     private final GigaChatClient client;
+    private final CourseMapper courseMapper;
+    private static final Logger log = LoggerFactory.getLogger(ChatService.class);
 
-    public ChatService(PromptProperties properties, PromptBuilder promptBuilder, @Value("${ai.key}") String apiKey) {
+    private final Map<String, List<ChatMessage>> chatHistory = new ConcurrentHashMap<>();
+
+    public ChatService(PromptProperties properties, PromptBuilder promptBuilder, CourseMapper courseMapper, @Value("${ai.key}") String apiKey) {
         this.promptBuilder = promptBuilder;
         this.promptProperties = properties;
-        this.apiKey = apiKey;
-    
+        this.courseMapper = courseMapper;
+
         this.client = GigaChatClient.builder()
-            .verifySslCerts(false)
-            .authClient(AuthClient.builder()
-                .withOAuth(OAuthBuilder.builder()
-                    .scope(Scope.GIGACHAT_API_PERS)
-                    .authKey(apiKey)
-                    .build())
-                .build())
-            .build();
-    }
-
-    public String returnSomething() {
-        return promptProperties.getCourse() + apiKey;
-    }
-
-    public Course createCourse(CourseRequest courseRequest) {
-        CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
-                .model(ModelName.GIGA_CHAT_2)
-                .message(ChatMessage.builder()
-                        .content(promptProperties.getSystem())
-                        .role(ChatMessageRole.SYSTEM)
+                .verifySslCerts(false)
+                .authClient(AuthClient.builder()
+                        .withOAuth(OAuthBuilder.builder()
+                                .scope(Scope.GIGACHAT_API_PERS)
+                                .authKey(apiKey)
+                                .build())
                         .build())
-                .message(ChatMessage.builder()
-                        .content(promptBuilder.buildCoursePrompt(courseRequest))
-                        .role(ChatMessageRole.USER).build());
+                .build();
+    }
+
+    public CourseResponceDto generateInitialCourse(CourseRequest courseRequest) {
+        log.info("User input: {}", courseRequest.toString());
+
+        String sessionId = UUID.randomUUID().toString();
+
+        List<ChatMessage> messages = new ArrayList<>();
+        chatHistory.put(sessionId, messages);
+
+        messages.add(ChatMessage.builder()
+                .role(ChatMessageRole.SYSTEM)
+                .content(promptProperties.getSystem())
+                .build());
+
+        ChatMessage userMessage = ChatMessage.builder()
+                .role(ChatMessageRole.USER)
+                .content(promptBuilder.buildCoursePrompt(courseRequest))
+                .build();
+        messages.add(userMessage);
+
+        return sendToGigaChatAndGetCourse(messages, sessionId);
+    }
+
+    public CourseResponceDto editCourse(EditCourseRequest editCourseRequest) {
+        log.info("User input: {}", editCourseRequest.toString());
+        String sessionId = editCourseRequest.getSessionId();
+        if (sessionId == null || !chatHistory.containsKey(sessionId)) {
+            throw new IllegalArgumentException("Session not found or not passed");
+        }
+
+        List<ChatMessage> messages = chatHistory.get(sessionId);
+
+        ChatMessage userMessage = ChatMessage.builder()
+                .role(ChatMessageRole.USER)
+                .content(editCourseRequest.getRequest() + promptProperties.getEditpaste())
+                .build();
+        messages.add(userMessage);
+
+        return sendToGigaChatAndGetCourse(messages, sessionId);
+    }
+
+    private CourseResponceDto sendToGigaChatAndGetCourse(List<ChatMessage> messages, String sessionId) {
+        CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
+                .model(ModelName.GIGA_CHAT_2);
+
+        messages.forEach(requestBuilder::message);
+
         try {
             CompletionRequest request = requestBuilder.build();
-            CompletionResponse response1 = client.completions(request);
+            CompletionResponse response = client.completions(request);
 
-            String json = response1.choices().get(0).message().content();
+            ChatMessage assistantMessage = ChatMessage.builder()
+                    .role(response.choices().get(0).message().role())
+                    .content(response.choices().get(0).message().content())
+                    .build();
+            messages.add(assistantMessage);
+
+            String json = assistantMessage.content();
+            log.info("LLM output: {}", json);
             ObjectMapper mapper = new ObjectMapper();
             Course course = mapper.readValue(json, Course.class);
-            return course;
-            // System.out.println(response1.choices().get(0).message().content());
-            // for (var choice : response1.choices()) {
-            //     requestBuilder.message(choice.message().ofAssistantMessage());
-            // }
-            // requestBuilder.message(ChatMessage.builder().content("Add one more lesson calles reflection")
-            //         .role(ChatMessageRole.USER).build());
-
-            // request = requestBuilder.build();
-            // response1 = client.completions(request);
+            return courseMapper.toCourseResponceDto(course, sessionId);
 
         } catch (JsonProcessingException ex) {
-            throw new InvalidPromtInputException("Invalid input");
+            throw new InvalidResponseException(ex.getMessage());
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {
-            throw new RuntimeException("Ошибка при парсинге JSON", ex);
+            throw new RuntimeException(ex);
         }
     }
+
+    public void deleteSession(String sessionId) {
+        if (sessionId == null || !chatHistory.containsKey(sessionId)) {
+            throw new IllegalArgumentException("Session not found or not passed");
+        }
+        chatHistory.remove(sessionId);
+    }
+    
 }

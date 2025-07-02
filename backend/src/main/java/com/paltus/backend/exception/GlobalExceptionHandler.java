@@ -35,13 +35,13 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()));
     }
 
-    @ExceptionHandler(InvalidPromtInputException.class)
-    public ResponseEntity<ErrorResponse> handleJson(InvalidPromtInputException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(
+    @ExceptionHandler(InvalidResponseException.class)
+    public ResponseEntity<ErrorResponse> handleJson(InvalidResponseException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ErrorResponse(
             LocalDateTime.now().toString(),
-            HttpStatus.BAD_REQUEST.value(),
-            HttpStatus.BAD_REQUEST.getReasonPhrase(),
-            "Invalid input",
+            HttpStatus.NOT_ACCEPTABLE.value(),
+            HttpStatus.NOT_ACCEPTABLE.getReasonPhrase(),
+           "Error in the llm response",
             request.getRequestURI()));
     }
 
