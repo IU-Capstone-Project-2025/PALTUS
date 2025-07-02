@@ -65,7 +65,6 @@ jobs:
         working-directory: /home/githubrunner/PALTUS/
         run: |
           docker run --rm --privileged -v /home/githubrunner/PALTUS:/workspace -w /workspace/PALTUS docker:27.1.1-dind sh -c "
-            export DOCKER_HOST=unix:///var/run/docker.sock
             docker compose down &&
             docker compose pull &&
             docker compose up -d --build
