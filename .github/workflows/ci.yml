@@ -68,7 +68,7 @@ jobs:
             git checkout dev
           fi
       - name: Docker Compose Deploy
-        working-directory: /home/githubrunner/PALTUS/PALTUS
+        working-directory: /home/githubrunner/PALTUS/
         run: |
           docker run --rm -v /home/githubrunner/PALTUS:/workspace -w /workspace/PALTUS docker:27.1.1-dind sh -c "
             docker compose down &&
