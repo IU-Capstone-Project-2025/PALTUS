@@ -38,9 +38,9 @@ jobs:
 
     - name: Build and test with Maven
       working-directory: ./backend
-      run: mvn -B verify
+      run: mvn -B verify -e -X
       env:
         SPRING_PROFILES_ACTIVE: test
-        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test
-        SPRING_DATASOURCE_USERNAME: test
-        SPRING_DATASOURCE_PASSWORD: test
+        # SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test
+        # SPRING_DATASOURCE_USERNAME: test
+        # SPRING_DATASOURCE_PASSWORD: test
