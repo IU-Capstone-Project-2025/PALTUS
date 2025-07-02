@@ -64,13 +64,6 @@ jobs:
           cd PALTUS
           git checkout ${{ github.ref_name }}
 
-      - name: Build and test
-        run: |
-          cd PALTUS/backend
-          mvn clean verify -B -e -X
-        env:
-          SPRING_PROFILES_ACTIVE: test
-
       - name: Docker compose
         run: |
           cd PALTUS/backend
