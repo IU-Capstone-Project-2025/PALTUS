@@ -37,7 +37,7 @@ const chosenContent = ref(0);
 watch(chosenContent, async (newValue, oldValue) => {
   if (oldValue) {
     for (const subtopicChanged of subtopicsChanged) {
-      await course.updateSubtopic(subtopicChanged);
+      await course.updateSubtopic(subtopicChanged, course.lessons[chosenContent.value - 1].id);
     }
     subtopicsChanged = [];
   }
@@ -46,7 +46,7 @@ watch(chosenContent, async (newValue, oldValue) => {
 onBeforeRouteLeave(async (to, from, next) => {
   if (subtopicsChanged.length > 0) {
     for (const subtopicChanged of subtopicsChanged) {
-      await course.updateSubtopic(subtopicChanged);
+      await course.updateSubtopic(subtopicChanged, course.lessons[chosenContent.value - 1].id);
     }
     subtopicsChanged = [];
   }
