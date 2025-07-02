@@ -54,14 +54,21 @@ jobs:
           backend/target/surefire-reports
           backend/target/logs
   deploy:
-    needs: build-and-test
-    runs-on: self-hosted
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Docker Compose Deploy
-        run: |
+  needs: build-and-test
+  runs-on: self-hosted
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  
+    - name: Docker Compose Deploy
+      working-directory: ./backend
+      run: |
+        docker run --rm -v $(pwd):/workspace -w /workspace/backend docker:27.1.1-dind sh -c "
+          docker compose down &&
+          docker compose pull &&
+          docker compose up -d --build
+        "
           docker compose down
           docker compose pull
           docker compose up -d --build
