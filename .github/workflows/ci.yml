@@ -1,24 +1,29 @@
-name: CI with Maven
+name: Java CI with Maven
 
 on:
   push:
     branches: [ main, dev ]
   pull_request:
     branches: [ main, dev ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:15
         env:
           POSTGRES_USER: test
           POSTGRES_PASSWORD: test
           POSTGRES_DB: test
         ports:
           - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - name: Checkout code
@@ -31,14 +36,11 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
 
-    - name: Build project
+    - name: Build and test with Maven
       working-directory: ./backend
-      run: mvn -B package -DskipTests=true
-
-    - name: Run tests
-      working-directory: ./backend
-      run: mvn test
+      run: mvn -B verify
       env:
-        # SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test
+        SPRING_PROFILES_ACTIVE: test
+        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test
         SPRING_DATASOURCE_USERNAME: test
         SPRING_DATASOURCE_PASSWORD: test
