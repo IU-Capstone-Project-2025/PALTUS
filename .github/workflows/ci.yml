@@ -63,7 +63,7 @@ jobs:
             cd /home/githubrunner/project
             git pull origin main
           else
-            git clone https://github.com/IU-Capstone-Project-2025/PALTUS/PALTUS
+            git clone https://github.com/IU-Capstone-Project-2025/PALTUS PALTUS
             git checkout dev
           fi
       - name: Docker Compose Deploy
