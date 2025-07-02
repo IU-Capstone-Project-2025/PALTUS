@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paltus.backend.config.PromptProperties;
-import com.paltus.backend.exception.InvalidPromtInputException;
+import com.paltus.backend.exception.InvalidResponseException;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.dto.CourseResponceDto;
@@ -30,12 +30,16 @@ import chat.giga.model.completion.ChatMessageRole;
 import chat.giga.model.completion.CompletionRequest;
 import chat.giga.model.completion.CompletionResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class ChatService {
     private final PromptProperties promptProperties;
     private final PromptBuilder promptBuilder;
     private final GigaChatClient client;
     private final CourseMapper courseMapper;
+    private static final Logger log = LoggerFactory.getLogger(ChatService.class);
 
     private final Map<String, List<ChatMessage>> chatHistory = new ConcurrentHashMap<>();
 
@@ -56,6 +60,8 @@ public class ChatService {
     }
 
     public CourseResponceDto generateInitialCourse(CourseRequest courseRequest) {
+        log.info("User input: {}", courseRequest.toString());
+
         String sessionId = UUID.randomUUID().toString();
 
         List<ChatMessage> messages = new ArrayList<>();
@@ -76,6 +82,7 @@ public class ChatService {
     }
 
     public CourseResponceDto editCourse(EditCourseRequest editCourseRequest) {
+        log.info("User input: {}", editCourseRequest.toString());
         String sessionId = editCourseRequest.getSessionId();
         if (sessionId == null || !chatHistory.containsKey(sessionId)) {
             throw new IllegalArgumentException("Session not found or not passed");
@@ -109,13 +116,13 @@ public class ChatService {
             messages.add(assistantMessage);
 
             String json = assistantMessage.content();
+            log.info("LLM output: {}", json);
             ObjectMapper mapper = new ObjectMapper();
             Course course = mapper.readValue(json, Course.class);
             return courseMapper.toCourseResponceDto(course, sessionId);
 
         } catch (JsonProcessingException ex) {
-            System.out.println(ex.getMessage());
-            throw new InvalidPromtInputException(ex.getMessage());
+            throw new InvalidResponseException("Error in the llm response");
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {
