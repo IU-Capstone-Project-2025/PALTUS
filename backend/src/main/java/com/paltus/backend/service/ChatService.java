@@ -115,11 +115,11 @@ public class ChatService {
 
         } catch (JsonProcessingException ex) {
             System.out.println(ex.getMessage());
-            throw new InvalidPromtInputException("Invalid input");
+            throw new InvalidPromtInputException(ex.getMessage());
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {
-            throw new RuntimeException("Ошибка при парсинге JSON", ex);
+            throw new RuntimeException(ex);
         }
     }
 
