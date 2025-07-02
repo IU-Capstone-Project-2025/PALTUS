@@ -42,8 +42,8 @@ async function loginUser() {
 
       <ButtonGreen type="submit" title="Log In" />
       <p>Don't have an account?</p>
-      <router-link to="/sign_in">
-        <ButtonGreen title="Sign In" />
+      <router-link to="/sign_up">
+        <ButtonGreen title="Sign Up" />
       </router-link>
     </form>
   </div>

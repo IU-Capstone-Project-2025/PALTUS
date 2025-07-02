@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
+import router from "@/router/index.js";
 
 const email = ref('');
 const password = ref('');
@@ -11,7 +12,7 @@ const name = ref('');
 const auth = useAuthStore();
 
 const signIn = async () => {
-
+  router.push('verify');
 }
 </script>
 
@@ -19,7 +20,7 @@ const signIn = async () => {
   <div class="container">
     <Logo />
     <form @submit.prevent="signIn">
-      <h3>Sign In</h3>
+      <h3>Sign Up</h3>
       <BaseInput
           v-model="email"
           placeholder="Email"
@@ -39,7 +40,7 @@ const signIn = async () => {
           class="custom-input"
       />
 
-      <ButtonGreen type="submit" title="Sign In" />
+      <ButtonGreen type="submit" title="Sign Up" />
     </form>
   </div>
 </template>
