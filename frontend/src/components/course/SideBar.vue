@@ -22,8 +22,10 @@ const emit = defineEmits(['update:modelValue'])
 
 <template>
   <div class="side-bar">
-    <Logo class="courses-logo" />
-    <ProgressBar :fraction_finished="progress * 100" />
+    <div style="position: sticky; top: 0;">
+      <Logo class="courses-logo" />
+      <ProgressBar :fraction_finished="progress * 100" />
+    </div>
     <div
         class="course-name"
         @click="emit('update:modelValue', 0)"
@@ -61,11 +63,17 @@ ul {
   width: 23vw;
   height: 100vh;
   background-color: #42A5F5;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .courses-logo {
   background-color: #42A5F5;
   color: #F5F7FA;
+  width: 23vw;
+  padding-right: 8vw;
 }
 
 .course-name {

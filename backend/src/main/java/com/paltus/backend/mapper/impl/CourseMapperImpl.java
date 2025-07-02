@@ -9,6 +9,7 @@ import com.paltus.backend.model.Course;
 import com.paltus.backend.model.Lesson;
 import com.paltus.backend.model.Subtopic;
 import com.paltus.backend.model.dto.CoursePageDto;
+import com.paltus.backend.model.dto.CourseResponceDto;
 import com.paltus.backend.model.dto.CourseSummaryDto;
 import com.paltus.backend.model.dto.DashboardDto;
 import com.paltus.backend.model.dto.LessonDto;
@@ -68,6 +69,11 @@ public class CourseMapperImpl implements CourseMapper {
             return new DashboardDto(courses, null);
         }
         return new DashboardDto(courses, toNextLessonDto(nextLesson, nextLesson.getCourse()));
+    }
+
+    @Override
+    public CourseResponceDto toCourseResponceDto(Course course, String sessionId) {
+        return new CourseResponceDto(course, sessionId);
     }
 
 }

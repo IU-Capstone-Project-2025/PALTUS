@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
             LocalDateTime.now().toString(),
             HttpStatus.BAD_REQUEST.value(),
             HttpStatus.BAD_REQUEST.getReasonPhrase(),
-            "Invalid input",
+            ex.getMessage(),
             request.getRequestURI()));
     }
 
