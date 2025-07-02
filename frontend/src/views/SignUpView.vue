@@ -11,15 +11,19 @@ const password = ref('');
 const name = ref('');
 const auth = useAuthStore();
 
-const signIn = async () => {
-  router.push('verify');
+const checkFields = () => {
+  return !!(email.value.length && password.value.length && name.value.length);
+}
+
+const signUp = async () => {
+  router.push('/verify')
 }
 </script>
 
 <template>
   <div class="container">
     <Logo />
-    <form @submit.prevent="signIn">
+    <form @submit.prevent="signUp">
       <h3>Sign Up</h3>
       <BaseInput
           v-model="email"
@@ -40,7 +44,8 @@ const signIn = async () => {
           class="custom-input"
       />
 
-      <ButtonGreen type="submit" title="Sign Up" />
+      <ButtonGreen v-if="checkFields()" type="submit" title="Sign Up" />
+      <ButtonGreen v-else title="Sign Up" class="inactive" />
     </form>
   </div>
 </template>
@@ -80,5 +85,11 @@ p {
   color: #F5F7FA;
   margin-top: 5vh;
   margin-bottom: 1vh;
+}
+
+.inactive {
+  background-color: #BBDEFB;
+  color: #0D47A1;
+  cursor: not-allowed;
 }
 </style>
