@@ -57,12 +57,9 @@ jobs:
     needs: build-and-test
     runs-on: self-hosted
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Docker Compose Deploy
         run: |
-          cd backend
           docker compose down
           docker compose pull
           docker compose up -d --build
