@@ -57,19 +57,20 @@ jobs:
     needs: build-and-test
     runs-on: self-hosted
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  
-      - name: Docker Compose Deploy
-        working-directory: ./backend
+      - name: Clone or update repository
         run: |
-          docker run --rm -v $(pwd):/workspace -w /workspace/backend docker:27.1.1-dind sh -c "
+          if [ -d "/home/githubrunner/project" ]; then
+            cd /home/githubrunner/project
+            git pull origin main
+          else
+            git clone https://github.com/IU-Capstone-Project-2025/PALTUS/tree/dev PALTUS
+          fi
+      - name: Docker Compose Deploy
+        working-directory: /home/githubrunner/project/backend
+        run: |
+          docker run --rm -v /home/githubrunner/project:/workspace -w /workspace/backend docker:27.1.1-dind sh -c "
             docker compose down &&
             docker compose pull &&
             docker compose up -d --build
           "
-            docker compose down
-            docker compose pull
-            docker compose up -d --build
 
