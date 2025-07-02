@@ -54,23 +54,23 @@ jobs:
 #          backend/target/surefire-reports
 #          backend/target/logs
   deploy:
-#    needs: build-and-test
+    #    needs: build-and-test
     runs-on: self-hosted
     steps:
       - name: Clone or update repository
         run: |
-          if [ -d "PALTUS" ]; then
-            cd PALTUS
+          if [ -d "/home/githubrunner/PALTUS" ]; then
+            cd /home/githubrunner/PALTUS
             git pull origin main
           else
-            git clone https://github.com/IU-Capstone-Project-2025/PALTUS PALTUS
-            cd PALTUS
+            git clone https://github.com/IU-Capstone-Project-2025/PALTUS /home/githubrunner/PALTUS
+            cd /home/githubrunner/PALTUS
             git checkout dev
           fi
       - name: Docker Compose Deploy
-        working-directory: PALTUS
+        working-directory: /home/githubrunner/PALTUS/PALTUS
         run: |
-          docker run --rm -v PALTUS:/workspace -w PALTUS docker:27.1.1-dind sh -c "
+          docker run --rm -v /home/githubrunner/PALTUS:/workspace -w /workspace/PALTUS docker:27.1.1-dind sh -c "
             docker compose down &&
             docker compose pull &&
             docker compose up -d --build
