@@ -72,7 +72,8 @@ public class CourseService {
     }
 
     public List<Course> getAllCourses() {
-        List<Course> courses = courseRepository.findAll();
+        User user = userService.getCurrentUser();
+        List<Course> courses = courseRepository.findAllByUser(user);
         courses.sort(Comparator.comparing(
                 Course::getLastActivityTime,
                 Comparator.nullsLast(Comparator.reverseOrder())));
