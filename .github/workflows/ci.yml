@@ -63,7 +63,6 @@ jobs:
             cd /home/githubrunner/PALTUS
             git pull origin main
           else
-            git clone https://github.com/IU-Capstone-Project-2025/PALTUS /home/githubrunner/PALTUS
             cd /home/githubrunner/PALTUS
             git checkout dev
           fi
