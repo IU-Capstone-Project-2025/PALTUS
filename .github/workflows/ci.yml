@@ -61,7 +61,7 @@ jobs:
         run: |
           rm -rf PALTUS || true
           git clone https://github.com/IU-Capstone-Project-2025/PALTUS.git
-          cp environment/.env PALTUS/.env
+          cp ~/actions-runner/environment/.env PALTUS/.env
           cd PALTUS
           git checkout ${{ github.ref_name }}
 
