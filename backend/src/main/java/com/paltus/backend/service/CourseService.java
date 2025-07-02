@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.paltus.backend.mapper.CourseMapper;
@@ -47,6 +46,10 @@ public class CourseService {
     public CoursePageDto getCourseById(long course_id) {
         Course course = courseRepository.findById(course_id).orElseThrow(
                 () -> new EntityNotFoundException("Course not found with id " + course_id));
+        User user = userService.getCurrentUser();
+        if (!user.equals(course.getUser())) {
+            throw new AccessDeniedException("You don't have this course");
+        }
         return courseMapper.toCoursePageDto(course);
     }
 
@@ -88,9 +91,14 @@ public class CourseService {
     }
 
     public void deleteCourse(long id) {
-        if (!courseRepository.existsById(id)) {
-            throw new EntityNotFoundException("Course not found with id " + id);
+        Course course = courseRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Course not found with id " + id));
+
+        User user = userService.getCurrentUser();
+        if (!user.equals(course.getUser())) {
+            throw new AccessDeniedException("You don't have this course");
         }
+
         courseRepository.deleteById(id);
     }
 }
