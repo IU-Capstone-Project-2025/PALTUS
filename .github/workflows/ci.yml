@@ -57,17 +57,29 @@ jobs:
     #    needs: build-and-test
     runs-on: self-hosted
     steps:
-      - name: Clone or update repository
+      - name: Clone repo
         run: |
-          cd /home/githubrunner/PALTUS
-          git checkout dev
-      - name: Docker Compose Deploy
-        working-directory: /home/githubrunner/PALTUS/
-        run: |
-          docker run --rm --privileged -v /home/githubrunner/PALTUS:/workspace -w /workspace/PALTUS docker:27.1.1-dind sh -c "
-            export DOCKER_HOST=unix:///var/run/docker.sock
-            docker compose down &&
-            docker compose pull &&
-            docker compose up -d --build
-          "
+          rm -rf PALTUS || true
+          git clone https://github.com/IU-Capstone-Project-2025/PALTUS.git
+          cd PALTUS
+          git checkout ${{ github.ref_name }}
 
+      - name: Java and Maven
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jdk maven
+          java -version
+          mvn -v
+
+      - name: Build and test
+        run: |
+          cd PALTUS/backend
+          mvn clean verify -B -e -X
+        env:
+          SPRING_PROFILES_ACTIVE: test
+
+      - name: Docker compose
+        run: |
+          cd PALTUS/backend
+          docker compose down
+          docker compose up -d --build
