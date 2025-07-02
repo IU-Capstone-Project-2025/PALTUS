@@ -25,7 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <ProfileTab @click="hideLinks" />
+  <ProfileTab @click="hideLinks" class="profileTab" />
   <ul>
     <li v-for="accountLink in accountLinks">
       <AccountLink :title="accountLink.title" :link="accountLink.link" />
@@ -40,8 +40,10 @@ ul {
 }
 li {
   position: relative;
-  z-index: -1;
   transition: 300ms;
   top: 0;
+}
+.profileTab {
+  z-index: 2;
 }
 </style>
