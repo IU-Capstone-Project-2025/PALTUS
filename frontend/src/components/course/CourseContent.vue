@@ -48,13 +48,20 @@ const removeCourse = async () => {
         Subtopics:
       </div>
       <ul class="subtopics-list">
-        <li v-for="subtopic in course.lessons[chosenContent - 1].subtopics" class="subtopic">
-          <BaseCheckbox
-              :id="subtopic.topic"
-              v-model="subtopic.finished"
-              @update:modelValue="checkSubtopic(subtopic.id, subtopic.finished)"
-          />
-          <label :for="subtopic.topic" class="field-info">{{ subtopic.topic }}</label>
+        <li v-for="subtopic in course.lessons[chosenContent - 1].subtopics">
+          <div class="subtopic">
+            <BaseCheckbox
+                :id="subtopic.topic"
+                v-model="subtopic.finished"
+                @update:modelValue="checkSubtopic(subtopic.id, subtopic.finished)"
+            />
+            <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}</label>
+          </div>
+          <ul v-if="subtopic.content">
+            <li class="field-info">
+              {{ subtopic.content }}
+            </li>
+          </ul>
         </li>
       </ul>
     </div>
