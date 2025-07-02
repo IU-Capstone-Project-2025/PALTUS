@@ -13,7 +13,6 @@ export const useCourseStore = defineStore("course", {
         async loadCourse(id) {
             try {
                 const response = await axios.get(`courses/${id}`);
-                console.log(response);
                 this.courseId = response.id;
                 this.course_name = response.course_name;
                 this.description = response.description;
@@ -23,9 +22,9 @@ export const useCourseStore = defineStore("course", {
                 console.error(error);
             }
         },
-        async updateSubtopic(subtopicChanged){
+        async updateSubtopic(subtopicChanged, lesson_id){
             try {
-                await axios.put(`api/v1/lessons/subtopic/${subtopicChanged.id}`, {
+                await axios.put(`lessons/${lesson_id}/subtopics/setFinished/${subtopicChanged.id}`, {
                     courseId: this.courseId,
                     state: subtopicChanged.finished
                 })
