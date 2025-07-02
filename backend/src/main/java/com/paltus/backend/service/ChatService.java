@@ -92,7 +92,7 @@ public class ChatService {
 
         ChatMessage userMessage = ChatMessage.builder()
                 .role(ChatMessageRole.USER)
-                .content(editCourseRequest.getRequest())
+                .content(editCourseRequest.getRequest() + promptProperties.getEditpaste())
                 .build();
         messages.add(userMessage);
 
