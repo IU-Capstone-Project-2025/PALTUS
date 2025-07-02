@@ -8,7 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -44,3 +45,11 @@ jobs:
         # SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test
         # SPRING_DATASOURCE_USERNAME: test
         # SPRING_DATASOURCE_PASSWORD: test
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-reports
+        path: |
+          backend/target/surefire-reports
+          backend/target/logs

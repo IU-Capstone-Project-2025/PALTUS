@@ -95,10 +95,8 @@
                 	<includes>
                     	<include>**/*Test.java</include>
                 	</includes>
-                	<excludes>
-                    	<exclude>**/*IntegrationTest.java</exclude>
-                	</excludes>
-         		</configuration>
+                	<parallel>none</parallel>
+            	</configuration>
         	</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
