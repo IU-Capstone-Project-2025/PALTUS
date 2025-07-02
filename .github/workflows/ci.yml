@@ -59,8 +59,8 @@ jobs:
     steps:
       - name: Clone or update repository
         run: |
-          if [ -d "/home/githubrunner/project" ]; then
-            cd /home/githubrunner/project
+          if [ -d "PALTUS" ]; then
+            cd PALTUS
             git pull origin main
           else
             git clone https://github.com/IU-Capstone-Project-2025/PALTUS PALTUS
@@ -68,9 +68,9 @@ jobs:
             git checkout dev
           fi
       - name: Docker Compose Deploy
-        working-directory: /home/githubrunner/project/backend
+        working-directory: PALTUS
         run: |
-          docker run --rm -v /home/githubrunner/project:/workspace -w /workspace/backend docker:27.1.1-dind sh -c "
+          docker run --rm -v PALTUS:/workspace -w PALTUS docker:27.1.1-dind sh -c "
             docker compose down &&
             docker compose pull &&
             docker compose up -d --build
