@@ -122,7 +122,7 @@ public class ChatService {
             return courseMapper.toCourseResponceDto(course, sessionId);
 
         } catch (JsonProcessingException ex) {
-            throw new InvalidResponseException("Error in the llm response");
+            throw new InvalidResponseException(ex.getMessage());
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {

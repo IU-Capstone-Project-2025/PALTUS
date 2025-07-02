@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
             LocalDateTime.now().toString(),
             HttpStatus.NOT_ACCEPTABLE.value(),
             HttpStatus.NOT_ACCEPTABLE.getReasonPhrase(),
-            ex.getMessage(),
+           "Error in the llm response",
             request.getRequestURI()));
     }
 
