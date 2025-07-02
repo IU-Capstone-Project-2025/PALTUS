@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paltus.backend.model.User;
 import com.paltus.backend.model.dto.LoginUserDto;
 import com.paltus.backend.model.dto.RegisterUserDto;
-import com.paltus.backend.model.dto.ResendDto;
 import com.paltus.backend.model.dto.VerifyUserDto;
 import com.paltus.backend.model.responses.LoginResponse;
 import com.paltus.backend.service.AuthenticationService;
@@ -49,8 +48,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/resend")
-    public ResponseEntity<String> resendVerificationCode(@RequestBody ResendDto resendDto) {
-        authenticationService.resendVerificationCode(resendDto.email());
+    public ResponseEntity<String> resendVerificationCode(@RequestBody String email) {
+        authenticationService.resendVerificationCode(email);
         return ResponseEntity.ok("Verification code sent");
     }
 }
