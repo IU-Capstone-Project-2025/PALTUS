@@ -64,13 +64,6 @@ jobs:
           cd PALTUS
           git checkout ${{ github.ref_name }}
 
-      - name: Java and Maven
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-17-jdk maven
-          java -version
-          mvn -v
-
       - name: Build and test
         run: |
           cd PALTUS/backend
