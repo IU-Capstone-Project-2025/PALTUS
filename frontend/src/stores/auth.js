@@ -4,8 +4,16 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: 'null',
         token: null,
+        email: '',
+        password: '',
+        verificationCode: null,
     }),
     actions: {
+        setUserData(email, password, username) {
+            this.email = email;
+            this.password = password;
+            this.user = username;
+        },
         login(email, password) {
             // Mock data
             if (email === 'test@example.com' && password === '123') {
@@ -34,6 +42,6 @@ export const useAuthStore = defineStore('auth', {
         },
         isAuthenticated() {
             return !!this.token;
-        },
+        }
     },
 });

@@ -5,6 +5,7 @@ import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import router from "@/router/index.js";
+import axios from "@/plugins/axios.js";
 
 const email = ref('');
 const password = ref('');
@@ -16,7 +17,19 @@ const checkFields = () => {
 }
 
 const signUp = async () => {
-  router.push('/verify')
+  try {
+    const userData = {
+      username: name.value,
+      email: email.value,
+      password: password.value,
+    }
+    const response = await axios.post('/register', userData);
+
+    auth.setUserData(email.value, password.value, name.value);
+    router.push('/verify')
+  } catch (err) {
+    console.log(err);
+  }
 }
 </script>
 
