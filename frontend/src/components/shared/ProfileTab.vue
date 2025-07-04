@@ -3,9 +3,11 @@ import {useAuthStore} from "@/stores/auth.js";
 </script>
 
 <template>
-  <div class="profile">
-    {{ useAuthStore().user.email }}
-  </div>
+  <a>
+    <div class="profile">
+      {{ useAuthStore().user.email }}
+    </div>
+  </a>
 </template>
 
 <style scoped>
@@ -20,5 +22,9 @@ import {useAuthStore} from "@/stores/auth.js";
   color: #F5F7FA;
   font-weight: bold;
   border-bottom-left-radius: 16px;
+}
+
+a {
+  cursor: pointer;
 }
 </style>

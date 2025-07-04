@@ -1,64 +1,92 @@
-// package com.paltus.backend.controller;
+package com.paltus.backend.controller;
 
-// import com.paltus.backend.dto.CoursePageDto;
-// import com.paltus.backend.dto.CourseSummaryDto;
-// import com.paltus.backend.service.CourseService;
-// import org.junit.jupiter.api.Test;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.mockito.InjectMocks;
-// import org.mockito.Mock;
-// import org.springframework.test.web.servlet.MockMvc;
-// import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paltus.backend.model.Course;
+import com.paltus.backend.model.dto.CoursePageDto;
+import com.paltus.backend.model.dto.DashboardDto;
+import com.paltus.backend.service.CourseService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-// import java.util.Collections;
+import java.util.Collections;
 
-// import static org.mockito.Mockito.*;
-// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-// import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-// public class CourseControllerTest {
+class CourseControllerTest {
 
-//     @Mock
-//     private CourseService courseService;
+    @Mock
+    private CourseService courseService;
 
-//     @InjectMocks
-//     private CourseController courseController;
+    @InjectMocks
+    private CourseController courseController;
 
-//     private MockMvc mockMvc;
+    private MockMvc mockMvc;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-//     @BeforeEach
-//     public void setup() {
-//         mockMvc = MockMvcBuilders.standaloneSetup(courseController).build(); 
-//     }
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(courseController).build();
+    }
+
+    @Test
+    void getDashboardDto_ShouldReturnDashboard() throws Exception {
+        DashboardDto dashboardDto = new DashboardDto(Collections.emptyList(), null);
+        when(courseService.getDashboard()).thenReturn(dashboardDto);
+
+        mockMvc.perform(get("/courses"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.courses").isArray());
+        
+        verify(courseService, times(1)).getDashboard();
+    }
+
+    @Test
+    void getCourseById_ShouldReturnCourse() throws Exception {
+        CoursePageDto coursePageDto = new CoursePageDto(1, "Test Course", "Description", 
+                Collections.emptyList(), Collections.emptyList());
+        
+        when(courseService.getCourseById(anyLong())).thenReturn(coursePageDto);
+
+        mockMvc.perform(get("/courses/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.course_name").value("Test Course"));
+    }
+
+    @Test
+    void deleteCourseById_ShouldReturnNoContent() throws Exception {
+        doNothing().when(courseService).deleteCourse(anyLong());
+        
+        mockMvc.perform(delete("/courses/1"))
+                .andExpect(status().isNoContent());
+        
+        verify(courseService, times(1)).deleteCourse(1L);
+    }
 
     // @Test
-    // public void testGetAllCoursesSummaries() throws Exception {
-    //     CourseSummaryDto courseSummary = new CourseSummaryDto(1L, "Test Course");
-    //     when(courseService.getAllCoursesSummaries()).thenReturn(Collections.singletonList(courseSummary));
-    //     mockMvc.perform(get("/courses"))
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$[0].id").value(1))
-    //             .andExpect(jsonPath("$[0].course_name").value("Test Course"));
-
-    //     verify(courseService, times(1)).getAllCoursesSummaries();
-    // }
-
-    // @Test
-    // public void testGetCourseById() throws Exception {
-    //     CoursePageDto coursePageDto = new CoursePageDto(1L, "Test Course", "Description", Collections.emptyList(), Collections.emptyList());
-    //     when(courseService.getCourseById(1L)).thenReturn(coursePageDto);
-    //     mockMvc.perform(get("/courses/{id}", 1))
+    // void saveCourse_ShouldSaveAndReturnCourse() throws Exception {
+    //     Course course = new Course();
+    //     course.setId(1L);
+    //     course.setCourse_name("New Course");
+        
+    //     when(courseService.saveCourse(any(Course.class))).thenReturn(course);
+        
+    //     mockMvc.perform(post("/courses/saveCourse")
+    //             .contentType(MediaType.APPLICATION_JSON)
+    //             .content(objectMapper.writeValueAsString(course)))
     //             .andExpect(status().isOk())
     //             .andExpect(jsonPath("$.id").value(1))
-    //             .andExpect(jsonPath("$.course_name").value("Test Course"));
-
-    //     verify(courseService, times(1)).getCourseById(1L);
+    //             .andExpect(jsonPath("$.course_name").value("New Course"));
     // }
-
-    // @Test
-    // public void testDeleteCourseById() throws Exception {
-    //     mockMvc.perform(delete("/courses/{id}", 1))
-    //             .andExpect(status().isNoContent());
-    //     verify(courseService, times(1)).deleteCourse(1L);
-    // }
-// }
+}

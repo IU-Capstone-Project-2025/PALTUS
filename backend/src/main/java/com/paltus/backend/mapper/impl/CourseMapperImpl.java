@@ -9,11 +9,13 @@ import com.paltus.backend.model.Course;
 import com.paltus.backend.model.Lesson;
 import com.paltus.backend.model.Subtopic;
 import com.paltus.backend.model.dto.CoursePageDto;
+import com.paltus.backend.model.dto.CourseResponceDto;
 import com.paltus.backend.model.dto.CourseSummaryDto;
 import com.paltus.backend.model.dto.DashboardDto;
 import com.paltus.backend.model.dto.LessonDto;
 import com.paltus.backend.model.dto.NextLessonDto;
 import com.paltus.backend.model.dto.SubtopicDto;
+import com.paltus.backend.model.dto.SubtopicForNextLessonDto;
 
 @Component
 public class CourseMapperImpl implements CourseMapper {
@@ -47,12 +49,17 @@ public class CourseMapperImpl implements CourseMapper {
 
     @Override
     public SubtopicDto toSubtopicDto(Subtopic subtopic) {
-        return new SubtopicDto(subtopic.getTopic(), subtopic.isFinished());
+        return new SubtopicDto(subtopic.getTopic(), subtopic.isFinished(), subtopic.getContent(), subtopic.getNotes());
+    }
+
+    @Override
+    public SubtopicForNextLessonDto toSubtopicForNextLessonDto(Subtopic subtopic) {
+        return new SubtopicForNextLessonDto(subtopic.getTopic());
     }
 
     @Override
     public NextLessonDto toNextLessonDto(Lesson lesson, Course course) {
-        return new NextLessonDto(course.getId(), lesson.getTitle(), lesson.getSubtopics().stream().map(subtopic -> this.toSubtopicDto(subtopic))
+        return new NextLessonDto(course.getId(), lesson.getTitle(), lesson.getSubtopics().stream().map(subtopic -> this.toSubtopicForNextLessonDto(subtopic))
         .toList());
     }
 
@@ -62,6 +69,11 @@ public class CourseMapperImpl implements CourseMapper {
             return new DashboardDto(courses, null);
         }
         return new DashboardDto(courses, toNextLessonDto(nextLesson, nextLesson.getCourse()));
+    }
+
+    @Override
+    public CourseResponceDto toCourseResponceDto(Course course, String sessionId) {
+        return new CourseResponceDto(course, sessionId);
     }
 
 }

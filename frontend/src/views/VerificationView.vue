@@ -6,45 +6,28 @@ import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 
-const email = ref('');
-const password = ref('');
+const ver_code = ref('');
 const auth = useAuthStore();
 const router = useRouter();
 
-async function loginUser() {
-  console.log("Trying login with:", email.value, password.value);
-  try {
-    await auth.login(email.value, password.value);
-    await router.push('/');
-  } catch (err) {
-    alert(err.message);
-  }
+const checkCode = async () => {
+
 }
 </script>
 
 <template>
   <div class="container">
     <Logo />
-    <form @submit.prevent="loginUser">
-      <h3>Log In</h3>
+    <form @submit.prevent="checkCode">
+      <h3>Check your email</h3>
       <BaseInput
-          v-model="email"
-          placeholder="Email"
+          v-model="ver_code"
+          placeholder="Pass verification code here"
           class="custom-input"
       />
 
-      <BaseInput
-          v-model="password"
-          placeholder="Password"
-          type="password"
-          class="custom-input"
-      />
-
-      <ButtonGreen type="submit" title="Log In" />
-      <p>Don't have an account?</p>
-      <router-link to="/sign_up">
-        <ButtonGreen title="Sign Up" />
-      </router-link>
+      <ButtonGreen type="submit" title="Submit" />
+      <p>I did not receive the code</p>
     </form>
   </div>
 </template>
@@ -74,15 +57,20 @@ form {
   border-radius: 16px;
 }
 .custom-input {
-  height: 5vh;
-  font-size: 1rem;
+  height: 8vh;
+  font-size: 1.2rem;
   margin-bottom: 3vh;
 }
 
 p {
   font-size: 1rem;
-  color: #F5F7FA;
+  color: #BBDEFB;
   margin-top: 5vh;
   margin-bottom: 1vh;
+  cursor: pointer;
+  text-decoration: underline;
+}
+p:hover {
+  color: #F5F7FA;
 }
 </style>
