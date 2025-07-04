@@ -21,17 +21,24 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.paltus.backend.service.JWTService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
-    private JwtFilter jwtFilter;
+    private JWTService jwtService;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService, JwtFilter jwtFilter) {
+    public SecurityConfig(JWTService jwtService, UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.jwtFilter = jwtFilter;
+        this.jwtService = jwtService;
+    }
+
+    @Bean
+    public JwtFilter jwtFilter() {
+        return new JwtFilter(jwtService, userDetailsService);
     }
 
     @Bean
@@ -46,7 +53,7 @@ public class SecurityConfig {
 
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
