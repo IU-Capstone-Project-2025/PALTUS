@@ -5,7 +5,7 @@ import {useAuthStore} from "@/stores/auth.js";
 <template>
   <a>
     <div class="profile">
-      {{ useAuthStore().user.email }}
+      {{ useAuthStore().user }}
     </div>
   </a>
 </template>
