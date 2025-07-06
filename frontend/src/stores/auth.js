@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia';
+import axios from "@/plugins/axios.js";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: 'null',
         token: null,
+        expiresIn: null,
         email: '',
         password: '',
-        verificationCode: null,
+        isVerified: false,
     }),
     actions: {
         setUserData(email, password, username) {
@@ -14,16 +16,22 @@ export const useAuthStore = defineStore('auth', {
             this.password = password;
             this.user = username;
         },
-        login(email, password) {
-            // Mock data
-            if (email === 'test@example.com' && password === '123') {
-                this.user = { email };
-                this.token = 'mock-token';
-                localStorage.setItem('user', JSON.stringify(this.user));
+        async login(email, password, username) {
+            const login_data = {
+                email: email,
+                password: password,
+            }
+            try {
+                const response = await axios.post('/login', login_data);
+                console.log(response);
+                this.user = username;
+                this.email = email;
+                this.token = response.token;
+                this.expiresIn = response.expiresIn;
+                localStorage.setItem('user', this.user);
                 localStorage.setItem('token', this.token);
-            } else {
-                throw new Error('email - test@example.com\n' +
-                                'password - 123');
+            } catch (error) {
+                console.error(error);
             }
         },
         logout() {
@@ -36,7 +44,7 @@ export const useAuthStore = defineStore('auth', {
             const saved = localStorage.getItem('user');
             const token = localStorage.getItem('token');
             if (saved && token) {
-                this.user = JSON.parse(saved);
+                this.user = saved;
                 this.token = token;
             }
         },

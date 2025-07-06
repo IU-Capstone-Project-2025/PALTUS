@@ -14,7 +14,7 @@ const router = useRouter();
 async function loginUser() {
   console.log("Trying login with:", email.value, password.value);
   try {
-    await auth.login(email.value, password.value);
+    await auth.login(email.value, password.value, email.value);
     await router.push('/');
   } catch (err) {
     alert(err.message);

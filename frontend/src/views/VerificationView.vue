@@ -1,18 +1,45 @@
 <script setup>
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
+import axios from "@/plugins/axios.js";
 
 const ver_code = ref('');
 const auth = useAuthStore();
 const router = useRouter();
 
 const checkCode = async () => {
-
+  const ver_data = {
+    email: auth.email,
+    verificationCode: ver_code.value,
+  };
+  try {
+    const response = await axios.post('/verify', ver_data);
+    console.log(response);
+    auth.isVerified = true;
+    auth.token = response.token;
+    try {
+      await auth.login(auth.email, auth.password, auth.user);
+      router.push('/');
+    } catch (e) {
+      console.error(e);
+    }
+    await router.push('/');
+  } catch (error) {
+    console.log(error);
+  }
 }
+
+onMounted(() => {
+  if (!auth.email) {
+    router.push('/sign_up');
+  } else if (auth.isVerified) {
+    router.push('/');
+  }
+})
 </script>
 
 <template>

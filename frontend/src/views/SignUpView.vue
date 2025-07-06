@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
@@ -24,13 +24,19 @@ const signUp = async () => {
       password: password.value,
     }
     const response = await axios.post('/register', userData);
-
+    console.log(response);
     auth.setUserData(email.value, password.value, name.value);
     router.push('/verify')
   } catch (err) {
     console.log(err);
   }
 }
+
+onMounted(() => {
+  if (auth.isVerified) {
+    router.push('/');
+  }
+})
 </script>
 
 <template>
