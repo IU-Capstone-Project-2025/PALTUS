@@ -38,7 +38,8 @@ public class AuthenticationService {
     }
 
     public void register(RegisterUserDto userDto) {
-        if (userRepo.existsByEmail(userDto.email())) {
+        Optional<User> optionalUser = userRepo.findByEmail(userDto.email());
+        if (optionalUser.isPresent() && optionalUser.get().getVerificationCode() == null) {
             throw new EntityExistsException("User already exists");
         }
         User user = new User();
