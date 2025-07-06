@@ -42,11 +42,16 @@ public class AuthenticationService {
         if (optionalUser.isPresent() && optionalUser.get().getVerificationCode() == null) {
             throw new EntityExistsException("User already exists");
         }
-        User user = new User();
-        user.setUsername(userDto.username());
-        user.setEmail(userDto.email());
-        user.setPassword(encoder.encode(userDto.password()));
-        user.setEnabled(false);
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        } else {
+            user = new User();
+            user.setUsername(userDto.username());
+            user.setEmail(userDto.email());
+            user.setPassword(encoder.encode(userDto.password()));
+            user.setEnabled(false);
+        }
         user.setVerificationCode(generateVerificationCode());
         user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15));
         userRepo.save(user);
