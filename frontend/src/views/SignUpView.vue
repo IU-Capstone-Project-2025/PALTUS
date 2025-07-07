@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
@@ -12,8 +12,13 @@ const password = ref('');
 const name = ref('');
 const auth = useAuthStore();
 
+const isValidEmail = computed(() => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email.value);
+});
+
 const checkFields = () => {
-  return !!(email.value.length && password.value.length && name.value.length);
+  return !!(isValidEmail.value && password.value.length && name.value.length);
 }
 
 const signUp = async () => {
