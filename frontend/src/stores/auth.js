@@ -7,13 +7,11 @@ export const useAuthStore = defineStore('auth', {
         token: null,
         expiresIn: null,
         email: '',
-        password: '',
         isVerified: false,
     }),
     actions: {
-        setUserData(email, password, username) {
+        setUserData(email, username) {
             this.email = email;
-            this.password = password;
             this.user = username;
         },
         async login(email, password, username) {
@@ -24,15 +22,24 @@ export const useAuthStore = defineStore('auth', {
             try {
                 const response = await axios.post('/login', login_data);
                 console.log(response);
+
                 this.user = username;
                 this.email = email;
                 this.token = response.token;
-                this.expiresIn = response.expiresIn;
+                this.expiresIn = Number.parseInt(response.expiresIn);
+
                 localStorage.setItem('user', this.user);
                 localStorage.setItem('token', this.token);
+
+                this.setLogoutTimer(expiresIn);
             } catch (error) {
                 console.error(error);
             }
+        },
+        setLogoutTimer(msUntilLogout) {
+            setTimeout(() => {
+                this.logout();
+            }, msUntilLogout);
         },
         logout() {
             this.user = null;
@@ -43,9 +50,18 @@ export const useAuthStore = defineStore('auth', {
         loadUser() {
             const saved = localStorage.getItem('user');
             const token = localStorage.getItem('token');
-            if (saved && token) {
-                this.user = saved;
-                this.token = token;
+            const expires = localStorage.getItem('expiresIn');
+
+            if (saved && token && expires) {
+                const now = Date.now();
+                if (now < Number.parseInt(expires)) {
+                    this.user = saved;
+                    this.token = token;
+                    this.expiresIn = expires;
+                    this.setLogoutTimer(Number.parseInt(expires) - now); // разница
+                } else {
+                    this.logout();
+                }
             }
         },
         isAuthenticated() {
