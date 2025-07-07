@@ -22,6 +22,7 @@ import {useAuthStore} from "@/stores/auth.js";
   color: #F5F7FA;
   font-weight: bold;
   border-bottom-left-radius: 16px;
+  overflow: hidden;
 }
 
 a {
