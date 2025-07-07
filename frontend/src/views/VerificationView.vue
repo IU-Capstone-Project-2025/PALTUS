@@ -15,7 +15,14 @@ const validateCode = () => {
   return /^\d{6}$/.test(ver_code.value);
 }
 
-
+const resendCode = async () => {
+  try {
+    const response = await axios.post('/resend', auth.email);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 const checkCode = async () => {
   const ver_data = {
@@ -45,9 +52,9 @@ onMounted(() => {
   } else if (auth.isVerified) {
     router.push('/');
   }
-  setTimeout(() => {
-    document.getElementById('send-again').style.display = 'block';
-  }, 15000)
+  // setTimeout(() => {
+  //   document.getElementById('send-again').style.display = 'block';
+  // }, 15000)
 })
 </script>
 
@@ -64,7 +71,7 @@ onMounted(() => {
 
       <ButtonGreen type="submit" title="Submit" v-if="validateCode()" />
       <ButtonGreen title="Submit" class="inactive" v-else />
-      <p id="send-again">I did not receive the code</p>
+      <p id="send-again" @click="resendCode">I did not receive the code</p>
     </form>
   </div>
 </template>
