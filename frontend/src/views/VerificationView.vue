@@ -15,6 +15,8 @@ const validateCode = () => {
   return /^\d{6}$/.test(ver_code.value);
 }
 
+
+
 const checkCode = async () => {
   const ver_data = {
     email: auth.email,
@@ -43,6 +45,9 @@ onMounted(() => {
   } else if (auth.isVerified) {
     router.push('/');
   }
+  setTimeout(() => {
+    document.getElementById('send-again').style.display = 'block';
+  }, 15000)
 })
 </script>
 
@@ -59,7 +64,7 @@ onMounted(() => {
 
       <ButtonGreen type="submit" title="Submit" v-if="validateCode()" />
       <ButtonGreen title="Submit" class="inactive" v-else />
-      <p>I did not receive the code</p>
+      <p id="send-again">I did not receive the code</p>
     </form>
   </div>
 </template>
@@ -102,6 +107,7 @@ p {
   margin-bottom: 1vh;
   cursor: pointer;
   text-decoration: underline;
+  display: none;
 }
 p:hover {
   color: #F5F7FA;
