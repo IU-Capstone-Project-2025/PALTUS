@@ -16,7 +16,7 @@ async function loginUser() {
   submitted.value = true;
   console.log("Trying login with:", email.value, password.value);
   try {
-    await auth.login(email.value, password.value, email.value);
+    await auth.login(email.value, password.value);
     await router.push('/');
   } catch (err) {
     alert(err.message);

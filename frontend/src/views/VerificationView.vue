@@ -37,7 +37,7 @@ const checkCode = async () => {
     auth.isVerified = true;
     auth.token = response.token;
     try {
-      await auth.login(auth.email, auth.password, auth.user);
+      await auth.login(auth.email, auth.password);
       router.push('/');
     } catch (e) {
       console.error(e);

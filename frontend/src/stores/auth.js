@@ -3,27 +3,33 @@ import axios from "@/plugins/axios.js";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        user: 'null',
+        user: '',
+        password: '',
         token: null,
         expiresIn: null,
         email: '',
         isVerified: false,
     }),
     actions: {
-        setUserData(email, username) {
+        setUserData(email, username, password) {
             this.email = email;
             this.user = username;
+            this.password = password;
         },
-        async login(email, password, username) {
+        async login(email, password) {
             const login_data = {
                 email: email,
                 password: password,
             }
+            console.log(`${this.user} trying to log in`)
             try {
                 const response = await axios.post('/login', login_data);
                 console.log(response);
 
-                this.user = username;
+                if (!this.user) {
+                    this.user = email.split('@')[0];
+                }
+                this.password = '';
                 this.email = email;
                 this.token = response.token;
                 this.expiresIn = Number.parseInt(response.expiresIn);

@@ -32,7 +32,7 @@ const signUp = async () => {
     }
     const response = await axios.post('/register', userData);
     console.log(response);
-    auth.setUserData(email.value, password.value, name.value);
+    auth.setUserData(email.value, name.value, password.value);
     router.push('/verify')
   } catch (err) {
     console.log(err);
