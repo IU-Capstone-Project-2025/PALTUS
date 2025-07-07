@@ -10,8 +10,10 @@ const email = ref('');
 const password = ref('');
 const auth = useAuthStore();
 const router = useRouter();
+const submitted = ref(false);
 
 async function loginUser() {
+  submitted.value = true;
   console.log("Trying login with:", email.value, password.value);
   try {
     await auth.login(email.value, password.value, email.value);
@@ -53,7 +55,12 @@ const validation = () => {
           class="custom-input"
       />
 
-      <ButtonGreen type="submit" title="Log In" v-if="validation()" />
+      <ButtonGreen
+          type="submit"
+          title="Log In"
+          v-if="validation() && !submitted"
+          id="submit-button"
+      />
       <ButtonGreen title="Log In" class="inactive" v-else />
       <p>Don't have an account?</p>
       <router-link to="/sign_up">

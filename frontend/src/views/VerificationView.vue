@@ -10,6 +10,7 @@ import axios from "@/plugins/axios.js";
 const ver_code = ref('');
 const auth = useAuthStore();
 const router = useRouter();
+const submitted = ref(false);
 
 const validateCode = () => {
   return /^\d{6}$/.test(ver_code.value);
@@ -25,6 +26,7 @@ const resendCode = async () => {
 }
 
 const checkCode = async () => {
+  submitted.value = true;
   const ver_data = {
     email: auth.email,
     verificationCode: ver_code.value,
@@ -69,7 +71,7 @@ onMounted(() => {
           class="custom-input"
       />
 
-      <ButtonGreen type="submit" title="Submit" v-if="validateCode()" />
+      <ButtonGreen type="submit" title="Submit" v-if="validateCode() && !submitted" />
       <ButtonGreen title="Submit" class="inactive" v-else />
       <p id="send-again" @click="resendCode">I did not receive the code</p>
     </form>

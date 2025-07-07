@@ -11,6 +11,7 @@ const email = ref('');
 const password = ref('');
 const name = ref('');
 const auth = useAuthStore();
+const submitted = ref(false);
 
 const isValidEmail = computed(() => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,6 +23,7 @@ const checkFields = () => {
 }
 
 const signUp = async () => {
+  submitted.value = true;
   try {
     const userData = {
       username: name.value,
@@ -68,7 +70,7 @@ onMounted(() => {
           class="custom-input"
       />
 
-      <ButtonGreen v-if="checkFields()" type="submit" title="Sign Up" />
+      <ButtonGreen v-if="checkFields() && !submitted" type="submit" title="Sign Up" />
       <ButtonGreen v-else title="Sign Up" class="inactive" />
     </form>
   </div>
