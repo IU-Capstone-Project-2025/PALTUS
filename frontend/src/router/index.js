@@ -9,6 +9,7 @@ import CourseView from "@/views/CourseView.vue";
 import LevelView from "@/views/LevelView.vue";
 import SignInView from "@/views/SignInView.vue";
 import AwardsView from "@/views/AwardsView.vue";
+import QuizView from "@/views/QuizView.vue";
 
 const routes = [
     { path: '/login', component: LoginView },
@@ -47,6 +48,11 @@ const routes = [
     {
         path: '/awards',
         component: AwardsView,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/quiz',
+        component: QuizView,
         meta: { requiresAuth: true }
     }
 ]
