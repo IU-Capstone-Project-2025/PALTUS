@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
@@ -19,6 +19,19 @@ async function loginUser() {
   } catch (err) {
     alert(err.message);
   }
+}
+
+const isValidEmail = computed(() => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email.value);
+});
+
+const isValidPassword = computed(() => {
+  return !!password.value;
+});
+
+const validation = () => {
+  return isValidPassword.value && isValidEmail.value;
 }
 </script>
 
@@ -40,7 +53,8 @@ async function loginUser() {
           class="custom-input"
       />
 
-      <ButtonGreen type="submit" title="Log In" />
+      <ButtonGreen type="submit" title="Log In" v-if="validation()" />
+      <ButtonGreen title="Log In" class="inactive" v-else />
       <p>Don't have an account?</p>
       <router-link to="/sign_up">
         <ButtonGreen title="Sign Up" />
@@ -84,5 +98,11 @@ p {
   color: #F5F7FA;
   margin-top: 5vh;
   margin-bottom: 1vh;
+}
+
+.inactive {
+  background-color: #BBDEFB;
+  color: #0D47A1;
+  cursor: not-allowed;
 }
 </style>
