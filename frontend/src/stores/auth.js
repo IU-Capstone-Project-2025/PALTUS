@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth', {
                 localStorage.setItem('user', this.user);
                 localStorage.setItem('token', this.token);
 
-                this.setLogoutTimer(expiresIn);
+                this.setLogoutTimer(this.expiresIn);
             } catch (error) {
                 console.error(error);
             }
@@ -50,18 +50,12 @@ export const useAuthStore = defineStore('auth', {
         loadUser() {
             const saved = localStorage.getItem('user');
             const token = localStorage.getItem('token');
-            const expires = localStorage.getItem('expiresIn');
 
-            if (saved && token && expires) {
-                const now = Date.now();
-                if (now < Number.parseInt(expires)) {
-                    this.user = saved;
-                    this.token = token;
-                    this.expiresIn = expires;
-                    this.setLogoutTimer(Number.parseInt(expires) - now); // разница
-                } else {
-                    this.logout();
-                }
+            if (saved && token) {
+                this.user = saved;
+                this.token = token;
+            } else {
+                this.logout();
             }
         },
         isAuthenticated() {
