@@ -53,7 +53,7 @@ onMounted(() => {
       <h3>Check your email</h3>
       <BaseInput
           v-model="ver_code"
-          placeholder="Pass verification code here"
+          placeholder="Enter your verification code"
           class="custom-input"
       />
 
