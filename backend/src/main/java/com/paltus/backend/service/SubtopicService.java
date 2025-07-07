@@ -29,4 +29,10 @@ public class SubtopicService {
         subtopicRepository.updateNotes(id, note);
     }
 
+    public String getNotes(Long id) {
+        return subtopicRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No subtopic with id " + id))
+                .getNotes();
+    }
+
 }
