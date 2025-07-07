@@ -116,6 +116,7 @@
   </div>
 </template>
 
+
 <style scoped>
 .awards-view {
   width: 100%;
