@@ -11,6 +11,10 @@ const ver_code = ref('');
 const auth = useAuthStore();
 const router = useRouter();
 
+const validateCode = () => {
+  return /^\d{6}$/.test(ver_code.value);
+}
+
 const checkCode = async () => {
   const ver_data = {
     email: auth.email,
@@ -53,7 +57,8 @@ onMounted(() => {
           class="custom-input"
       />
 
-      <ButtonGreen type="submit" title="Submit" />
+      <ButtonGreen type="submit" title="Submit" v-if="validateCode()" />
+      <ButtonGreen title="Submit" class="inactive" v-else />
       <p>I did not receive the code</p>
     </form>
   </div>
@@ -87,6 +92,7 @@ form {
   height: 8vh;
   font-size: 1.2rem;
   margin-bottom: 3vh;
+  text-align: center;
 }
 
 p {
@@ -99,5 +105,11 @@ p {
 }
 p:hover {
   color: #F5F7FA;
+}
+
+.inactive {
+  background-color: #BBDEFB;
+  color: #0D47A1;
+  cursor: not-allowed;
 }
 </style>
