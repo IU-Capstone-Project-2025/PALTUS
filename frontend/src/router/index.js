@@ -7,11 +7,13 @@ import AccountView from "@/views/AccountView.vue";
 import SettingsView from "@/views/SettingsView.vue";
 import CourseView from "@/views/CourseView.vue";
 import LevelView from "@/views/LevelView.vue";
-import SignInView from "@/views/SignInView.vue";
+import SignUpView from "@/views/SignUpView.vue";
+import VerificationView from "@/views/VerificationView.vue";
 
 const routes = [
     { path: '/login', component: LoginView },
-    { path: '/sign_in', component: SignInView},
+    { path: '/sign_up', component: SignUpView},
+    { path: '/verify', component: VerificationView},
     {
         path: '/',
         component: HomeView,

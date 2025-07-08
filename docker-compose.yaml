@@ -31,6 +31,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       GIGA_CHAT_API_KEY: ${GIGA_CHAT_API_KEY}
     depends_on:
       - postgres

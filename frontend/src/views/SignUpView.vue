@@ -1,25 +1,56 @@
 <script setup>
-import { ref } from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
+import router from "@/router/index.js";
+import axios from "@/plugins/axios.js";
 
 const email = ref('');
 const password = ref('');
 const name = ref('');
 const auth = useAuthStore();
+const submitted = ref(false);
 
-const signIn = async () => {
+const isValidEmail = computed(() => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email.value);
+});
 
+const checkFields = () => {
+  return !!(isValidEmail.value && password.value.length && name.value.length);
 }
+
+const signUp = async () => {
+  submitted.value = true;
+  try {
+    const userData = {
+      username: name.value,
+      email: email.value,
+      password: password.value,
+    }
+    const response = await axios.post('/register', userData);
+    console.log(response);
+    auth.setUserData(email.value, name.value, password.value);
+    router.push('/verify')
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+onMounted(() => {
+  if (auth.isVerified) {
+    router.push('/');
+  }
+})
 </script>
 
 <template>
   <div class="container">
     <Logo />
-    <form @submit.prevent="signIn">
-      <h3>Sign In</h3>
+    <form @submit.prevent="signUp">
+      <h3>Sign Up</h3>
       <BaseInput
           v-model="email"
           placeholder="Email"
@@ -39,7 +70,8 @@ const signIn = async () => {
           class="custom-input"
       />
 
-      <ButtonGreen type="submit" title="Sign In" />
+      <ButtonGreen v-if="checkFields() && !submitted" type="submit" title="Sign Up" />
+      <ButtonGreen v-else title="Sign Up" class="inactive" />
     </form>
   </div>
 </template>
@@ -79,5 +111,11 @@ p {
   color: #F5F7FA;
   margin-top: 5vh;
   margin-bottom: 1vh;
+}
+
+.inactive {
+  background-color: #BBDEFB;
+  color: #0D47A1;
+  cursor: not-allowed;
 }
 </style>
