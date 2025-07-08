@@ -6,7 +6,6 @@ import CourseCreationView from "@/views/CourseCreationView.vue";
 import AccountView from "@/views/AccountView.vue";
 import SettingsView from "@/views/SettingsView.vue";
 import CourseView from "@/views/CourseView.vue";
-import LevelView from "@/views/LevelView.vue";
 import SignInView from "@/views/SignInView.vue";
 import AwardsView from "@/views/AwardsView.vue";
 import QuizView from "@/views/QuizView.vue";
@@ -32,11 +31,6 @@ const routes = [
     {
         path: '/settings',
         component: SettingsView,
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/level',
-        component: LevelView,
         meta: { requiresAuth: true }
     },
     {
