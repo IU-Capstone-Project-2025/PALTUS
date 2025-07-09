@@ -3,7 +3,6 @@ import Logo from "@/components/shared/Logo.vue";
 import MyCourses from "@/components/shared/MyCourses.vue";
 import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import BaseInput from "@/components/shared/BaseInput.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import {onMounted, reactive, ref} from "vue";
 import router from "@/router/index.js";
