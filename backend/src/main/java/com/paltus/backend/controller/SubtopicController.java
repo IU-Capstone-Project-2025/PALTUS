@@ -22,12 +22,17 @@ public class SubtopicController {
 
     @PutMapping("setFinished/{id}")
     @UpdateLastActivityTime
-    public void putMethodName(@PathVariable Long id, @RequestBody SubtopicSetStateRequest request) {
+    public void setFinishedState(@PathVariable Long id, @RequestBody SubtopicSetStateRequest request) {
         subtopicService.setFinishedState(id, request.isState());
     }
 
     @PutMapping("setNotes/{id}")
-    public void putMethodName(@PathVariable Long id, @RequestBody String notes) {
+    public void setNotes(@PathVariable Long id, @RequestBody String notes) {
         subtopicService.setNotes(id, notes);
+    }
+
+    @PutMapping("addNotes/{id}")
+    public void addNotes(@PathVariable Long id, @RequestBody String notes) {
+        subtopicService.addNotes(id, notes);
     }
 }

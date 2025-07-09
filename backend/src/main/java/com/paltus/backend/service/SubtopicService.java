@@ -31,6 +31,19 @@ public class SubtopicService {
         subtopicRepository.updateNotes(id, note);
     }
 
+    public void addNotes(Long id, String newNote) {
+        Subtopic subtopic = subtopicRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("No subtopic with id " + id));
+    
+        String existingNotes = subtopic.getNotes();
+        if (existingNotes == null) {
+            existingNotes = "";
+        }
+    
+        String updatedNotes = existingNotes + "\n" + newNote;
+        subtopicRepository.updateNotes(id, updatedNotes);
+    }
+
     public String getNotes(Long id) {
         return subtopicRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No subtopic with id " + id))
