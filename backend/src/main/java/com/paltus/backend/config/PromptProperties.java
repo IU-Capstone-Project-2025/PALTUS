@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 public class PromptProperties {
     private String course;
     private String system;
+    private String systemResponder;
     private String editpaste;
-    private String askLLM;
 
     public String getCourse() {
         return course;
@@ -34,12 +34,12 @@ public class PromptProperties {
         this.editpaste = editpaste;
     }
 
-    public String getAskLLM() {
-        return askLLM;
+    public String getSystemResponder() {
+        return systemResponder;
     }
 
-    public void setAskLLM(String askLLM) {
-        this.askLLM = askLLM;
+    public void setSystemResponder(String systemResponder) {
+        this.systemResponder = systemResponder;
     }   
 
 }

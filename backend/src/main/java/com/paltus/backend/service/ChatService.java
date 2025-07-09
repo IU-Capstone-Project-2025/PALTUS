@@ -141,8 +141,8 @@ public class ChatService {
             String context = "Context: " + subtopicService.getContext(subtopicId);
             log.info("Context for llm: {}", context);
             ChatMessage userMessage = ChatMessage.builder()
-                .role(ChatMessageRole.USER)
-                .content(context)
+                .role(ChatMessageRole.SYSTEM)
+                .content(promptProperties.getSystemResponder() + context)
                 .build();
             messages.add(userMessage);
             chatHistory.put(sessionId, messages);
@@ -151,7 +151,7 @@ public class ChatService {
         List<ChatMessage> messages = chatHistory.get(sessionId);
         ChatMessage userMessage = ChatMessage.builder()
                 .role(ChatMessageRole.USER)
-                .content(request.getRequest() + promptProperties.getAskLLM())
+                .content(request.getRequest())
                 .build();
         messages.add(userMessage);
         return sendToGigaChatAndGetNotes(messages, sessionId);
@@ -171,14 +171,17 @@ public class ChatService {
                     .role(response.choices().get(0).message().role())
                     .content(response.choices().get(0).message().content())
                     .build();
-            messages.add(assistantMessage);
             String content = assistantMessage.content();
+            if (content.contains("{\"error\": \"Improper content of request\"}")) {
+                throw new InvalidResponseException("Improper content of request");
+            }
+            messages.add(assistantMessage);
             log.info("LLM content ouput: {}", content);
             return content;
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw ex;
         }
     }
 
