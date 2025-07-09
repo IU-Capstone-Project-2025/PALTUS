@@ -102,6 +102,7 @@ form {
 }
 .custom-input {
   height: 5vh;
+  min-height: 5vh;
   font-size: 1rem;
   margin-bottom: 3vh;
 }

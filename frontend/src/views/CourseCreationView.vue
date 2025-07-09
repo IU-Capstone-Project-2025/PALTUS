@@ -5,10 +5,11 @@ import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import router from "@/router/index.js";
 import { useRoute } from 'vue-router';
 import axios from "@/plugins/axios.js"
+import EditCourseModal from "@/components/course_creation/EditCourseModal.vue";
 
 const route = useRoute();
 const name = ref(route.query.courseName || '');
@@ -18,6 +19,10 @@ const lessonsNum = ref('');
 const duration = ref('');
 const courses = ref([]);
 const waiting = ref(false);
+const showModal = ref(false);
+const course = reactive({});
+const previous_course = reactive({});
+const sessionId = ref('');
 
 onMounted(async () => {
   try {
@@ -78,13 +83,9 @@ const getCourse = async () => {
     };
     try {
       await axios.post(`createCourse`, newCourse).then((response) => {
-        console.log(response);
-        try {
-          axios.post('courses/saveCourse', response)
-              .then((router.push('/')));
-        } catch (error) {
-          console.log(error);
-        }
+        course.value = response.course;
+        sessionId.value = response.sessionId;
+        showModal.value = true;
       });
     } catch (error) {
       console.log(error);
@@ -93,9 +94,63 @@ const getCourse = async () => {
     return 0;
   }
 }
+
+const saveCourse = async () => {
+  try {
+    const response = {
+      course: course.value,
+      sessionId: sessionId.value,
+    };
+    axios.post('courses/saveCourse', response)
+        .then((router.push('/')));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const editCourse = async (prompt) => {
+  showModal.value = false;
+  try {
+    const response = {
+      request: prompt,
+      sessionId: sessionId.value,
+    };
+    axios.post('editCourse', response).then((response) => {
+      previous_course.value = course.value;
+      course.value = response.course;
+      showModal.value = true;
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const savePrevious = async () => {
+  if (previous_course.value) {
+    try {
+      const response = {
+        course: previous_course.value,
+        sessionId: sessionId.value,
+      };
+      axios.post('courses/saveCourse', response)
+          .then((router.push('/')));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 </script>
 
 <template>
+  <div class="modal-container" v-if="showModal">
+    <EditCourseModal
+        :course="course.value"
+        :previous_course="!!previous_course.value"
+        @editCourse="editCourse"
+        @saveCourse="saveCourse"
+        @savePrevious="savePrevious"
+    />
+  </div>
   <div class="main">
     <section class="left">
       <Logo />
