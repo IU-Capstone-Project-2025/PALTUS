@@ -47,7 +47,7 @@ onMounted(autoResize);
   border-radius: 20px;
   min-height: 4rem;
   width: 100%;
-  padding: 0.75rem 1.25rem;
+  padding: 1.25rem;
   font-size: 1.125rem;
   line-height: 1.5rem;
   resize: none;

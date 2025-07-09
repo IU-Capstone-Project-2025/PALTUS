@@ -10,6 +10,7 @@ import router from "@/router/index.js";
 import { useRoute } from 'vue-router';
 import axios from "@/plugins/axios.js"
 import EditCourseModal from "@/components/course_creation/EditCourseModal.vue";
+import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 
 const route = useRoute();
 const name = ref(route.query.courseName || '');
@@ -162,10 +163,10 @@ const savePrevious = async () => {
           v-for="inp in inputs"
       >
         <BaseHeader :text="inp.question" class="header"/>
-        <BaseInput :placeholder="inp.placeholder" v-model="inp.model"/>
+        <BaseTextArea :placeholder="inp.placeholder" v-model="inp.model"/>
       </div>
       <div class="question" style="margin-top: 1vh">
-        <BaseInput placeholder="Lesson duration (in minutes)" v-model="duration"/>
+        <BaseTextArea placeholder="Lesson duration (in minutes)" v-model="duration"/>
       </div>
       <ButtonGreen
           v-if="validation() && !waiting"
