@@ -10,6 +10,7 @@ import com.paltus.backend.aspect.annotation.UpdateLastActivityTime;
 import com.paltus.backend.model.requests.SubtopicSetStateRequest;
 import com.paltus.backend.service.SubtopicService;
 
+
 @RestController
 @RequestMapping("lessons/{lesson_id}/subtopics")
 public class SubtopicController {

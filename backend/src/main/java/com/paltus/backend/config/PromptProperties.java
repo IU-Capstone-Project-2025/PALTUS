@@ -8,6 +8,7 @@ public class PromptProperties {
     private String course;
     private String system;
     private String editpaste;
+    private String askLLM;
 
     public String getCourse() {
         return course;
@@ -31,6 +32,14 @@ public class PromptProperties {
 
     public void setEditpaste(String editpaste) {
         this.editpaste = editpaste;
+    }
+
+    public String getAskLLM() {
+        return askLLM;
+    }
+
+    public void setAskLLM(String askLLM) {
+        this.askLLM = askLLM;
     }   
 
 }

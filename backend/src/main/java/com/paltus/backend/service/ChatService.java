@@ -138,17 +138,20 @@ public class ChatService {
         if (sessionId == null || sessionId == "" || !chatHistory.containsKey(sessionId)) {
             sessionId = UUID.randomUUID().toString();
             List<ChatMessage> messages = new ArrayList<>();
+            String context = "Context: " + subtopicService.getContext(subtopicId);
+            log.info("Context for llm: {}", context);
             ChatMessage userMessage = ChatMessage.builder()
                 .role(ChatMessageRole.USER)
-                .content("Context: " + subtopicService.getNotes(subtopicId))
+                .content(context)
                 .build();
             messages.add(userMessage);
             chatHistory.put(sessionId, messages);
         }
+        log.info("User input: {}", request.getRequest());
         List<ChatMessage> messages = chatHistory.get(sessionId);
         ChatMessage userMessage = ChatMessage.builder()
                 .role(ChatMessageRole.USER)
-                .content(request.getRequest())
+                .content(request.getRequest() + promptProperties.getAskLLM())
                 .build();
         messages.add(userMessage);
         return sendToGigaChatAndGetNotes(messages, sessionId);
@@ -169,8 +172,9 @@ public class ChatService {
                     .content(response.choices().get(0).message().content())
                     .build();
             messages.add(assistantMessage);
-
-            return assistantMessage.content();
+            String content = assistantMessage.content();
+            log.info("LLM content ouput: {}", content);
+            return content;
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {
