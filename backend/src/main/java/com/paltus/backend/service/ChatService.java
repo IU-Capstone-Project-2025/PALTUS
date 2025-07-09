@@ -16,6 +16,7 @@ import com.paltus.backend.exception.InvalidResponseException;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.dto.CourseResponceDto;
+import com.paltus.backend.model.dto.LLMResponseDTO;
 import com.paltus.backend.model.requests.CourseRequest;
 import com.paltus.backend.model.requests.EditCourseRequest;
 import com.paltus.backend.model.requests.GenerateContentRequest;
@@ -133,28 +134,31 @@ public class ChatService {
         }
     }
 
-    public String getContent(GenerateContentRequest request, Long subtopicId) {
+    public LLMResponseDTO getContent(GenerateContentRequest request, Long subtopicId) {
         String sessionId = request.getSessionId();
         if (sessionId == null || sessionId == "" || !chatHistory.containsKey(sessionId)) {
             sessionId = UUID.randomUUID().toString();
             List<ChatMessage> messages = new ArrayList<>();
+            String context = "Context: " + subtopicService.getContext(subtopicId);
+            log.info("Context for llm: {}", context);
             ChatMessage userMessage = ChatMessage.builder()
-                .role(ChatMessageRole.USER)
-                .content("Context: " + subtopicService.getNotes(subtopicId))
+                .role(ChatMessageRole.SYSTEM)
+                .content(promptProperties.getSystemResponder() + context)
                 .build();
             messages.add(userMessage);
             chatHistory.put(sessionId, messages);
         }
+        log.info("User input: {}", request.getRequest());
         List<ChatMessage> messages = chatHistory.get(sessionId);
         ChatMessage userMessage = ChatMessage.builder()
                 .role(ChatMessageRole.USER)
                 .content(request.getRequest())
                 .build();
         messages.add(userMessage);
-        return sendToGigaChatAndGetNotes(messages, sessionId);
+        return new LLMResponseDTO(sendToGigaChatAndGetNotes(messages), sessionId);
     }
 
-    private String sendToGigaChatAndGetNotes(List<ChatMessage> messages, String sessionId) {
+    private String sendToGigaChatAndGetNotes(List<ChatMessage> messages) {
         CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2);
 
@@ -168,13 +172,17 @@ public class ChatService {
                     .role(response.choices().get(0).message().role())
                     .content(response.choices().get(0).message().content())
                     .build();
+            String content = assistantMessage.content();
+            if (content.contains("{\"error\": \"Improper content of request\"}")) {
+                throw new InvalidResponseException("Improper content of request");
+            }
             messages.add(assistantMessage);
-
-            return assistantMessage.content();
+            log.info("LLM content ouput: {}", content);
+            return content;
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw ex;
         }
     }
 
