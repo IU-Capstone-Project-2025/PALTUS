@@ -4,6 +4,11 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
+import {ref} from "vue";
+import BaseTextArea from "@/components/shared/BaseTextArea.vue";
+import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+
+const editMode = ref(false);
 
 const props = defineProps({
   course: {
@@ -38,6 +43,14 @@ const removeCourse = async () => {
     console.error(error);
   }
 }
+
+const editNotes = () => {
+  editMode.value = true;
+}
+
+const submitNotes = () => {
+  editMode.value = false;
+}
 </script>
 
 <template>
@@ -55,13 +68,20 @@ const removeCourse = async () => {
                 v-model="subtopic.finished"
                 @update:modelValue="checkSubtopic(subtopic.id, subtopic.finished)"
             />
-            <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}</label>
+            <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}: </label>
           </div>
-          <ul v-if="subtopic.content">
+          <ul v-if="subtopic.notes && !editMode">
             <li class="field-info">
-              {{ subtopic.content }}
+              <a class="edit-notes" @click="editNotes">{{ subtopic.notes }}</a>
             </li>
           </ul>
+          <div class="editing" v-else>
+            <BaseTextArea
+                v-model="subtopic.notes"
+                placeholder="Add your notes here"
+            />
+            <ButtonGreen title="Submit changes" @click="submitNotes" class="submit-btn" />
+          </div>
         </li>
       </ul>
     </div>
@@ -125,7 +145,7 @@ a {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 2vh 30vw 2vh 8vw;
+  padding: 2vh 20vw 2vh 8vw;
 }
 
 .uppercase {
@@ -166,5 +186,21 @@ a {
 
 .navigation {
   padding-left: 8vw;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.editing {
+  margin-left: 2vw;
+}
+
+.editing textarea {
+  font-size: 0.9rem;
+}
+
+.submit-btn {
+  margin: 1vh 0 3vh;
 }
 </style>

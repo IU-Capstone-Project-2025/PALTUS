@@ -80,4 +80,9 @@ ul {
   display: flex;
   height: 100vh;
 }
+
+.left {
+  position: sticky;
+  height: 100vh;
+}
 </style>
