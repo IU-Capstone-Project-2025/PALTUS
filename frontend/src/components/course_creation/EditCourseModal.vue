@@ -1,16 +1,22 @@
 <script setup>
-import course from "../../../public/course.js";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import {ref} from "vue";
+import ButtonRed from "@/components/shared/ButtonRed.vue";
 
-// const props = defineProps({
-//   course: {
-//     type: Object,
-//     required: true
-//   }
-// })
+const props = defineProps({
+  course: {
+    type: Object,
+    required: true
+  },
+  previous_course: {
+    type: Boolean,
+    required: true
+  }
+})
+
+const emits = defineEmits(['saveCourse', 'editCourse', 'savePrevious']);
 const prompt = ref('');
 </script>
 
@@ -20,10 +26,10 @@ const prompt = ref('');
       <BaseHeader text="You can edit a course by adding a new lesson or a subtopic" />
       <div class="modal-body">
         <div class="course-name">
-          <BaseHeader :text="course.course_name" style="margin-bottom: 2vh" />
+          <BaseHeader :text="props.course.course_name" style="margin-bottom: 2vh" />
         </div>
         <ul>
-          <li v-for="lesson in course.lessons">
+          <li v-for="lesson in props.course.lessons">
             <p style="font-weight: bold"> {{ lesson.lesson_number }}. {{ lesson.title }}</p>
             <ul>
               <li v-for="subtopic in lesson.subtopics">
@@ -33,9 +39,10 @@ const prompt = ref('');
           </li>
         </ul>
       </div>
-      <BaseInput placeholder="Prompt for changing a course" :model-value="prompt" class="modal-prompt" />
-      <ButtonGreen title="Save Course" class="modal-btn" />
-      <ButtonGreen title="Cancel Course" class="modal-btn" />
+      <BaseInput placeholder="Prompt for changing a course" v-model="prompt" class="modal-prompt" />
+      <ButtonGreen title="Edit course" class="modal-btn" @click="$emit('editCourse', prompt)" />
+      <ButtonGreen title="Save Course" class="modal-btn" @click="$emit('saveCourse')" />
+      <ButtonRed title="Cancel edition" class="modal-btn" @click="$emit('savePrevious')" v-if="previous_course" />
     </div>
   </div>
 </template>
