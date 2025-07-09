@@ -9,7 +9,6 @@ import CourseView from "@/views/CourseView.vue";
 import LevelView from "@/views/LevelView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import VerificationView from "@/views/VerificationView.vue";
-import EditCourseView from "@/views/EditCourseView.vue";
 
 const routes = [
     { path: '/login', component: LoginView },
@@ -43,12 +42,6 @@ const routes = [
     {
         path: '/course/:id',
         component: CourseView,
-        props: true,
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/edit_course/:id',
-        component: EditCourseView,
         props: true,
         meta: { requiresAuth: true }
     }

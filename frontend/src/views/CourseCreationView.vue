@@ -78,6 +78,12 @@ const getCourse = async () => {
     };
     try {
       await axios.post(`createCourse`, newCourse).then((response) => {
+
+        router.push({
+          path: '/courses/edit_course/:id',
+          state: { course: response.data }
+        })
+
         console.log(response);
         try {
           axios.post('courses/saveCourse', response)
