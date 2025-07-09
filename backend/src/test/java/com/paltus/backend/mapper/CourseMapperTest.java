@@ -73,7 +73,6 @@ public class CourseMapperTest {
         Subtopic subtopic = new Subtopic();
         subtopic.setId(100);
         subtopic.setTopic("Subtopic 1");
-        subtopic.setContent("Content");
         subtopic.setNotes("Notes");
         subtopic.setFinished(false);
         
@@ -95,14 +94,12 @@ public class CourseMapperTest {
         Subtopic subtopic = new Subtopic();
         subtopic.setTopic("Data Structures");
         subtopic.setFinished(true);
-        subtopic.setContent("Content about data structures");
         subtopic.setNotes("Important notes");
         
         SubtopicDto dto = mapper.toSubtopicDto(subtopic);
         
         assertEquals("Data Structures", dto.topicName());
         assertTrue(dto.finished());
-        assertEquals("Content about data structures", dto.content());
         assertEquals("Important notes", dto.notes());
     }
 }

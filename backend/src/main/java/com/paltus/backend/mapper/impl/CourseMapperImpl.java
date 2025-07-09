@@ -49,7 +49,7 @@ public class CourseMapperImpl implements CourseMapper {
 
     @Override
     public SubtopicDto toSubtopicDto(Subtopic subtopic) {
-        return new SubtopicDto(subtopic.getTopic(), subtopic.isFinished(), subtopic.getContent(), subtopic.getNotes());
+        return new SubtopicDto(subtopic.getTopic(), subtopic.isFinished(), subtopic.getNotes());
     }
 
     @Override
