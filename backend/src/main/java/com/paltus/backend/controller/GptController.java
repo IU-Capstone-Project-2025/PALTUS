@@ -2,6 +2,7 @@ package com.paltus.backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.model.dto.CourseResponceDto;
+import com.paltus.backend.model.dto.LLMResponseDTO;
 import com.paltus.backend.model.requests.CourseRequest;
 import com.paltus.backend.model.requests.EditCourseRequest;
 import com.paltus.backend.model.requests.GenerateContentRequest;
@@ -29,7 +30,7 @@ public class GptController {
         return chatService.editCourse(request);
     }
     @PostMapping("/subtopicAskLLM/{id}")
-    public String postMethodName(@RequestBody GenerateContentRequest request, @PathVariable Long id) {
+    public LLMResponseDTO postMethodName(@RequestBody GenerateContentRequest request, @PathVariable Long id) {
         return chatService.getContent(request, id);
     }
     

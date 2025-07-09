@@ -16,6 +16,7 @@ import com.paltus.backend.exception.InvalidResponseException;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.dto.CourseResponceDto;
+import com.paltus.backend.model.dto.LLMResponseDTO;
 import com.paltus.backend.model.requests.CourseRequest;
 import com.paltus.backend.model.requests.EditCourseRequest;
 import com.paltus.backend.model.requests.GenerateContentRequest;
@@ -133,7 +134,7 @@ public class ChatService {
         }
     }
 
-    public String getContent(GenerateContentRequest request, Long subtopicId) {
+    public LLMResponseDTO getContent(GenerateContentRequest request, Long subtopicId) {
         String sessionId = request.getSessionId();
         if (sessionId == null || sessionId == "" || !chatHistory.containsKey(sessionId)) {
             sessionId = UUID.randomUUID().toString();
@@ -154,10 +155,10 @@ public class ChatService {
                 .content(request.getRequest())
                 .build();
         messages.add(userMessage);
-        return sendToGigaChatAndGetNotes(messages, sessionId);
+        return new LLMResponseDTO(sendToGigaChatAndGetNotes(messages), sessionId);
     }
 
-    private String sendToGigaChatAndGetNotes(List<ChatMessage> messages, String sessionId) {
+    private String sendToGigaChatAndGetNotes(List<ChatMessage> messages) {
         CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2);
 
