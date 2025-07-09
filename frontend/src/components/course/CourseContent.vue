@@ -4,11 +4,14 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 
-const editMode = ref(false);
+const editMode = reactive({
+  id: null,
+  edit: false
+});
 
 const props = defineProps({
   course: {
@@ -44,12 +47,14 @@ const removeCourse = async () => {
   }
 }
 
-const editNotes = () => {
-  editMode.value = true;
+const editNotes = (id) => {
+  editMode.edit = true;
+  editMode.id = id;
 }
 
 const submitNotes = () => {
-  editMode.value = false;
+  editMode.edit = false;
+  editMode.id = null;
 }
 </script>
 
@@ -70,12 +75,12 @@ const submitNotes = () => {
             />
             <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}: </label>
           </div>
-          <ul v-if="subtopic.notes && !editMode">
+          <ul v-if="subtopic.notes && editMode.id !== subtopic.id">
             <li class="field-info">
-              <a class="edit-notes" @click="editNotes">{{ subtopic.notes }}</a>
+              <a class="edit-notes" @click="editNotes(subtopic.id)">{{ subtopic.notes }}</a>
             </li>
           </ul>
-          <div class="editing" v-else>
+          <div class="editing" v-else-if="editMode.id === subtopic.id">
             <BaseTextArea
                 v-model="subtopic.notes"
                 placeholder="Add your notes here"
