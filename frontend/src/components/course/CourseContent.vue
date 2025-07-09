@@ -4,7 +4,7 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
-import {reactive, ref} from "vue";
+import {reactive} from "vue";
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 
@@ -39,7 +39,7 @@ const checkSubtopic = (id, finished) => {
 
 const removeCourse = async () => {
   try {
-    axios.delete(`courses/${props.course.courseId}`).then(() => {
+      axios.delete(`courses/${props.course.courseId}`).then(() => {
       router.push('/');
     });
   } catch (error) {
@@ -52,9 +52,17 @@ const editNotes = (id) => {
   editMode.id = id;
 }
 
-const submitNotes = () => {
-  editMode.edit = false;
-  editMode.id = null;
+const submitNotes = (notes) => {
+  try {
+    axios.put(
+        `lessons/${props.course.lessons[props.chosenContent - 1].id}/subtopics/setNotes/${editMode.id}`,
+        notes
+    );
+    editMode.edit = false;
+    editMode.id = null;
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>
 
@@ -85,7 +93,7 @@ const submitNotes = () => {
                 v-model="subtopic.notes"
                 placeholder="Add your notes here"
             />
-            <ButtonGreen title="Submit changes" @click="submitNotes" class="submit-btn" />
+            <ButtonGreen title="Submit changes" @click="submitNotes(subtopic.notes)" class="submit-btn" />
           </div>
         </li>
       </ul>
