@@ -1,5 +1,5 @@
 <script setup>
-import ProgressBar from "@/components/course/ProgressBar.vue";
+import ProgressBar from "@/components/shared/ProgressBar.vue";
 import Logo from "@/components/shared/Logo.vue";
 
 const props = defineProps({

@@ -1,144 +1,97 @@
+<script setup>
+import {ref} from "vue";
+import Logo from "@/components/shared/Logo.vue";
+import Account from "@/components/shared/Account.vue";
+import BaseHeader from "@/components/shared/BaseHeader.vue";
+import LevelBadge from "@/components/awards/LevelBadge.vue";
+import ProgressBar from "@/components/shared/ProgressBar.vue";
+import AwardCard from "@/components/awards/AwardCard.vue";
+
+const status = ref('BEGINNER PALTUS');
+const level = ref(1);
+const xp = ref(150);
+const next_level_xp = ref(500);
+const awards = ref([1, 2, 3])
+</script>
+
 <template>
-  <div class="awards-view">
-    <div class="awards-container">
-      <div class="awards-header">
-        <div class="user-level">
-          <div class="level-badge">BEGINNER PALTUS</div>
-          <h1>Your Achievements</h1>
-        </div>
+  <div class="main">
+    <section class="left">
+      <Logo />
+    </section>
+
+    <section class="center">
+      <div class="user-level">
+        <LevelBadge :title="status" />
+        <BaseHeader text="Your achievements" class="achievements-header" />
       </div>
 
       <div class="level-progress">
         <div class="progress-info">
-          <span>Level 1</span>
-          <span>150/500 XP</span>
+          <span>Level {{ level }}</span>
+          <span>{{ xp }}/{{ next_level_xp }} XP</span>
         </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 30%"></div>
-        </div>
+        <ProgressBar :fraction_finished="xp / next_level_xp * 100" class="progress-fill" />
       </div>
+    </section>
+    <section class="right">
+      <Account />
+    </section>
+  </div>
 
-      <div class="awards-section">
-        <h2 class="section-title">Available Awards</h2>
-        <div class="awards-grid">
-          <div class="award-card">
-            <div class="award-badge" style="background-color: #42A5F5">
-              ✓
-            </div>
-            <div class="award-info">
-              <h3>First Steps</h3>
-              <p>Complete your first lesson</p>
-              <div class="award-completed">
-                <span>+50 XP</span>
-                <span>Completed</span>
-              </div>
-            </div>
-          </div>
+  <section class="awards-container">
+  <div class="awards-section">
+    <h2 class="section-title">Available Awards</h2>
+    <ul class="awards-grid">
+      <li v-for="award in awards">
+        <AwardCard :finished="false" />
+      </li>
+    </ul>
+  </div>
 
-          <div class="award-card">
-            <div class="award-badge" style="background-color: #e0e0e0">
-            </div>
-            <div class="award-info">
-              <h3>Learner</h3>
-              <p>Complete 5 lessons</p>
-              <div class="award-progress">
-                <div class="progress-bar" style="width: 60%"></div>
-                <span>60% complete</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="award-card">
-            <div class="award-badge" style="background-color: #e0e0e0">
-            </div>
-            <div class="award-info">
-              <h3>Deep Dive</h3>
-              <p>Rewind a lesson 3 times</p>
-              <div class="award-progress">
-                <div class="progress-bar" style="width: 30%"></div>
-                <span>30% complete</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="award-card">
-            <div class="award-badge" style="background-color: #42A5F5">
-              ✓
-            </div>
-            <div class="award-info">
-              <h3>Hot Streak</h3>
-              <p>Log in 3 days in a row</p>
-              <div class="award-completed">
-                <span>+30 XP</span>
-                <span>Completed</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="award-card">
-            <div class="award-badge" style="background-color: #e0e0e0">
-            </div>
-            <div class="award-info">
-              <h3>Quiz Expert</h3>
-              <p>Complete 10 quizzes</p>
-              <div class="award-progress">
-                <div class="progress-bar" style="width: 10%"></div>
-                <span>10% complete</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="award-card">
-            <div class="award-badge" style="background-color: #e0e0e0">
-            </div>
-            <div class="award-info">
-              <h3>Perfect</h3>
-              <p>Get a 100% in 10 tests</p>
-              <div class="award-progress">
-                <div class="progress-bar" style="width: 5%"></div>
-                <span>5% complete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="streak-container-large">
-        <div class="streak-content">
-          <span class="streak-icon-large">🔥</span>
-          <div class="streak-text-large">
-            <div class="streak-title">Current Streak</div>
-            <div class="streak-days">3 days</div>
-          </div>
-        </div>
+  <div class="streak-container-large">
+    <div class="streak-content">
+      <span class="streak-icon-large">🔥</span>
+      <div class="streak-text-large">
+        <div class="streak-title">Current Streak</div>
+        <div class="streak-days">3 days</div>
       </div>
     </div>
   </div>
+  </section>
 </template>
 
 
 <style scoped>
-.awards-view {
-  width: 100%;
-  min-height: 100vh;
-  padding: 30px 20px;
-  font-family: 'Montserrat', sans-serif;
-  color: #000;
+.main {
+  display: flex;
+}
+
+.left {
+  width: 30vw
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  align-items: center;
+  padding: 5vh 0;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 30vw;
 }
 
 .awards-container {
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  background: var(--background-content, #ffffff);
   border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.awards-header {
-  text-align: center;
-  margin-bottom: 30px;
 }
 
 .user-level {
@@ -149,33 +102,16 @@
   margin-bottom: 15px;
 }
 
-.level-badge {
-  background: #42A5F5;
-  color: white;
-  padding: 12px 30px;
-  border-radius: 24px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 12px rgba(66, 165, 245, 0.3);
-  margin-bottom: 15px;
-}
-
-.awards-header h1 {
-  color: #42A5F5;
+.achievements-header {
   font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 5px;
 }
 
 .level-progress {
-  background: var(--background-element, #ffffff);
+  width: 30vw;
+  background: #F5F7FA;
   border-radius: 10px;
-  padding: 20px;
-  margin: 0 auto 30px;
-  max-width: 600px;
-  border: 1px solid var(--border-color, #eeeeee);
+  padding: 1vw;
+  border: 1px solid #EEEEEE;
 }
 
 .progress-info {
@@ -187,16 +123,14 @@
 }
 
 .progress-bar {
-  background: var(--progress-background, #f0f0f0);
-  height: 8px;
+  background: #F0F0F0;
+  height: 1vh;
   border-radius: 4px;
   width: 100%;
 }
 
 .progress-fill {
-  background: #42A5F5;
-  height: 100%;
-  border-radius: 4px;
+  border: none;
 }
 
 .awards-section {
@@ -221,83 +155,6 @@
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 15px;
   justify-items: center;
-}
-
-.award-card {
-  display: flex;
-  width: 100%;
-  max-width: 400px;
-  padding: 15px;
-  border-radius: 8px;
-  background: var(--background-element, #ffffff);
-  border: 1px solid var(--border-color, #eeeeee);
-  transition: all 0.2s ease;
-}
-
-.award-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-}
-
-.award-badge {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: white;
-  margin-right: 20px;
-  flex-shrink: 0;
-}
-
-.award-info {
-  flex: 1;
-}
-
-.award-info h3 {
-  color: var(--text-primary, #000000);
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 5px;
-}
-
-.award-info p {
-  color: var(--text-secondary, #000000);
-  font-size: 0.9rem;
-  opacity: 0.8;
-  margin-bottom: 10px;
-}
-
-.award-progress {
-  margin-top: 10px;
-}
-
-.award-progress .progress-bar {
-  background: var(--progress-background, #e0e0e0);
-  height: 6px;
-  border-radius: 3px;
-  margin-bottom: 5px;
-}
-
-.award-progress .progress-bar > div {
-  background: #42A5F5;
-  height: 100%;
-  border-radius: 3px;
-}
-
-.award-progress span {
-  font-size: 0.8rem;
-  color: var(--text-secondary, #000000);
-  opacity: 0.6;
-}
-
-.award-completed {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 8px;
-  font-size: 0.85rem;
 }
 
 .award-completed span:first-child {
@@ -347,6 +204,10 @@
   font-size: 2rem;
   font-weight: 600;
   line-height: 1.2;
+}
+
+ul {
+  list-style-type: none;
 }
 
 @media (max-width: 768px) {
