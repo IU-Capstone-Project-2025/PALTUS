@@ -79,5 +79,18 @@ ul {
 .main {
   display: flex;
   height: 100vh;
+  position: relative;
+}
+
+.left {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  align-self: flex-start;
+}
+
+.center {
+  flex-grow: 1;
+  overflow-y: auto;
 }
 </style>
