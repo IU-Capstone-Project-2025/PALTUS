@@ -55,6 +55,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const auth = useAuthStore();
     auth.loadUser();
+    if (Date.now() > auth.expiresAt) {
+        auth.logout();
+        next('/login');
+    }
 
     if (to.meta.requiresAuth && !auth.isAuthenticated()) {
         next('/login');

@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('auth', {
         password: '',
         token: null,
         expiresIn: null,
+        expiresAt: null,
         email: '',
         isVerified: false,
     }),
@@ -37,6 +38,7 @@ export const useAuthStore = defineStore('auth', {
                 localStorage.setItem('user', this.user);
                 localStorage.setItem('token', this.token);
 
+                this.expiresAt = Date.now() + this.expiresIn
                 this.setLogoutTimer(this.expiresIn);
             } catch (error) {
                 console.error(error);
