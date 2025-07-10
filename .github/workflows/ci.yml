@@ -62,9 +62,10 @@ jobs:
           git clone https://github.com/IU-Capstone-Project-2025/PALTUS.git
           cp ~/actions-runner/environment/.env PALTUS/.env
           cd PALTUS
+          git checkout ${{ github.ref_name }}
 
       - name: Docker compose
         run: |
-          cd PALTUS/backend
+          cd PALTUS
           docker compose down
           docker compose up -d --build
