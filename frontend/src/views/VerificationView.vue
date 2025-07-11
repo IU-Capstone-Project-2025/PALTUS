@@ -6,11 +6,14 @@ import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import axios from "@/plugins/axios.js";
+import ErrorNotification from "@/components/shared/ErrorNotification.vue";
 
 const ver_code = ref('');
 const auth = useAuthStore();
 const router = useRouter();
 const submitted = ref(false);
+const error_message = ref('');
+const isError = ref(false);
 
 const validateCode = () => {
   return /^\d{6}$/.test(ver_code.value);
@@ -44,7 +47,12 @@ const checkCode = async () => {
     }
     await router.push('/');
   } catch (error) {
-    console.log(error);
+    if (error.response.status === 500) {
+      error_message.value = 'Code is not correct';
+      isError.value = true;
+    }
+    submitted.value = false;
+    ver_code.value = '';
   }
 }
 
@@ -70,7 +78,7 @@ onMounted(() => {
           placeholder="Enter your verification code"
           class="custom-input"
       />
-
+      <ErrorNotification :error_message="error_message" v-if="isError" />
       <ButtonGreen type="submit" title="Submit" v-if="validateCode() && !submitted" />
       <ButtonGreen title="Submit" class="inactive" v-else />
       <p id="send-again" @click="resendCode">I did not receive the code</p>
@@ -109,7 +117,7 @@ form {
   text-align: center;
 }
 
-p {
+#send-again {
   font-size: 1rem;
   color: #BBDEFB;
   margin-top: 5vh;
@@ -118,7 +126,7 @@ p {
   text-decoration: underline;
   display: none;
 }
-p:hover {
+#send-again:hover {
   color: #F5F7FA;
 }
 

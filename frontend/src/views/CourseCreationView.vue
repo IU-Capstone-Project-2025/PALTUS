@@ -10,6 +10,7 @@ import { useRoute } from 'vue-router';
 import axios from "@/plugins/axios.js"
 import EditCourseModal from "@/components/course_creation/EditCourseModal.vue";
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
+import ErrorNotification from "@/components/shared/ErrorNotification.vue";
 
 const route = useRoute();
 const name = ref(route.query.courseName || '');
@@ -23,6 +24,8 @@ const showModal = ref(false);
 const course = reactive({});
 const previous_course = reactive({});
 const sessionId = ref('');
+const isError = ref(false);
+const error_message = ref('');
 
 onMounted(async () => {
   try {
@@ -72,6 +75,7 @@ const validation = () => {
 }
 
 const getCourse = async () => {
+  isError.value = false;
   waiting.value = true;
   if (validation()) {
     const newCourse = {
@@ -88,7 +92,15 @@ const getCourse = async () => {
         showModal.value = true;
       });
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 406) {
+        waiting.value = false;
+        error_message.value = 'Your inputs are unacceptable';
+        isError.value = true;
+      } else if (error.response.status === 500) {
+        waiting.value = false;
+        error_message.value = 'Internal Server Error, try again later';
+        isError.value = true;
+      }
     }
   } else {
     return 0;
@@ -111,17 +123,24 @@ const saveCourse = async () => {
 const editCourse = async (prompt) => {
   showModal.value = false;
   try {
-    const response = {
+    const responseData = {
       request: prompt,
       sessionId: sessionId.value,
     };
-    axios.post('editCourse', response).then((response) => {
-      previous_course.value = course.value;
-      course.value = response.course;
-      showModal.value = true;
-    })
+    const response = await axios.post('editCourse', responseData);
+    previous_course.value = course.value;
+    course.value = response.course;
+    showModal.value = true;
   } catch (error) {
-    console.log(error);
+    if (error.response.status === 406) {
+      waiting.value = false;
+      error_message.value = 'Your inputs are unacceptable';
+      isError.value = true;
+    } else if (error.response.status === 500) {
+      waiting.value = false;
+      error_message.value = 'Internal Server Error, try again later';
+      isError.value = true;
+    }
   }
 }
 
@@ -167,6 +186,7 @@ const savePrevious = async () => {
       <div class="question" style="margin-top: 1vh">
         <BaseTextArea placeholder="Lesson duration (in minutes)" v-model="duration"/>
       </div>
+      <ErrorNotification v-if="isError" :error_message="error_message" />
       <ButtonGreen
           v-if="validation() && !waiting"
           title="GET A COURSE"
@@ -219,12 +239,12 @@ const savePrevious = async () => {
 }
 
 .increased-size {
-  margin-top: 2.5vh;
+  margin: 2.5vh 0;
   padding: 2vh 3vw;
 }
 
 .inactive {
-  margin-top: 2.5vh;
+  margin: 2.5vh 0;
   padding: 2vh 3vw;
   background-color: #BBDEFB;
   color: #0D47A1;
