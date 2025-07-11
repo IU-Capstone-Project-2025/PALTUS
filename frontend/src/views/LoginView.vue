@@ -25,6 +25,10 @@ async function loginUser() {
     if (err.statusCode === 500) {
       error_message.value = 'Wrong password';
       error.value = true;
+    } else if (err.statusCode === 404) {
+      error_message.value = 'Account does not exist';
+      error.value = true;
+      email.value = '';
     }
     password.value = '';
     submitted.value = false;
