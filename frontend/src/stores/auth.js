@@ -40,6 +40,9 @@ export const useAuthStore = defineStore('auth', {
                 this.setLogoutTimer(this.expiresIn);
             } catch (error) {
                 console.error(error);
+                throw {
+                    statusCode: error?.response?.status,
+                }
             }
         },
         setLogoutTimer(msUntilLogout) {

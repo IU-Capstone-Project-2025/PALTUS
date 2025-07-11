@@ -5,12 +5,15 @@ import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
+import ErrorNotification from "@/components/shared/ErrorNotification.vue";
 
 const email = ref('');
 const password = ref('');
 const auth = useAuthStore();
 const router = useRouter();
 const submitted = ref(false);
+const error = ref(false);
+const error_message = ref('');
 
 async function loginUser() {
   submitted.value = true;
@@ -19,7 +22,12 @@ async function loginUser() {
     await auth.login(email.value, password.value);
     await router.push('/');
   } catch (err) {
-    alert(err.message);
+    if (err.statusCode === 500) {
+      error_message.value = 'Wrong password';
+      error.value = true;
+    }
+    password.value = '';
+    submitted.value = false;
   }
 }
 
@@ -54,6 +62,7 @@ const validation = () => {
           type="password"
           class="custom-input"
       />
+      <ErrorNotification :error_message="error_message" v-if="error" />
 
       <ButtonGreen
           type="submit"
@@ -62,7 +71,7 @@ const validation = () => {
           id="submit-button"
       />
       <ButtonGreen title="Log In" class="inactive" v-else />
-      <p>Don't have an account?</p>
+      <p class="register-suggest">Don't have an account?</p>
       <router-link to="/sign_up">
         <ButtonGreen title="Sign Up" />
       </router-link>
@@ -101,7 +110,7 @@ form {
   margin-bottom: 3vh;
 }
 
-p {
+.register-suggest {
   font-size: 1rem;
   color: #F5F7FA;
   margin-top: 5vh;
