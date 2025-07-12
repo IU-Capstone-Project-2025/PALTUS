@@ -9,7 +9,6 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-import com.paltus.backend.model.Course;
 import com.paltus.backend.model.requests.SaveCourseRequest;
 import com.paltus.backend.model.requests.SubtopicSetStateRequest;
 import com.paltus.backend.repository.CourseRepository;
@@ -32,6 +31,7 @@ public class ActivitytimeAspect {
         for (Object arg : joinPoint.getArgs()) {
             if (arg instanceof SubtopicSetStateRequest subtopicSetStateRequest) {
                 handleActivity(subtopicSetStateRequest.getCourseId());
+                // subtopicSetStateRequest
 
             } else if (arg instanceof SaveCourseRequest request) {
                 handleActivity(request.getCourse().getId());
@@ -47,4 +47,8 @@ public class ActivitytimeAspect {
             courseRepository.updateLastActivityTime(courseId, LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
         }
     }
+
+
+
+
 }

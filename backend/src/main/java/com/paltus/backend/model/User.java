@@ -1,8 +1,11 @@
 package com.paltus.backend.model;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -45,4 +48,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonManagedReference
     private List<Course> courses;
+
+    private int streak;
+
+    private LocalDate lastActivityTime;
+
 }
