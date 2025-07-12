@@ -54,17 +54,32 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const auth = useAuthStore();
-    auth.loadUser();
-    if (Date.now() > auth.expiresAt) {
-        auth.logout();
-        next('/login');
+
+    if (!auth.token) {
+        auth.loadUser();
     }
 
-    if (to.meta.requiresAuth && !auth.isAuthenticated()) {
-        next('/login');
-    } else {
-        next();
+    const isAuth = auth.isAuthenticated();
+
+    if (to.meta.requiresAuth && !isAuth) {
+        if (to.path !== '/login') {
+            return next('/login');
+        } else {
+            return next();
+        }
     }
+
+    if (auth.expiresAt && Date.now() > auth.expiresAt) {
+        auth.logout();
+        if (to.path !== '/login') {
+            return next('/login');
+        } else {
+            return next();
+        }
+    }
+
+    next();
 });
+
 
 export default router

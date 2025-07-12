@@ -32,6 +32,8 @@ services:
     profiles: [prod]
     ports:
       - "8080:8080"
+    volumes:
+      - /app/node_modules
     depends_on:
       - backend-app
 
