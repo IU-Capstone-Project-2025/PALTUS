@@ -68,4 +68,4 @@ jobs:
         run: |
           cd PALTUS/backend
           docker compose down
-          docker compose up -d --build
+          docker compose --profile prod up -d --build
