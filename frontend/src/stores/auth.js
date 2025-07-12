@@ -34,12 +34,11 @@ export const useAuthStore = defineStore('auth', {
                 this.email = email;
                 this.token = response.token;
                 this.expiresIn = Number.parseInt(response.expiresIn);
+                this.expiresAt = Date.now() + this.expiresIn
 
                 localStorage.setItem('user', this.user);
                 localStorage.setItem('token', this.token);
-
-                this.expiresAt = Date.now() + this.expiresIn
-                this.setLogoutTimer(this.expiresIn);
+                localStorage.setItem('expiresAt', this.expiresAt)
             } catch (error) {
                 console.error(error);
                 throw {
@@ -47,25 +46,23 @@ export const useAuthStore = defineStore('auth', {
                 }
             }
         },
-        setLogoutTimer(msUntilLogout) {
-            setTimeout(() => {
-                this.logout();
-            }, msUntilLogout);
-        },
         logout() {
             this.user = null;
             this.token = null;
             this.expiresAt = null;
             localStorage.removeItem('user');
             localStorage.removeItem('token');
+            localStorage.removeItem('expiresAt')
         },
         loadUser() {
             const saved = localStorage.getItem('user');
             const token = localStorage.getItem('token');
+            const expiresAt = Number(localStorage.getItem('expiresAt'));
 
             if (saved && token) {
                 this.user = saved;
                 this.token = token;
+                this.expiresAt = expiresAt;
             } else {
                 this.logout();
             }
