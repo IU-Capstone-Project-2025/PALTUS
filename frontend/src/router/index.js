@@ -64,12 +64,10 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && !isAuth) {
         if (to.path !== '/login') {
             return next('/login');
-        } else {
-            return next();
         }
     }
 
-    if (auth.expiresAt && Date.now() > auth.expiresAt) {
+    if (!!auth.expiresAt && (Date.now() > auth.expiresAt)) {
         auth.logout();
         if (to.path !== '/login') {
             return next('/login');

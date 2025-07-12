@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
@@ -19,7 +19,7 @@ async function loginUser() {
   submitted.value = true;
   console.log("Trying login with:", email.value, password.value);
   try {
-    await auth.login(email.value, password.value);
+    await auth.login(email.value, password.value, null);
     await router.push('/');
   } catch (err) {
     if (err.statusCode === 500) {
@@ -47,6 +47,12 @@ const isValidPassword = computed(() => {
 const validation = () => {
   return isValidPassword.value && isValidEmail.value;
 }
+
+onMounted(() => {
+  if (auth.isAuthenticated()) {
+    router.push('/');
+  } 
+})
 </script>
 
 <template>
