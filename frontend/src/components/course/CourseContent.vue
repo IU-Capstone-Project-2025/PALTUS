@@ -88,7 +88,10 @@ const submitNotes = (notes) => {
           </div>
           <ul v-if="subtopic.notes && editMode.id !== subtopic.id">
             <li class="field-info">
-              <a class="edit-notes" @click="editNotes(subtopic.id)">{{ subtopic.notes }}</a>
+              <p class="instruction" v-if="editMode.id !== subtopic.id">Click inside to add notes</p>
+              <div class="notes-container" @click="editNotes(subtopic.id)">
+                <a class="edit-notes">{{ subtopic.notes }}</a>
+              </div>
             </li>
           </ul>
           <div class="editing" v-else-if="editMode.id === subtopic.id">
@@ -129,11 +132,25 @@ const submitNotes = (notes) => {
 </template>
 
 <style scoped>
-a {
-  word-break: break-all;
-  cursor: pointer;
+.edit-notes {
   text-decoration: none;
-  color: inherit;
+  color: #0D47A1;
+  white-space: pre-line;
+}
+
+.notes-container {
+  border: solid 3px #b2d9fa;
+  border-radius: 20px;
+  margin-bottom: 2vh;
+  padding: 1vh 2vw;
+  background-color: #F5F7FA;
+  cursor: pointer;
+}
+
+.instruction {
+  margin-left: 1vw;
+  font-size: 0.95rem;
+  color: #42A5F5;
 }
 
 .main-content {
