@@ -4,12 +4,22 @@ import MyCourses from "@/components/shared/MyCourses.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import ContinueStudying from "@/components/home/ContinueStudying.vue";
 import Account from "@/components/shared/Account.vue";
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import axios from "@/plugins/axios.js";
 
 const courses = ref([]);
 const courseName = ref('');
 const nextLesson = reactive({});
+
+const refreshCourses = setInterval(async () => {
+  try {
+    const response = await axios.get('courses');
+    courses.value = response.courses;
+    Object.assign(nextLesson, response.nextLesson);
+  } catch (err) {
+    console.error('Request failed:', err);
+  }
+}, 100);
 
 onMounted(async () => {
   try {
@@ -19,6 +29,9 @@ onMounted(async () => {
   } catch (err) {
     console.error('Request failed:', err);
   }
+  setTimeout(() => {
+    clearInterval(refreshCourses);
+  }, 300)
 });
 </script>
 
