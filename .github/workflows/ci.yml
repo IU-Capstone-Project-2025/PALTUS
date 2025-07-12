@@ -66,6 +66,6 @@ jobs:
 
       - name: Docker compose
         run: |
-          cd PALTUS
+          cd PALTUS/backend
           docker compose down
-          docker compose up -d --build
+          docker compose --profile prod up -d --build
