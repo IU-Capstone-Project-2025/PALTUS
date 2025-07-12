@@ -56,7 +56,10 @@ const submitNotes = (notes) => {
   try {
     axios.put(
         `lessons/${props.course.lessons[props.chosenContent - 1].id}/subtopics/setNotes/${editMode.id}`,
-        notes
+        notes,
+        {
+          headers:{ "Content-Type": "text/plain"}
+        }
     );
     editMode.edit = false;
     editMode.id = null;
