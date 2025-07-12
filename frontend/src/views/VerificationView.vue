@@ -15,6 +15,9 @@ const submitted = ref(false);
 const error_message = ref('');
 const isError = ref(false);
 const resent = ref(false);
+const email = auth.email;
+const password = auth.password;
+const user = auth.user;
 
 const validateCode = () => {
   return /^\d{6}$/.test(ver_code.value);
@@ -22,7 +25,7 @@ const validateCode = () => {
 
 const resendCode = async () => {
   try {
-    const response = await axios.post('/resend', auth.email, {
+    const response = await axios.post('/resend', email, {
       headers:{ "Content-Type": "text/plain"}
     });
     resent.value = true;
@@ -44,7 +47,7 @@ const checkCode = async () => {
     auth.isVerified = true;
     auth.token = response.token;
     try {
-      await auth.login(auth.email, auth.password);
+      await auth.login(email, password, user);
       router.push('/');
     } catch (e) {
       console.error(e);
@@ -61,11 +64,12 @@ const checkCode = async () => {
 }
 
 onMounted(() => {
-  if (!auth.email) {
-    router.push('/sign_up');
-  } else if (auth.isVerified) {
+  if (auth.isAuthenticated()) {
     router.push('/');
+  } else if (!auth.email) {
+    router.push('/sign_up');
   }
+
   setTimeout(() => {
     document.getElementById('send-again').style.display = 'block';
   }, 15000)

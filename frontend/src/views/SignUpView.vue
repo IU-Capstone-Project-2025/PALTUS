@@ -49,7 +49,7 @@ const signUp = async () => {
 }
 
 onMounted(() => {
-  if (auth.isVerified) {
+  if (auth.isAuthenticated()) {
     router.push('/');
   }
 })
