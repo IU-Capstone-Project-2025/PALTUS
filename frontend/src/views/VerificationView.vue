@@ -14,6 +14,7 @@ const router = useRouter();
 const submitted = ref(false);
 const error_message = ref('');
 const isError = ref(false);
+const resent = ref(false);
 
 const validateCode = () => {
   return /^\d{6}$/.test(ver_code.value);
@@ -21,7 +22,10 @@ const validateCode = () => {
 
 const resendCode = async () => {
   try {
-    const response = await axios.post('/resend', auth.email);
+    const response = await axios.post('/resend', auth.email, {
+      headers:{ "Content-Type": "text/plain"}
+    });
+    resent.value = true;
     console.log(response);
   } catch (error) {
     console.log(error);
@@ -62,9 +66,9 @@ onMounted(() => {
   } else if (auth.isVerified) {
     router.push('/');
   }
-  // setTimeout(() => {
-  //   document.getElementById('send-again').style.display = 'block';
-  // }, 15000)
+  setTimeout(() => {
+    document.getElementById('send-again').style.display = 'block';
+  }, 15000)
 })
 </script>
 
@@ -81,7 +85,8 @@ onMounted(() => {
       <ErrorNotification :error_message="error_message" v-if="isError" />
       <ButtonGreen type="submit" title="Submit" v-if="validateCode() && !submitted" />
       <ButtonGreen title="Submit" class="inactive" v-else />
-      <p id="send-again" @click="resendCode">I did not receive the code</p>
+      <p id="send-again" @click="resendCode" v-if="!resent">I did not receive the code</p>
+      <p class="resent" v-if="resent">Code was resent, check your email</p>
     </form>
   </div>
 </template>
@@ -127,6 +132,13 @@ form {
   display: none;
 }
 #send-again:hover {
+  color: #F5F7FA;
+}
+
+.resent {
+  font-size: 1rem;
+  margin-top: 5vh;
+  margin-bottom: 1vh;
   color: #F5F7FA;
 }
 
