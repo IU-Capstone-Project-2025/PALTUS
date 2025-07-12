@@ -25,6 +25,7 @@ export const useAuthStore = defineStore('auth', {
                 const response = await axios.post('/login', login_data);
                 console.log(response);
                 this.user = username
+                this.password = '';
 
                 if (!this.user) {
                     this.user = email.split('@')[0];
