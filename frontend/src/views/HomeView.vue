@@ -4,7 +4,7 @@ import MyCourses from "@/components/shared/MyCourses.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import ContinueStudying from "@/components/home/ContinueStudying.vue";
 import Account from "@/components/shared/Account.vue";
-import {onMounted, reactive, ref, watch} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import axios from "@/plugins/axios.js";
 
 const courses = ref([]);

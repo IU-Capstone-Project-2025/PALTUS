@@ -101,21 +101,6 @@ const submitNotes = (notes) => {
         </li>
       </ul>
     </div>
-    <div class="books">
-      <div class="field-name">
-        Useful links:
-      </div>
-      <ul v-if="course.lessons[chosenContent - 1].links.value">
-        <li v-for="link in course.lessons[chosenContent - 1].links" class="field-info">
-          <a target="_blank" :href="link"> {{ link }}</a>
-        </li>
-      </ul>
-      <div class="description" v-else>
-        <p class="field-info">
-          No links available for this lesson.
-        </p>
-      </div>
-    </div>
   </div>
   <section class="main-content">
     <div class="lesson-content" v-if="!chosenContent">
