@@ -39,4 +39,8 @@ public class GptController {
         return "Something on the way";
     }
     
+    @GetMapping("/quiz/{id}")
+    public void getMethodName(@PathVariable long id) {
+        chatService.generateQuiz(id);
+    }
 }

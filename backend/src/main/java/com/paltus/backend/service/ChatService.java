@@ -43,15 +43,20 @@ public class ChatService {
     private final CourseMapper courseMapper;
     private static final Logger log = LoggerFactory.getLogger(ChatService.class);
     private final SubtopicService subtopicService;
+    private final LessonService lessonService;
+    CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
+    .model(ModelName.GIGA_CHAT_2);
 
     private final Map<String, List<ChatMessage>> chatHistory = new ConcurrentHashMap<>();
 
-    public ChatService(PromptProperties properties, PromptBuilder promptBuilder, CourseMapper courseMapper, SubtopicService subtopicService, @Value("${ai.key}") String apiKey) {
+    public ChatService(PromptProperties properties, PromptBuilder promptBuilder, CourseMapper courseMapper, 
+        LessonService lessonService, SubtopicService subtopicService, @Value("${ai.key}") String apiKey) {
         this.promptBuilder = promptBuilder;
         this.promptProperties = properties;
         this.courseMapper = courseMapper;
         this.subtopicService = subtopicService;
-
+        this.lessonService = lessonService;
+        
         this.client = GigaChatClient.builder()
                 .verifySslCerts(false)
                 .authClient(AuthClient.builder()
@@ -104,9 +109,6 @@ public class ChatService {
     }
 
     private CourseResponceDto sendToGigaChatAndGetCourse(List<ChatMessage> messages, String sessionId) {
-        CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
-                .model(ModelName.GIGA_CHAT_2);
-
         messages.forEach(requestBuilder::message);
 
         try {
@@ -159,9 +161,6 @@ public class ChatService {
     }
 
     private String sendToGigaChatAndGetNotes(List<ChatMessage> messages) {
-        CompletionRequest.CompletionRequestBuilder requestBuilder = CompletionRequest.builder()
-                .model(ModelName.GIGA_CHAT_2);
-
         messages.forEach(requestBuilder::message);
 
         try {
@@ -186,11 +185,23 @@ public class ChatService {
         }
     }
 
+    public void generateQuiz(Long lessonId) {
+    
+        String context = "Context: " + lessonService.getLessonContext(lessonId);
+        log.info("Context for llm: {}", context);
+        ChatMessage userMessage = ChatMessage.builder()
+                .role(ChatMessageRole.USER)
+                .content(context + promptProperties.getQuiz())
+                .build();
+        CompletionRequest request = requestBuilder.message(userMessage).build();
+        CompletionResponse response = client.completions(request);
+        System.out.println(response.choices().get(0).message().content());
+    }
+
     public void deleteSession(String sessionId) {
         if (sessionId == null || !chatHistory.containsKey(sessionId)) {
             throw new IllegalArgumentException("Session not found or not passed");
         }
         chatHistory.remove(sessionId);
     }
-    
 }

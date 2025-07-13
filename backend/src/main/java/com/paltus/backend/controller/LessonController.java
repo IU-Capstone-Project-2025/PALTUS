@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.model.dto.LessonDto;
 import com.paltus.backend.service.LessonService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 

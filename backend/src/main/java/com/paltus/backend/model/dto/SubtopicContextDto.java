@@ -2,7 +2,7 @@ package com.paltus.backend.model.dto;
 
 public record SubtopicContextDto (
     String courseName,
-    String lessonTitl,
+    String lessonTitle,
     String subtopicTopic,
     String notes
 ) {}
