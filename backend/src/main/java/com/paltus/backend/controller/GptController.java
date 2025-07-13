@@ -3,6 +3,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.model.dto.CourseResponceDto;
 import com.paltus.backend.model.dto.LLMResponseDTO;
+import com.paltus.backend.model.dto.QuizDto;
 import com.paltus.backend.model.requests.CourseRequest;
 import com.paltus.backend.model.requests.EditCourseRequest;
 import com.paltus.backend.model.requests.GenerateContentRequest;
@@ -40,7 +41,7 @@ public class GptController {
     }
     
     @GetMapping("/quiz/{id}")
-    public void getMethodName(@PathVariable long id) {
-        chatService.generateQuiz(id);
+    public QuizDto getMethodName(@PathVariable long id) {
+        return chatService.generateQuiz(id);
     }
 }

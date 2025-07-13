@@ -17,6 +17,7 @@ import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Course;
 import com.paltus.backend.model.dto.CourseResponceDto;
 import com.paltus.backend.model.dto.LLMResponseDTO;
+import com.paltus.backend.model.dto.QuizDto;
 import com.paltus.backend.model.requests.CourseRequest;
 import com.paltus.backend.model.requests.EditCourseRequest;
 import com.paltus.backend.model.requests.GenerateContentRequest;
@@ -56,7 +57,7 @@ public class ChatService {
         this.courseMapper = courseMapper;
         this.subtopicService = subtopicService;
         this.lessonService = lessonService;
-        
+
         this.client = GigaChatClient.builder()
                 .verifySslCerts(false)
                 .authClient(AuthClient.builder()
@@ -185,8 +186,7 @@ public class ChatService {
         }
     }
 
-    public void generateQuiz(Long lessonId) {
-    
+    public QuizDto generateQuiz(Long lessonId) {
         String context = "Context: " + lessonService.getLessonContext(lessonId);
         log.info("Context for llm: {}", context);
         ChatMessage userMessage = ChatMessage.builder()
@@ -195,7 +195,19 @@ public class ChatService {
                 .build();
         CompletionRequest request = requestBuilder.message(userMessage).build();
         CompletionResponse response = client.completions(request);
-        System.out.println(response.choices().get(0).message().content());
+        String json = response.choices().get(0).message().content();
+        log.info("LLM output: {}", json);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            QuizDto quiz = mapper.readValue(json, QuizDto.class);
+            return quiz;
+        } catch (JsonProcessingException ex) {
+            throw new InvalidResponseException(ex.getMessage());
+        } catch (HttpClientException ex) {
+            throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public void deleteSession(String sessionId) {
