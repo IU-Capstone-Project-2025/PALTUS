@@ -41,7 +41,6 @@ public class CourseMapperImpl implements CourseMapper {
                 lessonWithSubtopicsAndLinks.getLesson_number(),
                 lessonWithSubtopicsAndLinks.getTitle(),
                 lessonWithSubtopicsAndLinks.isQuiz(),
-                lessonWithSubtopicsAndLinks.getLinks(),
                 lessonWithSubtopicsAndLinks.getSubtopics());
                 // lessonWithSubtopicsAndLinks.getSubtopics().stream().map(subtopic -> this.toSubtopicDto(subtopic))
                 //         .toList());

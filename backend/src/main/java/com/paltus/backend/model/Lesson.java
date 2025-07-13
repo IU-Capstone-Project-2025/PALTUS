@@ -32,10 +32,6 @@ public class Lesson {
     private String title;
     private boolean quiz;
 
-    @Convert(converter = StringListConverter.class)
-    @Column(columnDefinition = "text")
-    private List<String> links;
-
     @ManyToOne
     @JoinColumn(name = "course_id")
     @JsonBackReference
