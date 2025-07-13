@@ -16,7 +16,7 @@ public interface UserLoginRepository extends JpaRepository<UserLogin, Long> {
                 WHERE email = :email
                 ORDER BY login_date DESC
             """, nativeQuery = true)
-    List<LocalDate> findAllLoginDatesByUserIdDesc(@Param("email") String email);
+    List<LocalDate> findAllLoginDatesByUserEmailDesc(@Param("email") String email);
 
     boolean existsByEmailAndLoginDate(String email, LocalDate date);
 }
