@@ -1,5 +1,6 @@
 package com.paltus.backend.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Service;
 
 import com.paltus.backend.exception.EmailException;
 import com.paltus.backend.model.User;
+import com.paltus.backend.model.UserLogin;
 import com.paltus.backend.model.dto.LoginUserDto;
 import com.paltus.backend.model.dto.RegisterUserDto;
 import com.paltus.backend.model.dto.VerifyUserDto;
+import com.paltus.backend.repository.UserLoginRepository;
 import com.paltus.backend.repository.UserRepository;
 
 import jakarta.mail.MessagingException;
@@ -27,14 +30,16 @@ public class AuthenticationService {
     private AuthenticationManager authManager;
     private EmailService emailService;
     private BCryptPasswordEncoder encoder;
+    private UserLoginRepository userLoginRepository;
 
     @Autowired
     public AuthenticationService(UserRepository userRepository, AuthenticationManager authenticationManager,
-            EmailService emailService, BCryptPasswordEncoder encoder) {
+            EmailService emailService, BCryptPasswordEncoder encoder, UserLoginRepository userLoginRepository) {
         this.userRepo = userRepository;
         this.authManager = authenticationManager;
         this.emailService = emailService;
         this.encoder = encoder;
+        this.userLoginRepository = userLoginRepository;
     }
 
     public void register(RegisterUserDto userDto) {
@@ -66,7 +71,11 @@ public class AuthenticationService {
             throw new RuntimeException("Account not verified");
         }
         authManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password()));
-
+        
+        LocalDate today = LocalDate.now();
+        if (!userLoginRepository.existsByEmailAndLoginDate(userDto.email(), today)) {
+            userLoginRepository.save(new UserLogin(userDto.email(), today));
+        }
         return user;
     }
 

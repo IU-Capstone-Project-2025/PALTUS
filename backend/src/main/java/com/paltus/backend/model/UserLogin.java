@@ -1,10 +1,8 @@
 package com.paltus.backend.model;
 
-import com.paltus.backend.model.enums.AchievementType;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,19 +10,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@NoArgsConstructor
 @Data
-public class Achievement {
+@Entity
+public class UserLogin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String name;
-    private String description;
+    private long id;
 
-    @Enumerated(EnumType.STRING)
-    private AchievementType type;
+    private String email;
+    private LocalDate loginDate;
 
-    private int targetCount;
+    public UserLogin(String email, LocalDate date) {
+        this.email = email;
+        this.loginDate = date;
+    }
 }
