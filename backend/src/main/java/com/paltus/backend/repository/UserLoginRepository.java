@@ -11,11 +11,11 @@ import com.paltus.backend.model.UserLogin;
 
 public interface UserLoginRepository extends JpaRepository<UserLogin, Long> {
     @Query(value = """
-                SELECT login_date
-                FROM user_login
-                WHERE email = :email
-                ORDER BY login_date DESC
-            """, nativeQuery = true)
+            SELECT ul.loginDate
+            FROM UserLogin ul
+            WHERE ul.email = :email
+            ORDER BY ul.loginDate DESC
+                """)
     List<LocalDate> findAllLoginDatesByUserEmailDesc(@Param("email") String email);
 
     boolean existsByEmailAndLoginDate(String email, LocalDate date);

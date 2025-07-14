@@ -29,6 +29,11 @@ public class UserService {
         return user;
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    }
+
     // TODO: при отображении стрика не занулять его в бд, только визуально,
     // зануление только при следующем обновлении сабтопика
 

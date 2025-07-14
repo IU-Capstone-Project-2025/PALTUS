@@ -1,6 +1,5 @@
 package com.paltus.backend.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
@@ -8,16 +7,17 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.paltus.backend.exception.EmailException;
 import com.paltus.backend.model.User;
-import com.paltus.backend.model.UserLogin;
 import com.paltus.backend.model.dto.LoginUserDto;
 import com.paltus.backend.model.dto.RegisterUserDto;
 import com.paltus.backend.model.dto.VerifyUserDto;
-import com.paltus.backend.repository.UserLoginRepository;
+import com.paltus.backend.model.enums.AchievementType;
 import com.paltus.backend.repository.UserRepository;
 
 import jakarta.mail.MessagingException;
@@ -30,16 +30,16 @@ public class AuthenticationService {
     private AuthenticationManager authManager;
     private EmailService emailService;
     private BCryptPasswordEncoder encoder;
-    private UserLoginRepository userLoginRepository;
+    private AchievementService achievementService;
 
     @Autowired
     public AuthenticationService(UserRepository userRepository, AuthenticationManager authenticationManager,
-            EmailService emailService, BCryptPasswordEncoder encoder, UserLoginRepository userLoginRepository) {
+            EmailService emailService, BCryptPasswordEncoder encoder, AchievementService achievementService) {
         this.userRepo = userRepository;
         this.authManager = authenticationManager;
         this.emailService = emailService;
         this.encoder = encoder;
-        this.userLoginRepository = userLoginRepository;
+        this.achievementService = achievementService;
     }
 
     public void register(RegisterUserDto userDto) {
@@ -70,12 +70,13 @@ public class AuthenticationService {
         if (!user.isEnabled()) {
             throw new RuntimeException("Account not verified");
         }
-        authManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password()));
-        
-        LocalDate today = LocalDate.now();
-        if (!userLoginRepository.existsByEmailAndLoginDate(userDto.email(), today)) {
-            userLoginRepository.save(new UserLogin(userDto.email(), today));
-        }
+        Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password()));
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        achievementService.updateProgress(AchievementType.LOGIN_STREAK);
+        // achievementService.updateProgress(userDto.email(), AchievementType.LOGIN_STREAK);
+
         return user;
     }
 
@@ -136,7 +137,6 @@ public class AuthenticationService {
         } catch (MessagingException ex) {
             throw new EmailException("Sending verification email failed");
         }
-        
 
     }
 
