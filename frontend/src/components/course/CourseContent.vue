@@ -4,16 +4,19 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import Notes from "@/components/course/Notes.vue";
 import NotesEdition from "@/components/course/NotesEdition.vue";
 import ButtonDefault from "@/components/shared/ButtonDefault.vue";
-import EditCourseModal from "@/components/course_creation/EditCourseModal.vue";
+import ChatModal from "@/components/course/ChatModal.vue";
 
 const editMode = reactive({
   id: null,
   edit: false
 });
+
+const modal = ref(false);
+const modalTopic = ref('');
 
 const props = defineProps({
   course: {
@@ -69,9 +72,24 @@ const submitNotes = (notes) => {
     console.error(error);
   }
 }
+
+const openChat = (topic) => {
+  modalTopic.value = topic;
+  modal.value = true;
+}
+
+const finishChat = () => {
+  modalTopic.value = '';
+  modal.value = false;
+}
 </script>
 
 <template>
+  <ChatModal
+      v-if="modal"
+      :topic="modalTopic"
+      @close-modal="finishChat"
+  />
   <div class="lesson-content" v-if="chosenContent">
     <BaseHeader :text="course.lessons[chosenContent - 1].title + ':'" class="uppercase" />
     <div class="subtopics">
@@ -99,11 +117,12 @@ const submitNotes = (notes) => {
               @submitNotes="submitNotes"
               v-else
           />
-          <ButtonDefault title="Ask AI" class="ai-btn"/>
+          <ButtonDefault title="Ask AI" class="ai-btn" @click="openChat(subtopic.topic)"/>
         </li>
       </ul>
     </div>
   </div>
+
   <section class="main-content">
     <div class="lesson-content" v-if="!chosenContent">
       <BaseHeader :text="course.course_name" class="uppercase" />
