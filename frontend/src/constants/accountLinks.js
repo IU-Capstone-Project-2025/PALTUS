@@ -9,6 +9,6 @@ export const accountLinks = [
     },
     {
         title: 'Current Level',
-        link: '/level',
+        link: '/awards',
     },
 ]
