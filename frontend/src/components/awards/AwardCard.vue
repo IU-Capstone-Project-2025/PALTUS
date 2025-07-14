@@ -1,36 +1,31 @@
 <script setup>
+import ProgressBar from "@/components/shared/ProgressBar.vue";
+
 const props = defineProps({
-  finished: {
-    type: Boolean,
+  award: {
+    type: Object,
     required: true
   }
 })
 </script>
 
 <template>
-  <div class="award-card" v-if="props.finished">
-    <div class="award-badge" style="background-color: #42A5F5">
+  <div class="award-card">
+    <div class="award-badge" style="background-color: #48CFAD" v-if="props.award.finished">
       ✓
     </div>
-    <div class="award-info">
-      <h3>Hot Streak</h3>
-      <p>Log in 3 days in a row</p>
-      <div class="award-completed">
-        <span>+30 XP</span>
-        <span>Completed</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="award-card" v-else>
-    <div class="award-badge" style="background-color: #e0e0e0">
+    <div class="award-badge" style="background-color: #BBDEFB" v-else>
+      ✗
     </div>
     <div class="award-info">
-      <h3>Learner</h3>
-      <p>Complete 5 lessons</p>
+      <h3>{{ props.award.name }}</h3>
+      <p>{{ props.award.description }}</p>
       <div class="award-progress">
-        <div class="progress-bar" style="width: 60%"></div>
-        <span>60% complete</span>
+        <ProgressBar fraction_finished="100" v-if="props.award.finished" class="award-progress-bar" />
+        <ProgressBar fraction_finished="0" v-else class="award-progress-bar" />
+        <span v-if="props.award.finished">Completed</span>
+        <span v-if="props.award.finished" class="award-completed">+ {{ props.award.xp }} XP</span>
+        <span v-else>Not completed</span>
       </div>
     </div>
   </div>
@@ -39,8 +34,8 @@ const props = defineProps({
 <style scoped>
 .award-card {
   display: flex;
-  width: 100%;
-  max-width: 400px;
+  width: 20vw;
+  height: 15vh;
   padding: 15px;
   border-radius: 8px;
   background: #F5F7FA;
@@ -67,47 +62,39 @@ const props = defineProps({
 }
 
 .award-info h3 {
-  color: var(--text-primary, #000000);
+  color: #0D47A1;
   font-size: 1.1rem;
   font-weight: 500;
   margin-bottom: 5px;
 }
 
 .award-info p {
-  color: var(--text-secondary, #000000);
+  color: #42A5F5;
   font-size: 0.9rem;
-  opacity: 0.8;
   margin-bottom: 10px;
+  opacity: 0.8;
 }
 
 .award-progress {
   margin-top: 10px;
 }
 
-.award-progress .progress-bar {
-  background: var(--progress-background, #e0e0e0);
-  height: 6px;
-  border-radius: 3px;
-  margin-bottom: 5px;
-}
-
-.award-progress .progress-bar > div {
-  background: #42A5F5;
-  height: 100%;
-  border-radius: 3px;
+.award-progress-bar {
+  height: 1vh;
+  border-radius: 4px;
+  background-color: #BBDEFB;
 }
 
 .award-progress span {
   font-size: 0.8rem;
-  color: var(--text-secondary, #000000);
-  opacity: 0.6;
+  color: #0D47A1;
+  opacity: 0.8;
 }
 
 .award-completed {
   display: flex;
-  justify-content: space-between;
-  margin-top: 8px;
-  font-size: 0.85rem;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .award-info {

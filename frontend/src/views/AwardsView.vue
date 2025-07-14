@@ -1,17 +1,39 @@
 <script setup>
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import Logo from "@/components/shared/Logo.vue";
 import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import LevelBadge from "@/components/awards/LevelBadge.vue";
 import ProgressBar from "@/components/shared/ProgressBar.vue";
 import AwardCard from "@/components/awards/AwardCard.vue";
+import Streak from "@/components/awards/Streak.vue";
 
 const status = ref('BEGINNER PALTUS');
 const level = ref(1);
 const xp = ref(150);
 const next_level_xp = ref(500);
-const awards = ref([1, 2, 3])
+const awards = reactive([{
+  name: "First steps",
+  description: "Complete your first lesson",
+  finished: true,
+  xp: 50,
+}, {
+  name: "Learner",
+  description: "Complete 5 lessons",
+  finished: false,
+  xp: 100,
+}, {
+  name: "Hot streak",
+  description: "Learn 3 days in a row",
+  finished: true,
+  xp: 30,
+}, {
+  name: "Hot streak",
+  description: "Learn 3 days in a row",
+  finished: true,
+  xp: 30,
+}]);
+const streak = ref(3);
 </script>
 
 <template>
@@ -33,6 +55,7 @@ const awards = ref([1, 2, 3])
         </div>
         <ProgressBar :fraction_finished="xp / next_level_xp * 100" class="progress-fill" />
       </div>
+      <Streak :streak="streak" v-if="streak" />
     </section>
     <section class="right">
       <Account />
@@ -40,24 +63,14 @@ const awards = ref([1, 2, 3])
   </div>
 
   <section class="awards-container">
-  <div class="awards-section">
-    <h2 class="section-title">Available Awards</h2>
-    <ul class="awards-grid">
-      <li v-for="award in awards">
-        <AwardCard :finished="false" />
-      </li>
-    </ul>
-  </div>
-
-  <div class="streak-container-large">
-    <div class="streak-content">
-      <span class="streak-icon-large">🔥</span>
-      <div class="streak-text-large">
-        <div class="streak-title">Current Streak</div>
-        <div class="streak-days">3 days</div>
-      </div>
+    <div class="awards-section">
+      <h2 class="section-title">Available Awards</h2>
+      <ul class="awards-grid">
+        <li v-for="award in awards" class="grid-element">
+          <AwardCard :award="award" />
+        </li>
+      </ul>
     </div>
-  </div>
   </section>
 </template>
 
@@ -87,8 +100,7 @@ const awards = ref([1, 2, 3])
 }
 
 .awards-container {
-  width: 100%;
-  max-width: 1000px;
+  width: 80vw;
   margin: 0 auto;
   border-radius: 16px;
   padding: 30px;
@@ -117,27 +129,22 @@ const awards = ref([1, 2, 3])
 .progress-info {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 1vh;
   font-size: 0.9rem;
-  color: var(--text-primary, #000000);
+  color: #0D47A1;
 }
 
-.progress-bar {
+.progress-fill {
   background: #F0F0F0;
   height: 1vh;
   border-radius: 4px;
   width: 100%;
 }
 
-.progress-fill {
-  border: none;
-}
-
 .awards-section {
-  background: var(--background-element, #ffffff);
+  background: white;
   border-radius: 12px;
-  padding: 25px;
-  border: 1px solid var(--border-color, #eeeeee);
+  padding: 2vw;
 }
 
 .section-title {
@@ -147,96 +154,17 @@ const awards = ref([1, 2, 3])
   margin-bottom: 25px;
   text-align: center;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color, #f0f0f0);
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .awards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
+  gap: 1vh;
   justify-items: center;
-}
-
-.award-completed span:first-child {
-  color: #42A5F5;
-  font-weight: 500;
-}
-
-.award-completed span:last-child {
-  color: var(--text-secondary, #000000);
-  opacity: 0.7;
-}
-
-.streak-container-large {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-}
-
-.streak-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  background: rgba(66, 165, 245, 0.1);
-  padding: 25px 50px;
-  border-radius: 50px;
-  border: 2px solid rgba(66, 165, 245, 0.3);
-}
-
-.streak-icon-large {
-  font-size: 3rem;
-}
-
-.streak-text-large {
-  display: flex;
-  flex-direction: column;
-  color: #42A5F5;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.streak-title {
-  font-size: 1.2rem;
-  font-weight: 500;
-  opacity: 0.9;
-}
-
-.streak-days {
-  font-size: 2rem;
-  font-weight: 600;
-  line-height: 1.2;
 }
 
 ul {
   list-style-type: none;
-}
-
-@media (max-width: 768px) {
-  .awards-view {
-    padding: 15px;
-  }
-
-  .awards-container {
-    padding: 20px;
-  }
-
-  .awards-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .award-card {
-    max-width: 100%;
-  }
-
-  .streak-content {
-    padding: 20px 30px;
-  }
-
-  .streak-icon-large {
-    font-size: 2.5rem;
-  }
-
-  .streak-days {
-    font-size: 1.8rem;
-  }
 }
 </style>
