@@ -57,11 +57,9 @@ public class LoginStreakEvaluator implements AchievementEvaluator {
         }
 
         for (Achievement achievement : achievements) {
-            System.out.println(achievement.getName());
             UserAchievement userAchievement = userAchievementRepository.findByUserAndAchievement(user, achievement)
                     .orElse(new UserAchievement(user, achievement, 0));
             if (userAchievement.getProgress() < 100) {
-                System.out.println(streak);
                 userAchievement.setProgress(Math.min(100, (int)((double)(streak * 100) / achievement.getTargetCount())));
                 userAchievementRepository.save(userAchievement);
             }
