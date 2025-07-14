@@ -7,6 +7,7 @@ import router from "@/router/index.js";
 import {reactive} from "vue";
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import Notes from "@/components/course/Notes.vue";
 
 const editMode = reactive({
   id: null,
@@ -86,14 +87,12 @@ const submitNotes = (notes) => {
             />
             <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}: </label>
           </div>
-          <ul v-if="subtopic.notes && editMode.id !== subtopic.id">
-            <li class="field-info">
-              <p class="instruction" v-if="editMode.id !== subtopic.id">Click inside to add notes</p>
-              <div class="notes-container" @click="editNotes(subtopic.id)">
-                <a class="edit-notes">{{ subtopic.notes }}</a>
-              </div>
-            </li>
-          </ul>
+          <Notes
+              v-if="editMode.id !== subtopic.id"
+              :notes="subtopic.notes"
+              :id="subtopic.id"
+              @editNotes="editNotes"
+          />
           <div class="editing" v-else-if="editMode.id === subtopic.id">
             <BaseTextArea
                 v-model="subtopic.notes"
@@ -132,27 +131,6 @@ const submitNotes = (notes) => {
 </template>
 
 <style scoped>
-.edit-notes {
-  text-decoration: none;
-  color: #0D47A1;
-  white-space: pre-line;
-}
-
-.notes-container {
-  border: solid 3px #b2d9fa;
-  border-radius: 20px;
-  margin-bottom: 2vh;
-  padding: 1vh 2vw;
-  background-color: #F5F7FA;
-  cursor: pointer;
-}
-
-.instruction {
-  margin-left: 1vw;
-  font-size: 0.95rem;
-  color: #42A5F5;
-}
-
 .main-content {
   display: flex;
   flex-direction: column;
