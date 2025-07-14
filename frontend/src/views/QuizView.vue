@@ -150,14 +150,4 @@
   font-weight: 500;
   color: #555;
 }
-
-@media (max-width: 768px) {
-  .quiz-view {
-    padding: 15px;
-  }
-
-  .question-container {
-    padding: 20px;
-  }
-}
 </style>
