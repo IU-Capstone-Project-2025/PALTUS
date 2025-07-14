@@ -4,6 +4,14 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
+import {reactive} from "vue";
+import BaseTextArea from "@/components/shared/BaseTextArea.vue";
+import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+
+const editMode = reactive({
+  id: null,
+  edit: false
+});
 
 const props = defineProps({
   course: {
@@ -31,9 +39,30 @@ const checkSubtopic = (id, finished) => {
 
 const removeCourse = async () => {
   try {
-    axios.delete(`courses/${props.course.courseId}`).then(() => {
+      axios.delete(`courses/${props.course.courseId}`).then(() => {
       router.push('/');
     });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const editNotes = (id) => {
+  editMode.edit = true;
+  editMode.id = id;
+}
+
+const submitNotes = (notes) => {
+  try {
+    axios.put(
+        `lessons/${props.course.lessons[props.chosenContent - 1].id}/subtopics/setNotes/${editMode.id}`,
+        notes,
+        {
+          headers:{ "Content-Type": "text/plain"}
+        }
+    );
+    editMode.edit = false;
+    editMode.id = null;
   } catch (error) {
     console.error(error);
   }
@@ -55,30 +84,25 @@ const removeCourse = async () => {
                 v-model="subtopic.finished"
                 @update:modelValue="checkSubtopic(subtopic.id, subtopic.finished)"
             />
-            <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}</label>
+            <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}: </label>
           </div>
-          <ul v-if="subtopic.content">
+          <ul v-if="subtopic.notes && editMode.id !== subtopic.id">
             <li class="field-info">
-              {{ subtopic.content }}
+              <p class="instruction" v-if="editMode.id !== subtopic.id">Click inside to add notes</p>
+              <div class="notes-container" @click="editNotes(subtopic.id)">
+                <a class="edit-notes">{{ subtopic.notes }}</a>
+              </div>
             </li>
           </ul>
+          <div class="editing" v-else-if="editMode.id === subtopic.id">
+            <BaseTextArea
+                v-model="subtopic.notes"
+                placeholder="Add your notes here"
+            />
+            <ButtonGreen title="Submit changes" @click="submitNotes(subtopic.notes)" class="submit-btn" />
+          </div>
         </li>
       </ul>
-    </div>
-    <div class="books">
-      <div class="field-name">
-        Useful links:
-      </div>
-      <ul v-if="course.lessons[chosenContent - 1].links.value">
-        <li v-for="link in course.lessons[chosenContent - 1].links" class="field-info">
-          <a target="_blank" :href="link"> {{ link }}</a>
-        </li>
-      </ul>
-      <div class="description" v-else>
-        <p class="field-info">
-          No links available for this lesson.
-        </p>
-      </div>
     </div>
   </div>
   <section class="main-content">
@@ -108,11 +132,25 @@ const removeCourse = async () => {
 </template>
 
 <style scoped>
-a {
-  word-break: break-all;
-  cursor: pointer;
+.edit-notes {
   text-decoration: none;
-  color: inherit;
+  color: #0D47A1;
+  white-space: pre-line;
+}
+
+.notes-container {
+  border: solid 3px #b2d9fa;
+  border-radius: 20px;
+  margin-bottom: 2vh;
+  padding: 1vh 2vw;
+  background-color: #F5F7FA;
+  cursor: pointer;
+}
+
+.instruction {
+  margin-left: 1vw;
+  font-size: 0.95rem;
+  color: #42A5F5;
 }
 
 .main-content {
@@ -125,7 +163,7 @@ a {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 2vh 30vw 2vh 8vw;
+  padding: 2vh 20vw 2vh 8vw;
 }
 
 .uppercase {
@@ -166,5 +204,21 @@ a {
 
 .navigation {
   padding-left: 8vw;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.editing {
+  margin-left: 2vw;
+}
+
+.editing textarea {
+  font-size: 0.9rem;
+}
+
+.submit-btn {
+  margin: 1vh 0 3vh;
 }
 </style>

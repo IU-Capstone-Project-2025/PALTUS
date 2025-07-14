@@ -3,6 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
+    profiles: [front-dev, prod]
     restart: always
     environment:
       POSTGRES_DB: ${DB_NAME}
@@ -15,6 +16,7 @@ services:
 
   frontend-app:
     build: frontend
+    profiles: [front-dev]
     ports:
       - "5175:5173"
     volumes:
@@ -23,14 +25,28 @@ services:
     depends_on:
       - backend-app
 
+  frontend-prod:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    profiles: [prod]
+    ports:
+      - "80:80"
+    volumes:
+      - /app/node_modules
+    depends_on:
+      - backend-app
+
   backend-app:
     build: backend
+    profiles: [front-dev, prod]
     ports:
       - "8081:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       GIGA_CHAT_API_KEY: ${GIGA_CHAT_API_KEY}
     depends_on:
       - postgres

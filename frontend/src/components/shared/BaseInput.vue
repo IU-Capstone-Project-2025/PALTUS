@@ -26,7 +26,8 @@ input {
   color: #0D47A1;
   border-style: none;
   border-radius: 20px;
-  height: 8vh;
+  min-height: 4rem;
+  height: 4rem;
   width: 20vw;
   padding-left: 30px;
   padding-right: 10px;

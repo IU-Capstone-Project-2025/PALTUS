@@ -1,39 +1,72 @@
 import { defineStore } from 'pinia';
+import axios from "@/plugins/axios.js";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        user: 'null',
+        user: '',
+        password: '',
         token: null,
+        expiresAt: null,
+        email: '',
     }),
     actions: {
-        login(email, password) {
-            // Mock data
-            if (email === 'test@example.com' && password === '123') {
-                this.user = { email };
-                this.token = 'mock-token';
-                localStorage.setItem('user', JSON.stringify(this.user));
+        setUserData(email, username, password) {
+            this.email = email;
+            this.user = username;
+            this.password = password;
+        },
+        async login(email, password, username) {
+            const login_data = {
+                email: email,
+                password: password,
+            }
+            console.log(`${username} trying to log in`)
+            try {
+                const response = await axios.post('/login', login_data);
+                console.log(response);
+                this.user = username
+                this.password = '';
+
+                if (!this.user) {
+                    this.user = email.split('@')[0];
+                }
+                this.token = response.token;
+                const expiresIn = Number.parseInt(response.expiresIn);
+                this.expiresAt = Date.now() + expiresIn
+
+                localStorage.setItem('user', this.user);
                 localStorage.setItem('token', this.token);
-            } else {
-                throw new Error('email - test@example.com\n' +
-                                'password - 123');
+                localStorage.setItem('expiresAt', this.expiresAt)
+            } catch (error) {
+                console.error(error);
+                throw {
+                    statusCode: error?.response?.status,
+                }
             }
         },
         logout() {
             this.user = null;
             this.token = null;
+            this.expiresAt = null;
             localStorage.removeItem('user');
             localStorage.removeItem('token');
+            localStorage.removeItem('expiresAt')
         },
         loadUser() {
             const saved = localStorage.getItem('user');
             const token = localStorage.getItem('token');
+            const expiresAt = Number(localStorage.getItem('expiresAt'));
+
             if (saved && token) {
-                this.user = JSON.parse(saved);
+                this.user = saved;
                 this.token = token;
+                this.expiresAt = expiresAt;
+            } else {
+                this.logout();
             }
         },
         isAuthenticated() {
             return !!this.token;
-        },
+        }
     },
 });

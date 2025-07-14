@@ -10,6 +10,7 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
+    base: '/',
     proxy: {
       '/api': {
         target: 'http://backend-app:8080',
@@ -20,6 +21,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    vueDevTools(),
   ],
   resolve: {
     alias: {

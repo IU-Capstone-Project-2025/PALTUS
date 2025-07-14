@@ -3,12 +3,14 @@ import Logo from "@/components/shared/Logo.vue";
 import MyCourses from "@/components/shared/MyCourses.vue";
 import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import BaseInput from "@/components/shared/BaseInput.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import router from "@/router/index.js";
 import { useRoute } from 'vue-router';
 import axios from "@/plugins/axios.js"
+import EditCourseModal from "@/components/course_creation/EditCourseModal.vue";
+import BaseTextArea from "@/components/shared/BaseTextArea.vue";
+import ErrorNotification from "@/components/shared/ErrorNotification.vue";
 
 const route = useRoute();
 const name = ref(route.query.courseName || '');
@@ -18,6 +20,12 @@ const lessonsNum = ref('');
 const duration = ref('');
 const courses = ref([]);
 const waiting = ref(false);
+const showModal = ref(false);
+const course = reactive({});
+const previous_course = reactive({});
+const sessionId = ref('');
+const isError = ref(false);
+const error_message = ref('');
 
 onMounted(async () => {
   try {
@@ -67,6 +75,7 @@ const validation = () => {
 }
 
 const getCourse = async () => {
+  isError.value = false;
   waiting.value = true;
   if (validation()) {
     const newCourse = {
@@ -78,24 +87,89 @@ const getCourse = async () => {
     };
     try {
       await axios.post(`createCourse`, newCourse).then((response) => {
-        console.log(response);
-        try {
-          axios.post('courses/saveCourse', response)
-              .then((router.push('/')));
-        } catch (error) {
-          console.log(error);
-        }
+        course.value = response.course;
+        sessionId.value = response.sessionId;
+        showModal.value = true;
       });
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 406) {
+        waiting.value = false;
+        error_message.value = 'Your inputs are unacceptable';
+        isError.value = true;
+      } else if (error.response.status === 500) {
+        waiting.value = false;
+        error_message.value = 'Internal Server Error, try again later';
+        isError.value = true;
+      }
     }
   } else {
     return 0;
   }
 }
+
+const saveCourse = async () => {
+  try {
+    const response = {
+      course: course.value,
+      sessionId: sessionId.value,
+    };
+    axios.post('courses/saveCourse', response)
+        .then((router.push('/')));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const editCourse = async (prompt) => {
+  showModal.value = false;
+  try {
+    const responseData = {
+      request: prompt,
+      sessionId: sessionId.value,
+    };
+    const response = await axios.post('editCourse', responseData);
+    previous_course.value = course.value;
+    course.value = response.course;
+    showModal.value = true;
+  } catch (error) {
+    if (error.response.status === 406) {
+      waiting.value = false;
+      error_message.value = 'Your inputs are unacceptable';
+      isError.value = true;
+    } else if (error.response.status === 500) {
+      waiting.value = false;
+      error_message.value = 'Internal Server Error, try again later';
+      isError.value = true;
+    }
+  }
+}
+
+const savePrevious = async () => {
+  if (previous_course.value) {
+    try {
+      const response = {
+        course: previous_course.value,
+        sessionId: sessionId.value,
+      };
+      axios.post('courses/saveCourse', response)
+          .then((router.push('/')));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 </script>
 
 <template>
+  <div class="modal-container" v-if="showModal">
+    <EditCourseModal
+        :course="course.value"
+        :previous_course="!!previous_course.value"
+        @editCourse="editCourse"
+        @saveCourse="saveCourse"
+        @savePrevious="savePrevious"
+    />
+  </div>
   <div class="main">
     <section class="left">
       <Logo />
@@ -107,11 +181,12 @@ const getCourse = async () => {
           v-for="inp in inputs"
       >
         <BaseHeader :text="inp.question" class="header"/>
-        <BaseInput :placeholder="inp.placeholder" v-model="inp.model"/>
+        <BaseTextArea :placeholder="inp.placeholder" v-model="inp.model"/>
       </div>
       <div class="question" style="margin-top: 1vh">
-        <BaseInput placeholder="Lesson duration (in minutes)" v-model="duration"/>
+        <BaseTextArea placeholder="Lesson duration (in minutes)" v-model="duration"/>
       </div>
+      <ErrorNotification v-if="isError" :error_message="error_message" />
       <ButtonGreen
           v-if="validation() && !waiting"
           title="GET A COURSE"
@@ -164,12 +239,12 @@ const getCourse = async () => {
 }
 
 .increased-size {
-  margin-top: 2.5vh;
+  margin: 2.5vh 0;
   padding: 2vh 3vw;
 }
 
 .inactive {
-  margin-top: 2.5vh;
+  margin: 2.5vh 0;
   padding: 2vh 3vw;
   background-color: #BBDEFB;
   color: #0D47A1;

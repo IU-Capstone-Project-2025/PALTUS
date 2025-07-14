@@ -1,68 +1,74 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
+import router from "@/router/index.js";
+import axios from "@/plugins/axios.js";
 import ErrorNotification from "@/components/shared/ErrorNotification.vue";
 
 const email = ref('');
 const password = ref('');
+const name = ref('');
 const auth = useAuthStore();
-const router = useRouter();
 const submitted = ref(false);
 const error = ref(false);
-const error_message = ref('');
+const error_message = ref('')
 
-async function loginUser() {
-  submitted.value = true;
-  console.log("Trying login with:", email.value, password.value);
-  try {
-    await auth.login(email.value, password.value, null);
-    await router.push('/');
-  } catch (err) {
-    if (err.statusCode === 500) {
-      error_message.value = 'Wrong password';
-      error.value = true;
-    } else if (err.statusCode === 404) {
-      error_message.value = 'Account does not exist';
-      error.value = true;
-      email.value = '';
-    }
-    password.value = '';
-    submitted.value = false;
-  }
-}
 
 const isValidEmail = computed(() => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email.value);
 });
 
-const isValidPassword = computed(() => {
-  return !!password.value;
-});
+const checkFields = () => {
+  return !!(isValidEmail.value && password.value.length && name.value.length);
+}
 
-const validation = () => {
-  return isValidPassword.value && isValidEmail.value;
+const signUp = async () => {
+  submitted.value = true;
+  try {
+    const userData = {
+      username: name.value,
+      email: email.value,
+      password: password.value,
+    }
+    const response = await axios.post('/register', userData);
+    console.log(response);
+    auth.setUserData(email.value, name.value, password.value);
+    router.push('/verify')
+  } catch (err) {
+    if (err.response.status === 500) {
+      error_message.value = 'Account with this email already exists';
+      email.value = '';
+    }
+    error.value = true;
+    submitted.value = false;
+  }
 }
 
 onMounted(() => {
   if (auth.isAuthenticated()) {
     router.push('/');
-  } 
+  }
 })
 </script>
 
 <template>
   <div class="container">
     <Logo />
-    <form @submit.prevent="loginUser">
-      <h3>Log In</h3>
+    <form @submit.prevent="signUp">
+      <h3>Sign Up</h3>
       <BaseInput
           v-model="email"
           placeholder="Email"
+          class="custom-input"
+      />
+
+      <BaseInput
+          v-model="name"
+          placeholder="Your Name"
           class="custom-input"
       />
 
@@ -73,18 +79,8 @@ onMounted(() => {
           class="custom-input"
       />
       <ErrorNotification :error_message="error_message" v-if="error" />
-
-      <ButtonGreen
-          type="submit"
-          title="Log In"
-          v-if="validation() && !submitted"
-          id="submit-button"
-      />
-      <ButtonGreen title="Log In" class="inactive" v-else />
-      <p class="register-suggest">Don't have an account?</p>
-      <router-link to="/sign_up">
-        <ButtonGreen title="Sign Up" />
-      </router-link>
+      <ButtonGreen v-if="checkFields() && !submitted" type="submit" title="Sign Up" />
+      <ButtonGreen v-else title="Sign Up" class="inactive" />
     </form>
   </div>
 </template>
@@ -118,13 +114,6 @@ form {
   min-height: 5vh;
   font-size: 1rem;
   margin-bottom: 3vh;
-}
-
-.register-suggest {
-  font-size: 1rem;
-  color: #F5F7FA;
-  margin-top: 5vh;
-  margin-bottom: 1vh;
 }
 
 .inactive {
