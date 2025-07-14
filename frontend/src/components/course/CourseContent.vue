@@ -5,10 +5,10 @@ import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
 import {reactive} from "vue";
-import BaseTextArea from "@/components/shared/BaseTextArea.vue";
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import Notes from "@/components/course/Notes.vue";
 import NotesEdition from "@/components/course/NotesEdition.vue";
+import ButtonDefault from "@/components/shared/ButtonDefault.vue";
+import EditCourseModal from "@/components/course_creation/EditCourseModal.vue";
 
 const editMode = reactive({
   id: null,
@@ -99,6 +99,7 @@ const submitNotes = (notes) => {
               @submitNotes="submitNotes"
               v-else
           />
+          <ButtonDefault title="Ask AI" class="ai-btn"/>
         </li>
       </ul>
     </div>
@@ -185,5 +186,10 @@ const submitNotes = (notes) => {
 
 ul {
   list-style-type: none;
+}
+
+.ai-btn {
+  margin-left: 2vw;
+  margin-bottom: 3vh;
 }
 </style>
