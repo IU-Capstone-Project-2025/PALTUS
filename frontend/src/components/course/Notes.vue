@@ -44,6 +44,7 @@ defineEmits(['editNotes'])
   padding: 1vh 2vw;
   background-color: #F5F7FA;
   cursor: pointer;
+  overflow-wrap: break-word;
 }
 
 .edit-notes {

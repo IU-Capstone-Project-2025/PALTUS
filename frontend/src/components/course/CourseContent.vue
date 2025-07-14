@@ -8,6 +8,7 @@ import {reactive} from "vue";
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import Notes from "@/components/course/Notes.vue";
+import NotesEdition from "@/components/course/NotesEdition.vue";
 
 const editMode = reactive({
   id: null,
@@ -93,13 +94,11 @@ const submitNotes = (notes) => {
               :id="subtopic.id"
               @editNotes="editNotes"
           />
-          <div class="editing" v-else-if="editMode.id === subtopic.id">
-            <BaseTextArea
-                v-model="subtopic.notes"
-                placeholder="Add your notes here"
-            />
-            <ButtonGreen title="Submit changes" @click="submitNotes(subtopic.notes)" class="submit-btn" />
-          </div>
+          <NotesEdition
+              v-model:notes="subtopic.notes"
+              @submitNotes="submitNotes"
+              v-else
+          />
         </li>
       </ul>
     </div>
@@ -186,17 +185,5 @@ const submitNotes = (notes) => {
 
 ul {
   list-style-type: none;
-}
-
-.editing {
-  margin-left: 2vw;
-}
-
-.editing textarea {
-  font-size: 0.9rem;
-}
-
-.submit-btn {
-  margin: 1vh 0 3vh;
 }
 </style>
