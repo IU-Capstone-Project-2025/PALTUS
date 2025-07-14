@@ -24,7 +24,7 @@ const emit = defineEmits(['update:modelValue'])
   <div class="side-bar">
     <div style="position: sticky; top: 0;">
       <Logo class="courses-logo" />
-      <ProgressBar :fraction_finished="progress * 100" />
+      <ProgressBar :fraction_finished="progress * 100" class="side-progress" />
     </div>
     <div
         class="course-name"
@@ -114,5 +114,14 @@ ul {
   cursor: pointer;
   transition: 0.2s;
   font-weight: bold;
+}
+
+.side-progress {
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #42A5F5;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #42A5F5;
 }
 </style>
