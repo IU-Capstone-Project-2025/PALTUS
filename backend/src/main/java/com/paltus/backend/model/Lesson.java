@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,5 +40,6 @@ public class Lesson {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
     @JsonManagedReference
+    @OrderBy("id ASC")
     private List<Subtopic> subtopics;
 }
