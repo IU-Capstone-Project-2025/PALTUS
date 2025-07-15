@@ -37,7 +37,7 @@ defineEmits(['update:modelValue', 'add'])
 
 .msg {
   padding: 1rem;
-  max-width: 17vw;
+  max-width: 25vw;
   background-color: #0D47A1;
   color: #F5F7FA;
   border-radius: 16px;
