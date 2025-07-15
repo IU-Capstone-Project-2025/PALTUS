@@ -24,7 +24,9 @@ defineEmits(['closeModal'])
         <BaseHeader :text="props.topic" style="margin-bottom: 2vh" />
       </div>
       <div class="modal-body">
-        <Chat />
+        <Chat
+            :id="props.id"
+        />
       </div>
       <div class="modal-footer">
         <ButtonDefault

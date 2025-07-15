@@ -4,34 +4,47 @@ import {nextTick, onMounted, ref} from "vue";
 import UserMessage from "@/components/course/UserMessage.vue";
 import AIMessage from "@/components/course/AIMessage.vue";
 import Typing from "@/components/course/Typing.vue";
+import axios from "@/plugins/axios.js";
 
 onMounted(() => {
   scrollToBottom();
 });
 
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  }
+})
+
 const messagesContainer = ref(null);
 const query = ref('');
-
-const userMessages = ref([
-    'Hello brother',
-    'I dont understand this topic at all??',
-    'dyou know what i mean this is so fucking hard maaaaan',
-])
-
-const aiMessages = ref([
-  'hello maaaaaaan',
-  'whats your problem piece of shit',
-  'fuck you brotha) ima gigachat man',
-])
-
 const waiting = ref(false);
+const sessionId = ref('');
 
-const askAI = () => {
+const userMessages = ref([])
+const aiMessages = ref([])
+
+
+const askAI = async () => {
   userMessages.value.push(query.value);
   waiting.value = true;
+  scrollToBottom();
+  const requestBody = {
+    request: query.value,
+    sessionId: sessionId.value,
+  }
   query.value = '';
 
-  scrollToBottom();
+  try {
+    const response = await axios.post(`/subtopicAskLLM/${props.id}`, requestBody);
+    sessionId.value = response.sessionId;
+    waiting.value = false;
+    aiMessages.value.push(response.response);
+    scrollToBottom();
+  } catch (e) {
+    console.err(e)
+  }
 }
 
 const scrollToBottom = () => {
