@@ -75,13 +75,6 @@ const submitNotes = (notes) => {
 }
 
 const openChat = (topic, id) => {
-  if (editMode.edit) {
-    submitNotes(
-        props.course.lessons[props.chosenContent - 1].subtopics
-            .find(subtopic => subtopic.id === editMode.id)
-            .notes
-    )
-  }
   modalTopic.value = topic;
   modalId.value = id;
   modal.value = true;
@@ -128,7 +121,12 @@ const finishChat = () => {
               @submitNotes="submitNotes"
               v-else
           />
-          <ButtonDefault title="Ask PALTUS" class="ai-btn" @click="openChat(subtopic.topic, subtopic.id)"/>
+          <ButtonDefault
+              v-if="editMode.id !== subtopic.id"
+              title="Ask PALTUS"
+              class="ai-btn"
+              @click="openChat(subtopic.topic, subtopic.id)"
+          />
         </li>
       </ul>
     </div>
