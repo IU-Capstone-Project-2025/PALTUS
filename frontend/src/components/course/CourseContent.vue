@@ -4,14 +4,21 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
-import {reactive} from "vue";
-import BaseTextArea from "@/components/shared/BaseTextArea.vue";
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import {nextTick, reactive, ref} from "vue";
+import Notes from "@/components/course/Notes.vue";
+import NotesEdition from "@/components/course/NotesEdition.vue";
+import ButtonDefault from "@/components/shared/ButtonDefault.vue";
+import ChatModal from "@/components/course/ChatModal.vue";
+import {useCourseStore} from "@/stores/course.js";
 
 const editMode = reactive({
   id: null,
   edit: false
 });
+
+const modal = ref(false);
+const modalTopic = ref('');
+const modalId = ref(null);
 
 const props = defineProps({
   course: {
@@ -67,9 +74,31 @@ const submitNotes = (notes) => {
     console.error(error);
   }
 }
+
+const openChat = (topic, id) => {
+  modalTopic.value = topic;
+  modalId.value = id;
+  modal.value = true;
+}
+
+const finishChat = () => {
+  useCourseStore().loadCourse(props.course.courseId);
+  nextTick(() => {
+    modalTopic.value = '';
+    modalId.value = null;
+    modal.value = false;
+  })
+}
 </script>
 
 <template>
+  <ChatModal
+      v-if="modal"
+      :topic="modalTopic"
+      :id="modalId"
+      :lesson="props.course.lessons[props.chosenContent - 1].id"
+      @close-modal="finishChat"
+  />
   <div class="lesson-content" v-if="chosenContent">
     <BaseHeader :text="course.lessons[chosenContent - 1].title + ':'" class="uppercase" />
     <div class="subtopics">
@@ -86,25 +115,28 @@ const submitNotes = (notes) => {
             />
             <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}: </label>
           </div>
-          <ul v-if="subtopic.notes && editMode.id !== subtopic.id">
-            <li class="field-info">
-              <p class="instruction" v-if="editMode.id !== subtopic.id">Click inside to add notes</p>
-              <div class="notes-container" @click="editNotes(subtopic.id)">
-                <a class="edit-notes">{{ subtopic.notes }}</a>
-              </div>
-            </li>
-          </ul>
-          <div class="editing" v-else-if="editMode.id === subtopic.id">
-            <BaseTextArea
-                v-model="subtopic.notes"
-                placeholder="Add your notes here"
-            />
-            <ButtonGreen title="Submit changes" @click="submitNotes(subtopic.notes)" class="submit-btn" />
-          </div>
+          <Notes
+              v-if="editMode.id !== subtopic.id"
+              :notes="subtopic.notes"
+              :id="subtopic.id"
+              @editNotes="editNotes"
+          />
+          <NotesEdition
+              v-model:notes="subtopic.notes"
+              @submitNotes="submitNotes"
+              v-else
+          />
+          <ButtonDefault
+              v-if="editMode.id !== subtopic.id"
+              title="Ask PALTUS"
+              class="ai-btn"
+              @click="openChat(subtopic.topic, subtopic.id)"
+          />
         </li>
       </ul>
     </div>
   </div>
+
   <section class="main-content">
     <div class="lesson-content" v-if="!chosenContent">
       <BaseHeader :text="course.course_name" class="uppercase" />
@@ -132,27 +164,6 @@ const submitNotes = (notes) => {
 </template>
 
 <style scoped>
-.edit-notes {
-  text-decoration: none;
-  color: #0D47A1;
-  white-space: pre-line;
-}
-
-.notes-container {
-  border: solid 3px #b2d9fa;
-  border-radius: 20px;
-  margin-bottom: 2vh;
-  padding: 1vh 2vw;
-  background-color: #F5F7FA;
-  cursor: pointer;
-}
-
-.instruction {
-  margin-left: 1vw;
-  font-size: 0.95rem;
-  color: #42A5F5;
-}
-
 .main-content {
   display: flex;
   flex-direction: column;
@@ -210,15 +221,8 @@ ul {
   list-style-type: none;
 }
 
-.editing {
+.ai-btn {
   margin-left: 2vw;
-}
-
-.editing textarea {
-  font-size: 0.9rem;
-}
-
-.submit-btn {
-  margin: 1vh 0 3vh;
+  margin-bottom: 3vh;
 }
 </style>

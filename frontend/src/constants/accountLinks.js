@@ -1,14 +1,13 @@
 export const accountLinks = [
     {
-        title: 'My Account',
-        link: '/account',
+        title: 'Awards',
+        link: '/awards',
     },
     {
         title: 'Settings',
         link: '/settings',
     },
     {
-        title: 'Current Level',
-        link: '/awards',
-    },
+        title: 'Log out'
+    }
 ]

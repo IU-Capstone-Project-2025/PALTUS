@@ -6,13 +6,22 @@ defineProps({
   },
   link: {
     type: String,
-    required: true
+    required: false
+  },
+  isFunc: {
+    type: Boolean,
+    default: false
   }
 })
+
+defineEmits(['logout'])
 </script>
 
 <template>
-  <router-link :to="link">
+  <div class="setting" v-if="isFunc" @click="$emit('logout')">
+    {{ title }}
+  </div>
+  <router-link :to="link" v-else>
     <div class="setting">
       {{ title }}
     </div>
