@@ -11,6 +11,10 @@ const props = defineProps({
   id: {
     type: Number,
     required: true,
+  },
+  lesson: {
+    type: Number,
+    required: true,
   }
 })
 
@@ -26,6 +30,7 @@ defineEmits(['closeModal'])
       <div class="modal-body">
         <Chat
             :id="props.id"
+            :lesson="props.lesson"
         />
       </div>
       <div class="modal-footer">

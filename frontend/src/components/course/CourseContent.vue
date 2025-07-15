@@ -92,6 +92,7 @@ const finishChat = () => {
       v-if="modal"
       :topic="modalTopic"
       :id="modalId"
+      :lesson="props.course.lessons[props.chosenContent - 1].id"
       @close-modal="finishChat"
   />
   <div class="lesson-content" v-if="chosenContent">

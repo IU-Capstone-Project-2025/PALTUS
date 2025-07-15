@@ -3,8 +3,14 @@ defineProps({
   message: {
     type: String,
     required: true,
+  },
+  modelValue: {
+    type: Boolean,
+    required: true,
   }
 })
+
+defineEmits(['update:modelValue', 'add'])
 </script>
 
 <template>
@@ -12,7 +18,10 @@ defineProps({
     <div class="msg">
       {{ message }}
     </div>
-    <a class="add-to-notes">
+    <p class="added" v-if="modelValue">
+      Added successfully
+    </p>
+    <a class="add-to-notes" @click="$emit('add')" v-else>
       Add to notes
     </a>
   </div>
@@ -47,5 +56,12 @@ defineProps({
 .add-to-notes:hover {
   color: #42A5F5;
   text-decoration: underline;
+}
+
+.added {
+  font-size: 0.8rem;
+  margin-bottom: 1vh;
+  color: #48CFAD;
+  margin-left: 1vw;
 }
 </style>

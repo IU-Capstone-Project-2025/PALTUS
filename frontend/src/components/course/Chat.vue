@@ -1,6 +1,6 @@
 <script setup>
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
-import {nextTick, onMounted, ref} from "vue";
+import {nextTick, onMounted, reactive, ref} from "vue";
 import UserMessage from "@/components/course/UserMessage.vue";
 import AIMessage from "@/components/course/AIMessage.vue";
 import Typing from "@/components/course/Typing.vue";
@@ -8,10 +8,15 @@ import axios from "@/plugins/axios.js";
 
 onMounted(() => {
   scrollToBottom();
+  sessionId.value = '';
 });
 
 const props = defineProps({
   id: {
+    type: Number,
+    required: true,
+  },
+  lesson: {
     type: Number,
     required: true,
   }
@@ -23,7 +28,7 @@ const waiting = ref(false);
 const sessionId = ref('');
 
 const userMessages = ref([])
-const aiMessages = ref([])
+const aiMessages = reactive([])
 
 
 const askAI = async () => {
@@ -35,15 +40,33 @@ const askAI = async () => {
     sessionId: sessionId.value,
   }
   query.value = '';
-
   try {
     const response = await axios.post(`/subtopicAskLLM/${props.id}`, requestBody);
     sessionId.value = response.sessionId;
     waiting.value = false;
-    aiMessages.value.push(response.response);
+    const newMessage = {
+      message: response.response,
+      added: false,
+    }
+    aiMessages.push(newMessage);
     scrollToBottom();
   } catch (e) {
     console.err(e)
+  }
+}
+
+const addToNotes = async (message) => {
+  try {
+    await axios.put(
+        `/lessons/${props.lesson}/subtopics/addNotes/${props.id}`,
+        message.message,
+        {
+          headers:{ "Content-Type": "text/plain"}
+        }
+    );
+    message.added = true;
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -57,6 +80,8 @@ const scrollToBottom = () => {
     }
   });
 };
+
+
 </script>
 
 <template>
@@ -65,7 +90,12 @@ const scrollToBottom = () => {
     <ul class="messages" v-if="userMessages.length > 0">
       <li class="message" v-for="(msg, index) in userMessages" :key="index">
         <UserMessage :message="msg" />
-        <AIMessage v-if="aiMessages.length > index" :message="aiMessages[index]" />
+        <AIMessage
+            v-if="aiMessages.length > index"
+            :message="aiMessages[index].message"
+            v-model="aiMessages[index].added"
+            @add="addToNotes(aiMessages[index])"
+        />
         <Typing v-else />
       </li>
     </ul>
