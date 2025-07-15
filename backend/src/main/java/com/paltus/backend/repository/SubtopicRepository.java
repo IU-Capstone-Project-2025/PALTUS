@@ -20,4 +20,8 @@ public interface SubtopicRepository extends JpaRepository<Subtopic, Long> {
     @Transactional
     @Query("UPDATE Subtopic s SET s.notes = :notes WHERE s.id = :id")
     void updateNotes(@Param("id") Long id, @Param("notes") String notes);
+
+    @Query("SELECT s.lesson.id FROM Subtopic s WHERE s.id = :id")
+    long getLessonIdById(@Param("id") Long id);
+
 }

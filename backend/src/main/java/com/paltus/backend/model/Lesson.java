@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,11 +31,8 @@ public class Lesson {
     private long id;
     private int lesson_number;
     private String title;
+    private boolean finished;
     private boolean quiz;
-
-    @Convert(converter = StringListConverter.class)
-    @Column(columnDefinition = "text")
-    private List<String> links;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
@@ -43,5 +41,6 @@ public class Lesson {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lesson")
     @JsonManagedReference
+    @OrderBy("id ASC")
     private List<Subtopic> subtopics;
 }
