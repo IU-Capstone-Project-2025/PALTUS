@@ -30,4 +30,5 @@ public class Achievement {
     private AchievementType type;
 
     private int targetCount;
+    private int experience;
 }

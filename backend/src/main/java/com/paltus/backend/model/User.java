@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -51,4 +52,22 @@ public class User {
 
     private LocalDate lastActivityTime;
 
+    private int currentExp;
+    private int requiredExp;
+    private int level;
+
+    @PrePersist
+    public void onCreate() {
+        if (level == 0) {
+            level = 1;
+        }
+
+        if (requiredExp == 0) {
+            requiredExp = 100;
+        }
+
+        if (currentExp == 0) {
+            currentExp = 0;
+        }
+    }
 }

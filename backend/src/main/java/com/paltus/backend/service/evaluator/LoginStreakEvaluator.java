@@ -3,12 +3,10 @@ package com.paltus.backend.service.evaluator;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-import com.paltus.backend.model.Achievement;
 import com.paltus.backend.model.User;
-import com.paltus.backend.model.UserAchievement;
 import com.paltus.backend.model.UserLogin;
 import com.paltus.backend.model.enums.AchievementType;
 import com.paltus.backend.repository.AchievementRepository;
@@ -16,17 +14,13 @@ import com.paltus.backend.repository.UserAchievementRepository;
 import com.paltus.backend.repository.UserLoginRepository;
 
 @Component
-public class LoginStreakEvaluator implements AchievementEvaluator {
+public class LoginStreakEvaluator extends AbstractAchievementEvaluator {
     private final UserLoginRepository userLoginRepository;
-    private final AchievementRepository achievementRepository;
-    private final UserAchievementRepository userAchievementRepository;
 
-    @Autowired
     public LoginStreakEvaluator(UserLoginRepository userLoginRepository, AchievementRepository achievementRepository,
-            UserAchievementRepository userAchievementRepository) {
+            UserAchievementRepository userAchievementRepository, ApplicationEventPublisher eventPublisher) {
+        super(achievementRepository, userAchievementRepository, eventPublisher);
         this.userLoginRepository = userLoginRepository;
-        this.achievementRepository = achievementRepository;
-        this.userAchievementRepository = userAchievementRepository;
     }
 
     @Override
@@ -37,8 +31,6 @@ public class LoginStreakEvaluator implements AchievementEvaluator {
             userLoginRepository.save(new UserLogin(user.getEmail(), today));
         }
 
-
-        List<Achievement> achievements = achievementRepository.findAllByType(getType());
         List<LocalDate> logins = userLoginRepository.findAllLoginDatesByUserEmailDesc(user.getEmail());
 
         if (logins.isEmpty())
@@ -56,14 +48,8 @@ public class LoginStreakEvaluator implements AchievementEvaluator {
             }
         }
 
-        for (Achievement achievement : achievements) {
-            UserAchievement userAchievement = userAchievementRepository.findByUserAndAchievement(user, achievement)
-                    .orElse(new UserAchievement(user, achievement, 0));
-            if (userAchievement.getProgress() < 100) {
-                userAchievement.setProgress(Math.min(100, (int)((double)(streak * 100) / achievement.getTargetCount())));
-                userAchievementRepository.save(userAchievement);
-            }
-        }
+        calculateProgress(user, streak);
+
     }
 
     @Override
