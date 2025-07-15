@@ -117,7 +117,7 @@ const finishChat = () => {
               @submitNotes="submitNotes"
               v-else
           />
-          <ButtonDefault title="Ask AI" class="ai-btn" @click="openChat(subtopic.topic)"/>
+          <ButtonDefault title="Ask PALTUS" class="ai-btn" @click="openChat(subtopic.topic)"/>
         </li>
       </ul>
     </div>
