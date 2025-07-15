@@ -23,4 +23,17 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
     @Transactional
     @Query("UPDATE Lesson l SET l.quiz = true WHERE l.id = :lessonId")
     void setQuizAsPassed(@Param("lessonId") Long lessonId);
+
+    @Query("""
+    SELECT COUNT(s) = 0
+    FROM Subtopic s
+    WHERE s.lesson.id = :lessonId AND s.finished = false
+    """)
+    boolean isFinished(@Param("lessonId") Long lessonId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Lesson l SET l.finished = :state WHERE l.id = :lessonId")
+    void updateLessonFinishedState(@Param("lessonId") Long lessonId, @Param("state") boolean state);
+
 }

@@ -28,6 +28,14 @@ public class LessonService {
         return this.courseMapper.toLessonDto(lesson);
     }
 
+    public void handleSubtopicFinished(long id) {
+        if (lessonRepository.isFinished(id)) {
+            lessonRepository.updateLessonFinishedState(id, true);
+        } else {
+            lessonRepository.updateLessonFinishedState(id, false);
+        }
+    }
+
     public void setQuizAsPassed(long id) {
         if (!lessonRepository.existsById(id)) {
             throw new EntityNotFoundException("No subtopic with id " + id);
