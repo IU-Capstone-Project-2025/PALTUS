@@ -24,11 +24,13 @@ defineProps({
 
 .msg {
   padding: 1rem;
-  max-width: 10vw;
+  max-width: 17vw;
   background-color: #BBDEFB;
   color: #0D47A1;
   border-radius: 16px;
   margin-bottom: 1vh;
   border: solid 1px #98c9f1;
+  overflow: hidden;
+  word-break: break-word;
 }
 </style>

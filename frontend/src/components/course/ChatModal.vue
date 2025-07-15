@@ -26,7 +26,9 @@ defineEmits(['closeModal'])
         <ButtonDefault
             title="Finish session"
             @click="$emit('closeModal')"
+            class="finish-btn"
         />
+        <p class="warning">Chat will be deleted after you leave</p>
       </div>
     </div>
   </div>
@@ -76,6 +78,19 @@ defineEmits(['closeModal'])
 }
 
 .modal-footer {
-  padding-top: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1vh;
+}
+
+.finish-btn {
+  width: 15vw;
+}
+
+.warning {
+  font-size: 0.8rem;
+  margin-top: 0.5vh;
+  color: #0D47A1;
 }
 </style>
