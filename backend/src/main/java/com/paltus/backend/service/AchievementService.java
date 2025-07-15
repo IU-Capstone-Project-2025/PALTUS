@@ -59,7 +59,8 @@ public class AchievementService {
 
     public UserGameStatsDto getUserGameStats() {
         User user = userService.getCurrentUser();
-        return new UserGameStatsDto(userService.getStreak(), user.getLevel(), user.getCurrentExp(), user.getRequiredExp(),
+        return new UserGameStatsDto(userService.getStreak(), user.getLevel(), user.getCurrentExp(),
+                user.getRequiredExp(), user.getTitle().getName(),
                 getAchievementsWithProgress());
     }
 }

@@ -2,15 +2,11 @@ package com.paltus.backend.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.paltus.backend.model.dto.AchievementWithProgressDto;
 import com.paltus.backend.model.dto.UserGameStatsDto;
 import com.paltus.backend.service.AchievementService;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-
 
 @RestController
 public class UserController {
@@ -19,6 +15,7 @@ public class UserController {
     public UserController(AchievementService achievementService) {
         this.achievementService = achievementService;
     }
+
     @GetMapping("/hello")
     public String getMethodName() {
         return "Hello test2";

@@ -18,6 +18,7 @@ import com.paltus.backend.model.dto.LoginUserDto;
 import com.paltus.backend.model.dto.RegisterUserDto;
 import com.paltus.backend.model.dto.VerifyUserDto;
 import com.paltus.backend.model.enums.AchievementType;
+import com.paltus.backend.repository.TitleRepository;
 import com.paltus.backend.repository.UserRepository;
 
 import jakarta.mail.MessagingException;
@@ -31,15 +32,19 @@ public class AuthenticationService {
     private EmailService emailService;
     private BCryptPasswordEncoder encoder;
     private AchievementService achievementService;
+    private TitleRepository titleRepository;
 
     @Autowired
     public AuthenticationService(UserRepository userRepository, AuthenticationManager authenticationManager,
-            EmailService emailService, BCryptPasswordEncoder encoder, AchievementService achievementService) {
+            EmailService emailService, BCryptPasswordEncoder encoder, AchievementService achievementService,
+            TitleRepository titleRepository) {
         this.userRepo = userRepository;
         this.authManager = authenticationManager;
         this.emailService = emailService;
         this.encoder = encoder;
         this.achievementService = achievementService;
+        this.titleRepository = titleRepository;
+
     }
 
     public void register(RegisterUserDto userDto) {
@@ -56,6 +61,7 @@ public class AuthenticationService {
             user.setEmail(userDto.email());
             user.setPassword(encoder.encode(userDto.password()));
             user.setEnabled(false);
+            user.setTitle(titleRepository.findById(1).get());
         }
         user.setVerificationCode(generateVerificationCode());
         user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15));
@@ -70,12 +76,14 @@ public class AuthenticationService {
         if (!user.isEnabled()) {
             throw new RuntimeException("Account not verified");
         }
-        Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password()));
+        Authentication auth = authManager
+                .authenticate(new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password()));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         achievementService.updateProgress(AchievementType.LOGIN_STREAK);
-        // achievementService.updateProgress(userDto.email(), AchievementType.LOGIN_STREAK);
+        // achievementService.updateProgress(userDto.email(),
+        // AchievementType.LOGIN_STREAK);
 
         return user;
     }

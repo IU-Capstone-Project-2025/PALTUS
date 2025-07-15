@@ -7,5 +7,6 @@ public record UserGameStatsDto(
     int level,
     int currentExp,
     int requiredExp,
+    String title,
     List<AchievementWithProgressDto> achievements
 ) {}
