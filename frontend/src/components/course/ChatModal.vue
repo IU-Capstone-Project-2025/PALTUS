@@ -7,6 +7,10 @@ const props = defineProps({
   topic: {
     type: String,
     required: true,
+  },
+  id: {
+    type: Number,
+    required: true,
   }
 })
 
