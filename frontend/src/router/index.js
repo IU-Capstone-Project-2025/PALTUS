@@ -2,13 +2,15 @@ import { createWebHistory, createRouter } from 'vue-router'
 import {useAuthStore} from "@/stores/auth.js";
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue';
+import SignUpView from "@/views/SignUpView.vue";
+import VerificationView from "@/views/VerificationView.vue";
 import CourseCreationView from "@/views/CourseCreationView.vue";
 import AccountView from "@/views/AccountView.vue";
 import SettingsView from "@/views/SettingsView.vue";
 import CourseView from "@/views/CourseView.vue";
-import LevelView from "@/views/LevelView.vue";
-import SignUpView from "@/views/SignUpView.vue";
-import VerificationView from "@/views/VerificationView.vue";
+import AwardsView from "@/views/AwardsView.vue";
+import QuizView from "@/views/QuizView.vue";
+
 
 const routes = [
     { path: '/login', component: LoginView },
@@ -35,14 +37,19 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: '/level',
-        component: LevelView,
-        meta: { requiresAuth: true }
-    },
-    {
         path: '/course/:id',
         component: CourseView,
         props: true,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/awards',
+        component: AwardsView,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/quiz',
+        component: QuizView,
         meta: { requiresAuth: true }
     }
 ]
@@ -64,12 +71,10 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && !isAuth) {
         if (to.path !== '/login') {
             return next('/login');
-        } else {
-            return next();
         }
     }
 
-    if (auth.expiresAt && Date.now() > auth.expiresAt) {
+    if (!!auth.expiresAt && (Date.now() > auth.expiresAt)) {
         auth.logout();
         if (to.path !== '/login') {
             return next('/login');
