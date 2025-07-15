@@ -32,5 +32,6 @@ defineProps({
   border: solid 1px #98c9f1;
   overflow: hidden;
   word-break: break-word;
+  white-space: pre-line;
 }
 </style>

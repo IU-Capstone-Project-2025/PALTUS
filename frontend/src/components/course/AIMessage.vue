@@ -44,6 +44,7 @@ defineEmits(['update:modelValue', 'add'])
   border: solid 1px #42A5F5;
   overflow: hidden;
   word-break: break-word;
+  white-space: pre-line;
 }
 
 .add-to-notes {
