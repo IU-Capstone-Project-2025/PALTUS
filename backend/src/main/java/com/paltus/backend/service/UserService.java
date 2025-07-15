@@ -29,13 +29,16 @@ public class UserService {
         return user;
     }
 
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-    }
+    public int getStreak() {
+        User user = getCurrentUser();
+        LocalDate lastActivityTime = user.getLastActivityTime();
+        LocalDate currentDate = LocalDate.now();
 
-    // TODO: при отображении стрика не занулять его в бд, только визуально,
-    // зануление только при следующем обновлении сабтопика
+        if (lastActivityTime == null || ChronoUnit.DAYS.between(lastActivityTime, currentDate) > 1) {
+            return 0;
+        }
+        return user.getStreak();
+    }
 
     public void updateStreak(long courseId) {
         UserLastActivityDto userLastActivityDto = userRepository.findUserIdAndLastActivityByCourseId(courseId);

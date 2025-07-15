@@ -3,10 +3,12 @@ package com.paltus.backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.model.dto.AchievementWithProgressDto;
+import com.paltus.backend.model.dto.UserGameStatsDto;
 import com.paltus.backend.service.AchievementService;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -23,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/achievements")
-    public List<AchievementWithProgressDto> getAchievements() {
-        return achievementService.getAchievementsWithProgress();
+    public ResponseEntity<UserGameStatsDto> getAchievements() {
+        return ResponseEntity.ok(achievementService.getUserGameStats());
     }
 }

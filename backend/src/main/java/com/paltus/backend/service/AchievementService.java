@@ -10,6 +10,7 @@ import com.paltus.backend.model.Achievement;
 import com.paltus.backend.model.User;
 import com.paltus.backend.model.UserAchievement;
 import com.paltus.backend.model.dto.AchievementWithProgressDto;
+import com.paltus.backend.model.dto.UserGameStatsDto;
 import com.paltus.backend.model.enums.AchievementType;
 import com.paltus.backend.repository.AchievementRepository;
 import com.paltus.backend.repository.UserAchievementRepository;
@@ -54,5 +55,11 @@ public class AchievementService {
             }
         }
         return achievemenstWithProgress;
+    }
+
+    public UserGameStatsDto getUserGameStats() {
+        User user = userService.getCurrentUser();
+        return new UserGameStatsDto(userService.getStreak(), user.getLevel(), user.getCurrentExp(), user.getRequiredExp(),
+                getAchievementsWithProgress());
     }
 }
