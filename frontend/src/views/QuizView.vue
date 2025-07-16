@@ -1,51 +1,80 @@
 <script setup>
 import {useQuizStore} from "@/stores/quiz.js";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
+import ErrorNotification from "@/components/shared/ErrorNotification.vue";
+import ButtonDefault from "@/components/shared/ButtonDefault.vue";
 
 const quiz = useQuizStore();
-const error = ref(false);
+const answers = reactive([]);
+const time = ref(5*60);
+const timer = ref(null);
+
+const formatTime = (seconds) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+};
+
+const startTimer = () => {
+  timer.value = setInterval(() => {
+    if (time.value > 0) {
+      time.value--;
+    } else {
+      clearInterval(timer.value);
+    }
+  }, 1000);
+};
 
 onMounted(() => {
   console.log(quiz);
+  startTimer();
 })
+
+const chooseAnswer = (index, questionIndex) => {
+  answers[questionIndex] = index;
+}
 </script>
 
 <template>
-  <div class="quiz-view">
+  <ErrorNotification
+      error_message="Quiz was not generated"
+      class="error"
+      v-if="!quiz.quizTitle"
+  />
+  <div class="quiz-view" v-else>
     <div class="quiz-header">
       <BaseHeader :text="quiz.quizTitle" />
     </div>
-
-    <div class="quiz-content">
-      <div class="question-container">
-        <h3 class="question-title">Question 1</h3>
-        <p class="question-text">What is the output of print(3 + 2 * 2) in Python?</p>
-
-        <div class="options-container">
-          <div class="option">
-            <input type="radio" id="option-1" name="quiz-option" value="7">
-            <label for="option-1">7</label>
-          </div>
-          <div class="option">
-            <input type="radio" id="option-2" name="quiz-option" value="9">
-            <label for="option-2">9</label>
-          </div>
-          <div class="option">
-            <input type="radio" id="option-3" name="quiz-option" value="1">
-            <label for="option-3">1</label>
-          </div>
-          <div class="option">
-            <input type="radio" id="option-4" name="quiz-option" value="3">
-            <label for="option-4">3</label>
-          </div>
-        </div>
+    <div class="timer-container">
+      <div class="timer">
+        {{ formatTime(time) }}
       </div>
+    </div>
 
-      <div class="quiz-footer">
-        <div class="timer">
-          <span>Time left: 5:00</span>
-        </div>
+    <div>
+      <ul class="quiz-content" >
+        <li v-for="(question, questionIndex) in quiz.questions" class="question-container">
+          <h3 class="question-title">Question {{ questionIndex + 1 }}</h3>
+          <p class="question-text">{{ question.questionText }}</p>
+
+          <ul>
+            <li class="options-container" v-for="(option, index) in question.options">
+              <div class="option">
+                <input
+                    type="radio"
+                    :id="option"
+                    :value="option"
+                    @click="chooseAnswer(index, questionIndex)"
+                >
+                <label :for="option">{{ option }}</label>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="button-container">
+        <ButtonDefault title="Submit" />
       </div>
     </div>
   </div>
@@ -53,68 +82,59 @@ onMounted(() => {
 
 <style scoped>
 .quiz-view {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Montserrat', sans-serif;
-  color: #000;
+  width: 60vw;
+  margin: 2vh auto;
+  padding: 2vh;
+  color: #0D47A1;
+}
+
+.error {
+  text-align: center;
+  font-size: 2rem;
+  height: 100%;
+  margin-top: 30vh;
+}
+
+ul {
+  list-style-type: none;
 }
 
 .quiz-header {
   text-align: center;
-  margin-bottom: 30px;
-}
-
-.quiz-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #42A5F5;
-  margin-bottom: 10px;
-}
-
-.quiz-header h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-.quiz-topic {
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: #42A5F5;
-  margin-top: 10px;
+  margin-bottom: 3vh;
 }
 
 .question-container {
-  background: white;
+  background: #F5F7FA;
   border-radius: 12px;
   padding: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  margin-bottom: 2vh;
 }
 
 .question-title {
   font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 15px;
+  font-weight: bold;
+  margin: 2vh 0;
   color: #42A5F5;
 }
 
 .question-text {
   font-size: 1.1rem;
-  margin-bottom: 25px;
+  margin-bottom: 2vh;
   line-height: 1.5;
+  font-weight: bold;
 }
 
 .options-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 3vh;
 }
 
 .option {
   display: flex;
   align-items: center;
+  margin: 1vh 0;
 }
 
 .option input[type="radio"] {
@@ -147,19 +167,33 @@ onMounted(() => {
 .option label {
   font-size: 1rem;
   cursor: pointer;
+  color: #0D47A1;
+  font-weight: 300;
   flex: 1;
 }
 
-.quiz-footer {
-  display: flex;
-  justify-content: flex-end;
+.timer-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
 }
 
 .timer {
-  background: #f0f0f0;
-  padding: 10px 20px;
-  border-radius: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   font-weight: 500;
-  color: #555;
+  color: #42A5F5;
+  background-color: #E3F2FD;
+  font-size: 3rem;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2vh 0;
 }
 </style>

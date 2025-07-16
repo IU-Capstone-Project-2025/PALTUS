@@ -12,19 +12,23 @@ export const useQuizStore = defineStore('quiz', {
     actions: {
         async loadQuiz(lessonId) {
             try {
-                const response = await axios.get(`/quiz/${lessonId}`);
-                console.log(response);
-                this.quizTitle = response.quizTitle;
+                const quizData = await axios.get(`/quiz/${lessonId}`);
+                console.log(quizData);
+                this.quizTitle = quizData.quizTitle;
                 const newQuestions = [];
                 const correct = [];
-                for (const question in response.questions) {
-                    const newQuestion = {};
-                    newQuestion.questionId = question.questionId
-                    newQuestion.questionText = question.questionText;
-                    newQuestion.options = question.options;
-                    correct.push(question.correctAnswer)
+
+                for (const question of quizData.questions) {
+                    const newQuestion = {
+                        questionId: question.questionId,
+                        questionText: question.questionText,
+                        options: [...question.options]
+                    };
+
+                    correct.push(question.correctAnswer);
                     newQuestions.push(newQuestion);
                 }
+
                 this.questions = newQuestions;
                 this.correctAnswers = correct;
                 await router.push('/quiz');
