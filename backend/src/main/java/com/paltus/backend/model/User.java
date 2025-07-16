@@ -58,6 +58,8 @@ public class User {
     private int requiredExp;
     private int level;
 
+    private int finishedLessons;
+
     @ManyToOne
     @JoinColumn(name = "title_id")
     private Title title;
