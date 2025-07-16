@@ -14,7 +14,7 @@ import com.paltus.backend.repository.UserAchievementRepository;
 public abstract class AbstractAchievementEvaluator implements AchievementEvaluator {
     private final AchievementRepository achievementRepository;
     private final UserAchievementRepository userAchievementRepository;
-    private  final ApplicationEventPublisher eventPublisher;
+    protected  final ApplicationEventPublisher eventPublisher;
 
     public AbstractAchievementEvaluator(AchievementRepository achievementRepository,
             UserAchievementRepository userAchievementRepository, ApplicationEventPublisher eventPublisher) {
