@@ -18,8 +18,9 @@ import com.paltus.backend.model.requests.SaveCourseRequest;
 import com.paltus.backend.service.ChatService;
 import com.paltus.backend.service.CourseService;
 
+import io.swagger.v3.oas.annotations.Operation;
 
-// TODO: change URL 
+
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
@@ -31,28 +32,31 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    // @GetMapping()
-    // public List<CourseSummaryDto> getAllCoursesSummaries() {
-    //     return courseService.getAllCoursesSummaries();
-    // }
 
+    @Operation(
+        description = "Retrieve the dashboard data for the user"
+    )
     @GetMapping()
     public DashboardDto getDashboardDto() {
         return courseService.getDashboard();
     }
     
-
+    @Operation(
+        description = "Retrieve detailed information about a course by its ID"
+    )
     @GetMapping("/{id}")
     public CoursePageDto getCourseById(@PathVariable(name = "id") long id) {
         return courseService.getCourseById(id);
     }
 
+    @Operation(description = "Delete the course with the specified ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourseById(@PathVariable long id) {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(description = "Save a course and deletes the related chat session")
     @PostMapping("/saveCourse")
     @UpdateLastActivityTime
     public Course postMethodName(@RequestBody SaveCourseRequest request) {

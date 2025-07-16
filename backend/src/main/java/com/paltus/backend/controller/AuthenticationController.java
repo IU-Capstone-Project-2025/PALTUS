@@ -15,6 +15,8 @@ import com.paltus.backend.model.responses.LoginResponse;
 import com.paltus.backend.service.AuthenticationService;
 import com.paltus.backend.service.JWTService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 public class AuthenticationController {
     private final JWTService jwtService;
@@ -26,6 +28,7 @@ public class AuthenticationController {
         this.authenticationService = userService;
     }
 
+    @Operation(description = "Register a new user and sends a verification code via email")
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterUserDto registerUserDto) {
         authenticationService.register(registerUserDto);
@@ -33,6 +36,7 @@ public class AuthenticationController {
                 .body("Registration successful. Please check your email for the verification code.");
     }
 
+    @Operation(description = "Authenticate user and returns a JWT token")
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
         User authenticatedUser = authenticationService.login(loginUserDto);
@@ -41,12 +45,14 @@ public class AuthenticationController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @Operation(description = "Verifie user account using the verification code")
     @PostMapping("/verify")
     public ResponseEntity<String> verifyUser(@RequestBody VerifyUserDto verifyUserDto) {
         authenticationService.verifyUser(verifyUserDto);
         return ResponseEntity.ok("Account verified successfully");
     }
 
+    @Operation(description = "Resend the verification code to the specified email")
     @PostMapping("/resend")
     public ResponseEntity<String> resendVerificationCode(@RequestBody String email) {
         authenticationService.resendVerificationCode(email);
