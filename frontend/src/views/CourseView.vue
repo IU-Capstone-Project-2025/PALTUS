@@ -38,6 +38,7 @@ watch(chosenContent, async (newValue, oldValue) => {
   if (oldValue) {
     for (const subtopicChanged of subtopicsChanged) {
       await course.updateSubtopic(subtopicChanged, course.lessons[chosenContent.value - 1].id);
+      await course.loadCourse(course.courseId)
     }
     subtopicsChanged = [];
   }

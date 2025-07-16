@@ -1,6 +1,8 @@
 <script setup>
 import ProgressBar from "@/components/shared/ProgressBar.vue";
 import Logo from "@/components/shared/Logo.vue";
+import {onUpdated, watch} from "vue";
+import {useCourseStore} from "@/stores/course.js";
 
 const props = defineProps({
   course: {
@@ -38,6 +40,14 @@ const emit = defineEmits(['update:modelValue'])
             class="lesson-chosen"
             @click="emit('update:modelValue', lesson.lesson_number)"
             v-if="lesson.lesson_number === modelValue"
+        >
+          {{ `${lesson.lesson_number}. ${lesson.title}` }}
+        </div>
+        <div
+            class="lesson"
+            style="opacity: 0.3"
+            @click="emit('update:modelValue', lesson.lesson_number)"
+            v-else-if="lesson.finished"
         >
           {{ `${lesson.lesson_number}. ${lesson.title}` }}
         </div>
