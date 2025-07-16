@@ -44,9 +44,8 @@ Run project via `docker compose --profile prod up --build -d`. You should get [G
   - AI Integration: GigaChat API
   - Security: Spring Security + JWT
   - Build: Maven
-  - Utilities: Lombok, MapStruct
+  - Utilities: Lombok, MapStruct, Jsonrepair
   - API docs: Springdoc-openapi
-  - Json fix util: Jsonrepair
 - **DevOps & Infrastructure**:
   - Containerization: Docker
   - CI/CD: GitHub Actions (build, test, deploy)
