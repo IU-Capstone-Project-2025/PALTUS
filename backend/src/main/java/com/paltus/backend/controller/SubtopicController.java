@@ -10,6 +10,8 @@ import com.paltus.backend.aspect.annotation.UpdateLastActivityTime;
 import com.paltus.backend.model.requests.SubtopicSetStateRequest;
 import com.paltus.backend.service.SubtopicService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 
 @RestController
 @RequestMapping("lessons/{lesson_id}/subtopics")
@@ -20,6 +22,9 @@ public class SubtopicController {
         this.subtopicService = subtopicService;
     }
 
+    @Operation(
+        description = "Set the finished state of the subtopic with the id"
+    )
     @PutMapping("setFinished/{id}")
     @UpdateLastActivityTime
     public void setFinishedState(@PathVariable Long id, @RequestBody SubtopicSetStateRequest request) {
