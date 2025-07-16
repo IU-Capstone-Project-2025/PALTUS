@@ -40,14 +40,14 @@ public class CourseMapperImpl implements CourseMapper {
         return new LessonDto(lesson.getId(),
             lesson.getLesson_number(),
             lesson.getTitle(),
-            lesson.isQuiz(),
-            lesson.isFinished(),
+            lesson.getQuiz(),
+            lesson.getFinished(),
             lesson.getSubtopics());
     }
 
     @Override
     public SubtopicDto toSubtopicDto(Subtopic subtopic) {
-        return new SubtopicDto(subtopic.getTopic(), subtopic.isFinished(), subtopic.getNotes());
+        return new SubtopicDto(subtopic.getTopic(), subtopic.getFinished(), subtopic.getNotes());
     }
 
     @Override
