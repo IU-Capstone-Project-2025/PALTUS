@@ -14,7 +14,7 @@ export const useQuizStore = defineStore('quiz', {
             this.quizTitle = quiz.title;
             const newQuestions = [];
             const correct = [];
-            for (const question of quiz.questions) {
+            for (const question in quiz.questions) {
                 const newQuestion = {};
                 newQuestion.questionId = question.questionId
                 newQuestion.questionText = question.questionText;

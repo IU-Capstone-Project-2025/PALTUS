@@ -101,6 +101,10 @@ const saveSubtopics = async () => {
     await useCourseStore().loadCourse(props.course.courseId);
   }
 }
+
+const generateCourse = () => {
+  quiz
+}
 </script>
 
 <template>
@@ -150,9 +154,11 @@ const saveSubtopics = async () => {
           v-if="course.lessons[chosenContent - 1].finished"
           class="quiz-btn"
       >
-        <ButtonGreen
-            title="Generate a quiz"
-        />
+        <router-link :to="`/quiz/${props.course.lessons[props.chosenContent - 1].id}`">
+          <ButtonGreen
+              title="Generate a quiz"
+          />
+        </router-link>
       </div>
     </div>
   </div>
