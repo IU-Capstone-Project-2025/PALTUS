@@ -25,10 +25,18 @@ public class AchievementUnlockedListener {
 
     @EventListener
     public void handleAchievementUnlocked(AchievementUnlockedEvent event) {
-        User user = userRepository.findById(event.getUserId()).get();
-        Achievement achievement = event.getAchievement();
+        updateLevel(event.getUserId(), event.getAchievement().getExperience());
+    }
 
-        int totalExp = user.getCurrentExp() + achievement.getExperience();
+    @EventListener
+    public void handleExpGot(ExpGotEvent event) {
+        updateLevel(event.getUserId(), event.getExp());
+    }
+
+    public void updateLevel(long userId, int exp) {
+        User user = userRepository.findById(userId).get();
+
+        int totalExp = user.getCurrentExp() + exp;
         if (totalExp >= user.getRequiredExp()) {
             user.setCurrentExp(totalExp - user.getRequiredExp());
             int currentLevel = user.getLevel() + 1;
