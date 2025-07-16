@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.model.dto.LessonDto;
 import com.paltus.backend.service.LessonService;
-
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/api/v1/lessons")
+@RequestMapping("/lessons")
 public class LessonController {
     private LessonService lessonService;
 
@@ -19,8 +19,8 @@ public class LessonController {
         this.lessonService = lessonService;
     }
 
-    @GetMapping("/{id}")
-    public LessonDto getLessonById(@PathVariable long id) {
-        return this.lessonService.getLessonById(id);
+    @PutMapping("passQuiz/{id}")
+    public void putMethodName(@PathVariable Long id, @PathVariable double correct) {
+        
     }
 }

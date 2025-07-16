@@ -1,5 +1,8 @@
 package com.paltus.backend.service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,5 +28,34 @@ public class UserService {
         return user;
     }
 
-    
+    public int getStreak() {
+        User user = getCurrentUser();
+        LocalDate lastActivityTime = user.getLastActivityTime();
+        LocalDate currentDate = LocalDate.now();
+
+        if (lastActivityTime == null || ChronoUnit.DAYS.between(lastActivityTime, currentDate) > 1) {
+            return 0;
+        }
+        return user.getStreak();
+    }
+
+    public void updateStreak() {
+        User user = getCurrentUser();
+
+        LocalDate lastActivityTime = user.getLastActivityTime();
+        LocalDate currentDate = LocalDate.now();
+
+        if (lastActivityTime == null) {
+            userRepository.incrementStreak(user.getId(), currentDate);
+            return;
+        }
+
+        long daysBetween = ChronoUnit.DAYS.between(lastActivityTime, currentDate);
+
+        if (daysBetween > 1) {
+            userRepository.resetStreak(user.getId());
+        } else if (daysBetween == 1) {
+            userRepository.incrementStreak(user.getId(), currentDate);
+        }
+    }
 }

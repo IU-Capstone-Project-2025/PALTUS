@@ -3,8 +3,16 @@ import AccountLink from "@/components/shared/AccountLink.vue";
 import {accountLinks} from "@/constants/accountLinks.js";
 import ProfileTab from "@/components/shared/ProfileTab.vue";
 import {onMounted, ref} from "vue";
+import {useAuthStore} from "@/stores/auth.js";
+import router from "@/router/index.js";
 
 let showLinks = ref(true);
+const auth = useAuthStore();
+
+const logout_func = () => {
+  auth.logout();
+  router.go();
+}
 
 const hideLinks = () => {
   const links = document.querySelectorAll("li");
@@ -28,7 +36,17 @@ onMounted(() => {
   <ProfileTab @click="hideLinks" class="profileTab" />
   <ul>
     <li v-for="accountLink in accountLinks">
-      <AccountLink :title="accountLink.title" :link="accountLink.link" />
+      <AccountLink
+          :title="accountLink.title"
+          :link="accountLink.link"
+          v-if="accountLink.link"
+      />
+      <AccountLink
+          :title="accountLink.title"
+          :isFunc="true"
+          @logout="logout_func"
+          v-else
+      />
     </li>
   </ul>
 </template>

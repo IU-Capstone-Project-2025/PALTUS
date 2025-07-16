@@ -4,14 +4,24 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
-import {reactive} from "vue";
-import BaseTextArea from "@/components/shared/BaseTextArea.vue";
+import {nextTick, reactive, ref} from "vue";
+import Notes from "@/components/course/Notes.vue";
+import NotesEdition from "@/components/course/NotesEdition.vue";
+import ButtonDefault from "@/components/shared/ButtonDefault.vue";
+import ChatModal from "@/components/course/ChatModal.vue";
+import {useCourseStore} from "@/stores/course.js";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import {useQuizStore} from "@/stores/quiz.js";
 
 const editMode = reactive({
   id: null,
   edit: false
 });
+
+const modal = ref(false);
+const modalTopic = ref('');
+const modalId = ref(null);
+const quiz = useQuizStore();
 
 const props = defineProps({
   course: {
@@ -35,6 +45,10 @@ const checkSubtopic = (id, finished) => {
   } else {
     props.subtopicsChanged.push({ id, finished });
   }
+  if (props.course.lessons[props.chosenContent - 1].subtopics.every(subtopic => subtopic.finished &&
+      props.subtopicsChanged.every(subtopic => subtopic.finished))) {
+    saveSubtopics();
+  }
 };
 
 const removeCourse = async () => {
@@ -56,7 +70,10 @@ const submitNotes = (notes) => {
   try {
     axios.put(
         `lessons/${props.course.lessons[props.chosenContent - 1].id}/subtopics/setNotes/${editMode.id}`,
-        notes
+        notes,
+        {
+          headers:{ "Content-Type": "text/plain"}
+        }
     );
     editMode.edit = false;
     editMode.id = null;
@@ -64,9 +81,51 @@ const submitNotes = (notes) => {
     console.error(error);
   }
 }
+
+const openChat = (topic, id) => {
+  modalTopic.value = topic;
+  modalId.value = id;
+  modal.value = true;
+}
+
+const finishChat = () => {
+  useCourseStore().loadCourse(props.course.courseId);
+  nextTick(() => {
+    modalTopic.value = '';
+    modalId.value = null;
+    modal.value = false;
+  })
+}
+
+const saveSubtopics = async () => {
+  for (const subtopicChanged of props.subtopicsChanged) {
+    await useCourseStore().updateSubtopic(subtopicChanged, props.course.lessons[props.chosenContent - 1].id);
+    await useCourseStore().loadCourse(props.course.courseId);
+  }
+}
+
+const generateQuiz = async () => {
+  const lessonId = props.course.lessons[props.chosenContent - 1].id;
+  try {
+    await quiz.loadQuiz(lessonId);
+  } catch (err) {
+    // if (err.statusCode === 406) {
+    //   errorMessage.value = 'Something went wrong';
+    //   error.value = true;
+    // }
+    console.log(error);
+  }
+}
 </script>
 
 <template>
+  <ChatModal
+      v-if="modal"
+      :topic="modalTopic"
+      :id="modalId"
+      :lesson="props.course.lessons[props.chosenContent - 1].id"
+      @close-modal="finishChat"
+  />
   <div class="lesson-content" v-if="chosenContent">
     <BaseHeader :text="course.lessons[chosenContent - 1].title + ':'" class="uppercase" />
     <div class="subtopics">
@@ -83,37 +142,37 @@ const submitNotes = (notes) => {
             />
             <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}: </label>
           </div>
-          <ul v-if="subtopic.notes && editMode.id !== subtopic.id">
-            <li class="field-info">
-              <a class="edit-notes" @click="editNotes(subtopic.id)">{{ subtopic.notes }}</a>
-            </li>
-          </ul>
-          <div class="editing" v-else-if="editMode.id === subtopic.id">
-            <BaseTextArea
-                v-model="subtopic.notes"
-                placeholder="Add your notes here"
-            />
-            <ButtonGreen title="Submit changes" @click="submitNotes(subtopic.notes)" class="submit-btn" />
-          </div>
+          <Notes
+              v-if="editMode.id !== subtopic.id"
+              :notes="subtopic.notes"
+              :id="subtopic.id"
+              @editNotes="editNotes"
+          />
+          <NotesEdition
+              v-model:notes="subtopic.notes"
+              @submitNotes="submitNotes"
+              v-else
+          />
+          <ButtonDefault
+              v-if="editMode.id !== subtopic.id"
+              title="Ask PALTUS"
+              class="ai-btn"
+              @click="openChat(subtopic.topic, subtopic.id)"
+          />
         </li>
       </ul>
-    </div>
-    <div class="books">
-      <div class="field-name">
-        Useful links:
-      </div>
-      <ul v-if="course.lessons[chosenContent - 1].links.value">
-        <li v-for="link in course.lessons[chosenContent - 1].links" class="field-info">
-          <a target="_blank" :href="link"> {{ link }}</a>
-        </li>
-      </ul>
-      <div class="description" v-else>
-        <p class="field-info">
-          No links available for this lesson.
-        </p>
+      <div
+          v-if="course.lessons[chosenContent - 1].finished"
+          class="quiz-btn"
+      >
+        <ButtonGreen
+            title="Start a quiz"
+            @click="generateQuiz"
+        />
       </div>
     </div>
   </div>
+
   <section class="main-content">
     <div class="lesson-content" v-if="!chosenContent">
       <BaseHeader :text="course.course_name" class="uppercase" />
@@ -141,13 +200,6 @@ const submitNotes = (notes) => {
 </template>
 
 <style scoped>
-a {
-  word-break: break-all;
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-}
-
 .main-content {
   display: flex;
   flex-direction: column;
@@ -205,15 +257,14 @@ ul {
   list-style-type: none;
 }
 
-.editing {
+.ai-btn {
   margin-left: 2vw;
+  margin-bottom: 3vh;
 }
 
-.editing textarea {
-  font-size: 0.9rem;
-}
-
-.submit-btn {
-  margin: 1vh 0 3vh;
+.quiz-btn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

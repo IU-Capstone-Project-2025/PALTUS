@@ -2,6 +2,7 @@ package com.paltus.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +22,9 @@ public class Subtopic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String topic;
+    @Column(columnDefinition = "TEXT")
     private String notes;
-    private boolean finished;
+    private Boolean finished = false;
 
     @ManyToOne
     @JoinColumn(name = "lesson_id")

@@ -1,5 +1,5 @@
 <script setup>
-import ProgressBar from "@/components/course/ProgressBar.vue";
+import ProgressBar from "@/components/shared/ProgressBar.vue";
 import Logo from "@/components/shared/Logo.vue";
 
 const props = defineProps({
@@ -24,7 +24,7 @@ const emit = defineEmits(['update:modelValue'])
   <div class="side-bar">
     <div style="position: sticky; top: 0;">
       <Logo class="courses-logo" />
-      <ProgressBar :fraction_finished="progress * 100" />
+      <ProgressBar :fraction_finished="progress * 100" class="side-progress" />
     </div>
     <div
         class="course-name"
@@ -38,6 +38,14 @@ const emit = defineEmits(['update:modelValue'])
             class="lesson-chosen"
             @click="emit('update:modelValue', lesson.lesson_number)"
             v-if="lesson.lesson_number === modelValue"
+        >
+          {{ `${lesson.lesson_number}. ${lesson.title}` }}
+        </div>
+        <div
+            class="lesson"
+            style="opacity: 0.3"
+            @click="emit('update:modelValue', lesson.lesson_number)"
+            v-else-if="lesson.finished"
         >
           {{ `${lesson.lesson_number}. ${lesson.title}` }}
         </div>
@@ -114,5 +122,14 @@ ul {
   cursor: pointer;
   transition: 0.2s;
   font-weight: bold;
+}
+
+.side-progress {
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #42A5F5;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #42A5F5;
 }
 </style>
