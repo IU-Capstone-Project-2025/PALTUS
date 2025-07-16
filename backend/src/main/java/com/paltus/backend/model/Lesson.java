@@ -31,8 +31,8 @@ public class Lesson {
     private long id;
     private int lesson_number;
     private String title;
-    private boolean finished = false;
-    private boolean quiz = false;
+    private Boolean finished = false;
+    private Boolean quiz = false;
 
     @ManyToOne
     @JoinColumn(name = "course_id")

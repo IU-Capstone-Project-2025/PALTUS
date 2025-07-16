@@ -22,7 +22,7 @@ public class Subtopic {
     private long id;
     private String topic;
     private String notes;
-    private boolean finished = false;
+    private Boolean finished = false;
 
     @ManyToOne
     @JoinColumn(name = "lesson_id")
