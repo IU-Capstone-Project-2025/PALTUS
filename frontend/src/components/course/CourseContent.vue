@@ -4,7 +4,7 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
-import {nextTick, reactive, ref, watch} from "vue";
+import {nextTick, reactive, ref} from "vue";
 import Notes from "@/components/course/Notes.vue";
 import NotesEdition from "@/components/course/NotesEdition.vue";
 import ButtonDefault from "@/components/shared/ButtonDefault.vue";

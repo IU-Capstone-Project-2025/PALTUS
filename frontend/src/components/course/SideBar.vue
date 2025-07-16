@@ -1,8 +1,6 @@
 <script setup>
 import ProgressBar from "@/components/shared/ProgressBar.vue";
 import Logo from "@/components/shared/Logo.vue";
-import {onUpdated, watch} from "vue";
-import {useCourseStore} from "@/stores/course.js";
 
 const props = defineProps({
   course: {
