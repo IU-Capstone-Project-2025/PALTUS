@@ -11,6 +11,7 @@ import ButtonDefault from "@/components/shared/ButtonDefault.vue";
 import ChatModal from "@/components/course/ChatModal.vue";
 import {useCourseStore} from "@/stores/course.js";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import {useQuizStore} from "@/stores/quiz.js";
 
 const editMode = reactive({
   id: null,
@@ -20,6 +21,7 @@ const editMode = reactive({
 const modal = ref(false);
 const modalTopic = ref('');
 const modalId = ref(null);
+const quiz = useQuizStore();
 
 const props = defineProps({
   course: {
@@ -102,8 +104,17 @@ const saveSubtopics = async () => {
   }
 }
 
-const generateCourse = () => {
-  quiz
+const generateQuiz = async () => {
+  const lessonId = props.course.lessons[props.chosenContent - 1].id;
+  try {
+    await quiz.loadQuiz(lessonId);
+  } catch (err) {
+    // if (err.statusCode === 406) {
+    //   errorMessage.value = 'Something went wrong';
+    //   error.value = true;
+    // }
+    console.log(error);
+  }
 }
 </script>
 
@@ -154,11 +165,10 @@ const generateCourse = () => {
           v-if="course.lessons[chosenContent - 1].finished"
           class="quiz-btn"
       >
-        <router-link :to="`/quiz/${props.course.lessons[props.chosenContent - 1].id}`">
-          <ButtonGreen
-              title="Generate a quiz"
-          />
-        </router-link>
+        <ButtonGreen
+            title="Start a quiz"
+            @click="generateQuiz"
+        />
       </div>
     </div>
   </div>

@@ -1,23 +1,20 @@
 <script setup>
 import {useQuizStore} from "@/stores/quiz.js";
-import {onBeforeMount, onMounted} from "vue";
-import {useRoute} from "vue-router";
+import {onMounted, ref} from "vue";
+import BaseHeader from "@/components/shared/BaseHeader.vue";
 
 const quiz = useQuizStore();
-const route = useRoute();
+const error = ref(false);
 
-
-onBeforeMount(() => {
-  const lessonId = route.params.lessonId;
-  quiz.loadQuiz(lessonId);
+onMounted(() => {
+  console.log(quiz);
 })
 </script>
 
 <template>
   <div class="quiz-view">
     <div class="quiz-header">
-      <h1>QUIZ</h1>
-      <h3 class="quiz-topic">Python Basics</h3>
+      <BaseHeader :text="quiz.quizTitle" />
     </div>
 
     <div class="quiz-content">

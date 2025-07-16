@@ -1,6 +1,6 @@
 <script setup>
 import SideBar from "@/components/course/SideBar.vue";
-import {computed, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
+import {computed, onBeforeMount, reactive, ref, watch} from "vue";
 import {useCourseStore} from "@/stores/course.js";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
 import CourseContent from "@/components/course/CourseContent.vue";

@@ -48,9 +48,8 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: '/quiz/:lessonId',
+        path: '/quiz',
         component: QuizView,
-        props: true,
         meta: { requiresAuth: true }
     }
 ]
