@@ -82,9 +82,7 @@ public class AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         achievementService.updateProgress(AchievementType.LOGIN_STREAK);
-        // achievementService.updateProgress(userDto.email(),
-        // AchievementType.LOGIN_STREAK);
-
+        
         return user;
     }
 

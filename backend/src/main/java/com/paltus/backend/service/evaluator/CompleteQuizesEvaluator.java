@@ -10,10 +10,10 @@ import com.paltus.backend.repository.UserAchievementRepository;
 import com.paltus.backend.repository.UserRepository;
 
 @Component
-public class CompleteLessonsEvaluator extends AbstractAchievementEvaluator {
+public class CompleteQuizesEvaluator extends AbstractAchievementEvaluator {
     private final UserRepository userRepository;
 
-    public CompleteLessonsEvaluator(AchievementRepository achievementRepository,
+    public CompleteQuizesEvaluator(AchievementRepository achievementRepository,
             UserAchievementRepository userAchievementRepository, ApplicationEventPublisher eventPublisher,
             UserRepository userRepository) {
         super(achievementRepository, userAchievementRepository, eventPublisher);
@@ -22,14 +22,13 @@ public class CompleteLessonsEvaluator extends AbstractAchievementEvaluator {
 
     @Override
     public void updateProgress(User user) {
-        user.setFinishedLessons(user.getFinishedLessons() + 1);
+        user.setFinishedQuizes(user.getFinishedQuizes() + 1);
         userRepository.save(user);
-        calculateProgress(user, user.getFinishedLessons());
+        calculateProgress(user, user.getFinishedQuizes());
     }
 
     @Override
     public AchievementType getType() {
-        return AchievementType.COMPLETE_LESSONS;
+        return AchievementType.COMPLETE_QUIZES;
     }
-
 }
