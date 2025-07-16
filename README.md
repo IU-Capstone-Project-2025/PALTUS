@@ -31,13 +31,13 @@ An AI-powered self-learning planner that helps users create personalized study p
 
 Run project via `docker compose --profile prod up --build -d`. You should get [GigaChat API key](https://developers.sber.ru/portal/gigachat-and-api) to run the application. See [.env.example](https://github.com/IU-Capstone-Project-2025/PALTUS/tree/main/.env.example) for configuration.
 
-### Technology Stack
-# Frontend
+## Technology Stack
+**Frontend**
  - Framework: Vue 3 + Composition API
  - State Management: Pinia
  - Styling: CSS
  - HTTP Requests: Axios
-# Backend
+**Backend**
  - Language: Java 17
  - Framework: Spring Boot 3
  - Database: PostgreSQL
@@ -47,10 +47,10 @@ Run project via `docker compose --profile prod up --build -d`. You should get [G
  - Utilities: Lombok, MapStruct
  - API docs: Springdoc-openapi
  - Json fix util: Jsonrepair
-# DevOps & Infrastructure
+**DevOps & Infrastructure**
  - Containerization: Docker
  - CI/CD: GitHub Actions (build, test, deploy)
-# Testing:
+**Testing**
  - JUnit 5
  - Spring Boot Test
  - Integration tests
