@@ -10,6 +10,8 @@ import NotesEdition from "@/components/course/NotesEdition.vue";
 import ButtonDefault from "@/components/shared/ButtonDefault.vue";
 import ChatModal from "@/components/course/ChatModal.vue";
 import {useCourseStore} from "@/stores/course.js";
+import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import {useQuizStore} from "@/stores/quiz.js";
 
 const editMode = reactive({
   id: null,
@@ -19,6 +21,7 @@ const editMode = reactive({
 const modal = ref(false);
 const modalTopic = ref('');
 const modalId = ref(null);
+const quiz = useQuizStore();
 
 const props = defineProps({
   course: {
@@ -41,6 +44,10 @@ const checkSubtopic = (id, finished) => {
     props.subtopicsChanged.splice(index, 1);
   } else {
     props.subtopicsChanged.push({ id, finished });
+  }
+  if (props.course.lessons[props.chosenContent - 1].subtopics.every(subtopic => subtopic.finished &&
+      props.subtopicsChanged.every(subtopic => subtopic.finished))) {
+    saveSubtopics();
   }
 };
 
@@ -89,6 +96,26 @@ const finishChat = () => {
     modal.value = false;
   })
 }
+
+const saveSubtopics = async () => {
+  for (const subtopicChanged of props.subtopicsChanged) {
+    await useCourseStore().updateSubtopic(subtopicChanged, props.course.lessons[props.chosenContent - 1].id);
+    await useCourseStore().loadCourse(props.course.courseId);
+  }
+}
+
+const generateQuiz = async () => {
+  const lessonId = props.course.lessons[props.chosenContent - 1].id;
+  try {
+    await quiz.loadQuiz(lessonId);
+  } catch (err) {
+    // if (err.statusCode === 406) {
+    //   errorMessage.value = 'Something went wrong';
+    //   error.value = true;
+    // }
+    console.log(error);
+  }
+}
 </script>
 
 <template>
@@ -134,6 +161,15 @@ const finishChat = () => {
           />
         </li>
       </ul>
+      <div
+          v-if="course.lessons[chosenContent - 1].finished"
+          class="quiz-btn"
+      >
+        <ButtonGreen
+            title="Start a quiz"
+            @click="generateQuiz"
+        />
+      </div>
     </div>
   </div>
 
@@ -224,5 +260,11 @@ ul {
 .ai-btn {
   margin-left: 2vw;
   margin-bottom: 3vh;
+}
+
+.quiz-btn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

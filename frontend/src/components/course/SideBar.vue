@@ -43,6 +43,14 @@ const emit = defineEmits(['update:modelValue'])
         </div>
         <div
             class="lesson"
+            style="opacity: 0.3"
+            @click="emit('update:modelValue', lesson.lesson_number)"
+            v-else-if="lesson.finished"
+        >
+          {{ `${lesson.lesson_number}. ${lesson.title}` }}
+        </div>
+        <div
+            class="lesson"
             @click="emit('update:modelValue', lesson.lesson_number)"
             v-else
         >
