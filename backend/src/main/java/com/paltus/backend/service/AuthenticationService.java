@@ -7,6 +7,8 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import com.paltus.backend.model.User;
 import com.paltus.backend.model.dto.LoginUserDto;
 import com.paltus.backend.model.dto.RegisterUserDto;
 import com.paltus.backend.model.dto.VerifyUserDto;
+import com.paltus.backend.model.enums.AchievementType;
+import com.paltus.backend.repository.TitleRepository;
 import com.paltus.backend.repository.UserRepository;
 
 import jakarta.mail.MessagingException;
@@ -27,14 +31,20 @@ public class AuthenticationService {
     private AuthenticationManager authManager;
     private EmailService emailService;
     private BCryptPasswordEncoder encoder;
+    private AchievementService achievementService;
+    private TitleRepository titleRepository;
 
     @Autowired
     public AuthenticationService(UserRepository userRepository, AuthenticationManager authenticationManager,
-            EmailService emailService, BCryptPasswordEncoder encoder) {
+            EmailService emailService, BCryptPasswordEncoder encoder, AchievementService achievementService,
+            TitleRepository titleRepository) {
         this.userRepo = userRepository;
         this.authManager = authenticationManager;
         this.emailService = emailService;
         this.encoder = encoder;
+        this.achievementService = achievementService;
+        this.titleRepository = titleRepository;
+
     }
 
     public void register(RegisterUserDto userDto) {
@@ -51,6 +61,7 @@ public class AuthenticationService {
             user.setEmail(userDto.email());
             user.setPassword(encoder.encode(userDto.password()));
             user.setEnabled(false);
+            user.setTitle(titleRepository.findById(1).get());
         }
         user.setVerificationCode(generateVerificationCode());
         user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15));
@@ -65,7 +76,14 @@ public class AuthenticationService {
         if (!user.isEnabled()) {
             throw new RuntimeException("Account not verified");
         }
-        authManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password()));
+        Authentication auth = authManager
+                .authenticate(new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password()));
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        achievementService.updateProgress(AchievementType.LOGIN_STREAK);
+        // achievementService.updateProgress(userDto.email(),
+        // AchievementType.LOGIN_STREAK);
 
         return user;
     }
@@ -127,7 +145,6 @@ public class AuthenticationService {
         } catch (MessagingException ex) {
             throw new EmailException("Sending verification email failed");
         }
-        
 
     }
 

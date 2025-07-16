@@ -13,10 +13,12 @@ import jakarta.persistence.EntityNotFoundException;
 public class SubtopicService {
     private final SubtopicRepository subtopicRepository;
     private final LessonService lessonService;
+    private final UserService userService;
 
-    public SubtopicService(SubtopicRepository subtopicRepository, LessonService lessonService) {
+    public SubtopicService(SubtopicRepository subtopicRepository, LessonService lessonService, UserService userService) {
         this.subtopicRepository = subtopicRepository;
         this.lessonService = lessonService;
+        this.userService = userService;
     }
 
     public void setFinishedState(Long id, boolean state) {
@@ -24,6 +26,7 @@ public class SubtopicService {
             throw new EntityNotFoundException("No subtopic with id " + id);
         }
         subtopicRepository.updateState(id, state);
+        userService.updateStreak();
         lessonService.handleSubtopicFinished(subtopicRepository.getLessonIdById(id));
     }
 
