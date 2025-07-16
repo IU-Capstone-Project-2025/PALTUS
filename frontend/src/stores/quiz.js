@@ -6,8 +6,7 @@ export const useQuizStore = defineStore('quiz', {
     state: () => ({
         quizTitle: '',
         questions: [],
-        correctAnswers: [],
-        userAnswers: [],
+        correctAnswers: []
     }),
     actions: {
         async loadQuiz(lessonId) {
@@ -31,13 +30,20 @@ export const useQuizStore = defineStore('quiz', {
 
                 this.questions = newQuestions;
                 this.correctAnswers = correct;
-                await router.push('/quiz');
+                await router.push(`/quiz/${lessonId}`);
             } catch (err) {
                 console.log(err);
             }
         },
-        checkAnswers(answer) {
-
-        },
+        checkAnswers(answers) {
+            let correctCount = 0;
+            for (let i = 0; i < answers.length; i++) {
+                if (this.correctAnswers[i] === answers[i]) {
+                    correctCount++;
+                }
+            }
+            console.log(correctCount);
+            return answers.length > 0 ? correctCount / this.questions.length : 0;
+        }
     },
 });
