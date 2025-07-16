@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.paltus.backend.model.User;
-import com.paltus.backend.model.dto.UserLastActivityDto;
 
 import jakarta.transaction.Transactional;
 
@@ -30,6 +29,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User u SET u.streak = 1 WHERE u.id = :userId")
     void resetStreak(@Param("userId") long userId);
 
-    @Query(value = "SELECT new com.paltus.backend.model.dto.UserLastActivityDto(c.user.id, c.user.lastActivityTime) FROM Course c WHERE id = :courseId")
-    UserLastActivityDto findUserIdAndLastActivityByCourseId(@Param("courseId") long courseId);
 }

@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.paltus.backend.model.User;
-import com.paltus.backend.model.dto.UserLastActivityDto;
 import com.paltus.backend.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -40,23 +39,23 @@ public class UserService {
         return user.getStreak();
     }
 
-    public void updateStreak(long courseId) {
-        UserLastActivityDto userLastActivityDto = userRepository.findUserIdAndLastActivityByCourseId(courseId);
+    public void updateStreak() {
+        User user = getCurrentUser();
 
-        LocalDate lastActivityTime = userLastActivityDto.lastActivityTime();
+        LocalDate lastActivityTime = user.getLastActivityTime();
         LocalDate currentDate = LocalDate.now();
 
         if (lastActivityTime == null) {
-            userRepository.incrementStreak(userLastActivityDto.id(), currentDate);
+            userRepository.incrementStreak(user.getId(), currentDate);
             return;
         }
 
         long daysBetween = ChronoUnit.DAYS.between(lastActivityTime, currentDate);
 
         if (daysBetween > 1) {
-            userRepository.resetStreak(userLastActivityDto.id());
+            userRepository.resetStreak(user.getId());
         } else if (daysBetween == 1) {
-            userRepository.incrementStreak(userLastActivityDto.id(), currentDate);
+            userRepository.incrementStreak(user.getId(), currentDate);
         }
     }
 }

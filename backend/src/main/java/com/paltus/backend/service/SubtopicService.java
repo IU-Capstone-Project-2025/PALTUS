@@ -22,7 +22,7 @@ public class SubtopicService {
             throw new EntityNotFoundException("No subtopic with id " + id);
         }
         subtopicRepository.updateState(id, state);
-        userService.updateStreak(courseId);
+        userService.updateStreak();
     }
 
     public void setNotes(Long id, String note) {
