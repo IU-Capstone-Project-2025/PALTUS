@@ -4,6 +4,21 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
+import {nextTick, reactive, ref} from "vue";
+import Notes from "@/components/course/Notes.vue";
+import NotesEdition from "@/components/course/NotesEdition.vue";
+import ButtonDefault from "@/components/shared/ButtonDefault.vue";
+import ChatModal from "@/components/course/ChatModal.vue";
+import {useCourseStore} from "@/stores/course.js";
+
+const editMode = reactive({
+  id: null,
+  edit: false
+});
+
+const modal = ref(false);
+const modalTopic = ref('');
+const modalId = ref(null);
 
 const props = defineProps({
   course: {
@@ -31,16 +46,59 @@ const checkSubtopic = (id, finished) => {
 
 const removeCourse = async () => {
   try {
-    axios.delete(`courses/${props.course.courseId}`).then(() => {
+      axios.delete(`courses/${props.course.courseId}`).then(() => {
       router.push('/');
     });
   } catch (error) {
     console.error(error);
   }
 }
+
+const editNotes = (id) => {
+  editMode.edit = true;
+  editMode.id = id;
+}
+
+const submitNotes = (notes) => {
+  try {
+    axios.put(
+        `lessons/${props.course.lessons[props.chosenContent - 1].id}/subtopics/setNotes/${editMode.id}`,
+        notes,
+        {
+          headers:{ "Content-Type": "text/plain"}
+        }
+    );
+    editMode.edit = false;
+    editMode.id = null;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const openChat = (topic, id) => {
+  modalTopic.value = topic;
+  modalId.value = id;
+  modal.value = true;
+}
+
+const finishChat = () => {
+  useCourseStore().loadCourse(props.course.courseId);
+  nextTick(() => {
+    modalTopic.value = '';
+    modalId.value = null;
+    modal.value = false;
+  })
+}
 </script>
 
 <template>
+  <ChatModal
+      v-if="modal"
+      :topic="modalTopic"
+      :id="modalId"
+      :lesson="props.course.lessons[props.chosenContent - 1].id"
+      @close-modal="finishChat"
+  />
   <div class="lesson-content" v-if="chosenContent">
     <BaseHeader :text="course.lessons[chosenContent - 1].title + ':'" class="uppercase" />
     <div class="subtopics">
@@ -55,32 +113,30 @@ const removeCourse = async () => {
                 v-model="subtopic.finished"
                 @update:modelValue="checkSubtopic(subtopic.id, subtopic.finished)"
             />
-            <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}</label>
+            <label :for="subtopic.topic" class="field-info" style="font-weight: 600">{{ subtopic.topic }}: </label>
           </div>
-          <ul v-if="subtopic.content">
-            <li class="field-info">
-              {{ subtopic.content }}
-            </li>
-          </ul>
+          <Notes
+              v-if="editMode.id !== subtopic.id"
+              :notes="subtopic.notes"
+              :id="subtopic.id"
+              @editNotes="editNotes"
+          />
+          <NotesEdition
+              v-model:notes="subtopic.notes"
+              @submitNotes="submitNotes"
+              v-else
+          />
+          <ButtonDefault
+              v-if="editMode.id !== subtopic.id"
+              title="Ask PALTUS"
+              class="ai-btn"
+              @click="openChat(subtopic.topic, subtopic.id)"
+          />
         </li>
       </ul>
-    </div>
-    <div class="books">
-      <div class="field-name">
-        Useful links:
-      </div>
-      <ul v-if="course.lessons[chosenContent - 1].links.value">
-        <li v-for="link in course.lessons[chosenContent - 1].links" class="field-info">
-          <a target="_blank" :href="link"> {{ link }}</a>
-        </li>
-      </ul>
-      <div class="description" v-else>
-        <p class="field-info">
-          No links available for this lesson.
-        </p>
-      </div>
     </div>
   </div>
+
   <section class="main-content">
     <div class="lesson-content" v-if="!chosenContent">
       <BaseHeader :text="course.course_name" class="uppercase" />
@@ -108,13 +164,6 @@ const removeCourse = async () => {
 </template>
 
 <style scoped>
-a {
-  word-break: break-all;
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-}
-
 .main-content {
   display: flex;
   flex-direction: column;
@@ -125,7 +174,7 @@ a {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 2vh 30vw 2vh 8vw;
+  padding: 2vh 20vw 2vh 8vw;
 }
 
 .uppercase {
@@ -166,5 +215,14 @@ a {
 
 .navigation {
   padding-left: 8vw;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.ai-btn {
+  margin-left: 2vw;
+  margin-bottom: 3vh;
 }
 </style>

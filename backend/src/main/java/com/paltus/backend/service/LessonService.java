@@ -1,11 +1,17 @@
 package com.paltus.backend.service;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.paltus.backend.model.dto.LessonContextDto;
 import com.paltus.backend.model.dto.LessonDto;
 import com.paltus.backend.mapper.CourseMapper;
 import com.paltus.backend.model.Lesson;
 import com.paltus.backend.repository.LessonRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class LessonService {
@@ -21,5 +27,36 @@ public class LessonService {
         Lesson lesson = this.lessonRepository.findById(lesson_id).get();
         return this.courseMapper.toLessonDto(lesson);
     }
-    
+
+    public void handleSubtopicFinished(long id) {
+        if (lessonRepository.isFinished(id)) {
+            lessonRepository.updateLessonFinishedState(id, true);
+        } else {
+            lessonRepository.updateLessonFinishedState(id, false);
+        }
+    }
+
+    public void setQuizAsPassed(long id) {
+        if (!lessonRepository.existsById(id)) {
+            throw new EntityNotFoundException("No subtopic with id " + id);
+        }
+        lessonRepository.setQuizAsPassed(id);
+    }
+
+    public LessonContextDto getLessonContext(Long id) {
+        Lesson lesson = this.lessonRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Lesson not found with id: " + id));
+
+        String courseName = lesson.getCourse().getCourse_name();
+        String lessonName = lesson.getTitle();
+
+        return new LessonContextDto(
+        courseName,
+        lessonName,
+        lesson.getSubtopics()
+            .stream()
+            .map(courseMapper::toSubtopicDto)
+            .collect(Collectors.toCollection(ArrayList::new))
+        );
+    }
 }

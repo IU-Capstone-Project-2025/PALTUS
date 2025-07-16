@@ -6,12 +6,16 @@ import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import router from "@/router/index.js";
 import axios from "@/plugins/axios.js";
+import ErrorNotification from "@/components/shared/ErrorNotification.vue";
 
 const email = ref('');
 const password = ref('');
 const name = ref('');
 const auth = useAuthStore();
 const submitted = ref(false);
+const error = ref(false);
+const error_message = ref('')
+
 
 const isValidEmail = computed(() => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,12 +39,17 @@ const signUp = async () => {
     auth.setUserData(email.value, name.value, password.value);
     router.push('/verify')
   } catch (err) {
-    console.log(err);
+    if (err.response.status === 500) {
+      error_message.value = 'Account with this email already exists';
+      email.value = '';
+    }
+    error.value = true;
+    submitted.value = false;
   }
 }
 
 onMounted(() => {
-  if (auth.isVerified) {
+  if (auth.isAuthenticated()) {
     router.push('/');
   }
 })
@@ -69,7 +78,7 @@ onMounted(() => {
           type="password"
           class="custom-input"
       />
-
+      <ErrorNotification :error_message="error_message" v-if="error" />
       <ButtonGreen v-if="checkFields() && !submitted" type="submit" title="Sign Up" />
       <ButtonGreen v-else title="Sign Up" class="inactive" />
     </form>
@@ -102,15 +111,9 @@ form {
 }
 .custom-input {
   height: 5vh;
+  min-height: 5vh;
   font-size: 1rem;
   margin-bottom: 3vh;
-}
-
-p {
-  font-size: 1rem;
-  color: #F5F7FA;
-  margin-top: 5vh;
-  margin-bottom: 1vh;
 }
 
 .inactive {
