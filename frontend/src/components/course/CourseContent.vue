@@ -10,6 +10,7 @@ import NotesEdition from "@/components/course/NotesEdition.vue";
 import ButtonDefault from "@/components/shared/ButtonDefault.vue";
 import ChatModal from "@/components/course/ChatModal.vue";
 import {useCourseStore} from "@/stores/course.js";
+import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 
 const editMode = reactive({
   id: null,
@@ -42,7 +43,8 @@ const checkSubtopic = (id, finished) => {
   } else {
     props.subtopicsChanged.push({ id, finished });
   }
-  if (props.course.lessons[props.chosenContent - 1].subtopics.every(subtopic => subtopic.finished)) {
+  if (props.course.lessons[props.chosenContent - 1].subtopics.every(subtopic => subtopic.finished &&
+      props.subtopicsChanged.every(subtopic => subtopic.finished))) {
     saveSubtopics();
   }
 };
@@ -144,6 +146,14 @@ const saveSubtopics = async () => {
           />
         </li>
       </ul>
+      <div
+          v-if="course.lessons[chosenContent - 1].finished"
+          class="quiz-btn"
+      >
+        <ButtonGreen
+            title="Generate a quiz"
+        />
+      </div>
     </div>
   </div>
 
@@ -234,5 +244,11 @@ ul {
 .ai-btn {
   margin-left: 2vw;
   margin-bottom: 3vh;
+}
+
+.quiz-btn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
