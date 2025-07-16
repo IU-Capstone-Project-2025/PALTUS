@@ -1,6 +1,6 @@
 <script setup>
 import SideBar from "@/components/course/SideBar.vue";
-import {computed, onMounted, reactive, ref, watch} from "vue";
+import {computed, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 import {useCourseStore} from "@/stores/course.js";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
 import CourseContent from "@/components/course/CourseContent.vue";
@@ -26,7 +26,7 @@ let progress = computed(() => {
   return lessons_passed.value > 0 ? lessons_passed.value / lessons_num.value : lessons_passed.value;
 });
 
-onMounted(() => {
+onBeforeMount(() => {
   const course_id = route.params.id;
   course.loadCourse(course_id);
   console.log(course);

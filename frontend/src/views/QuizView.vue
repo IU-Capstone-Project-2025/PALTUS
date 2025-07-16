@@ -1,13 +1,13 @@
 <script setup>
 import {useQuizStore} from "@/stores/quiz.js";
-import {onMounted} from "vue";
+import {onBeforeMount, onMounted} from "vue";
 import {useRoute} from "vue-router";
 
 const quiz = useQuizStore();
 const route = useRoute();
 
 
-onMounted(() => {
+onBeforeMount(() => {
   const lessonId = route.params.lessonId;
   quiz.loadQuiz(lessonId);
 })
