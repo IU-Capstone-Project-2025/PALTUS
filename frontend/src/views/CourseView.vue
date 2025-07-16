@@ -1,6 +1,6 @@
 <script setup>
 import SideBar from "@/components/course/SideBar.vue";
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import {useCourseStore} from "@/stores/course.js";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
 import CourseContent from "@/components/course/CourseContent.vue";
@@ -8,7 +8,7 @@ import CourseContent from "@/components/course/CourseContent.vue";
 
 const route = useRoute();
 const course = useCourseStore();
-let subtopicsChanged = [];
+let subtopicsChanged = reactive([]);
 
 const lessons_num = computed(() => course.lessons.length);
 
@@ -38,7 +38,7 @@ watch(chosenContent, async (newValue, oldValue) => {
   if (oldValue) {
     for (const subtopicChanged of subtopicsChanged) {
       await course.updateSubtopic(subtopicChanged, course.lessons[chosenContent.value - 1].id);
-      await course.loadCourse(course.courseId)
+      await course.loadCourse(course.courseId);
     }
     subtopicsChanged = [];
   }

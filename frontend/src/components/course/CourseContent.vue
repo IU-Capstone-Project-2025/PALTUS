@@ -4,7 +4,7 @@ import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ButtonRed from "@/components/shared/ButtonRed.vue";
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
-import {nextTick, reactive, ref} from "vue";
+import {nextTick, reactive, ref, watch} from "vue";
 import Notes from "@/components/course/Notes.vue";
 import NotesEdition from "@/components/course/NotesEdition.vue";
 import ButtonDefault from "@/components/shared/ButtonDefault.vue";
@@ -41,6 +41,9 @@ const checkSubtopic = (id, finished) => {
     props.subtopicsChanged.splice(index, 1);
   } else {
     props.subtopicsChanged.push({ id, finished });
+  }
+  if (props.course.lessons[props.chosenContent - 1].subtopics.every(subtopic => subtopic.finished)) {
+    saveSubtopics();
   }
 };
 
@@ -88,6 +91,13 @@ const finishChat = () => {
     modalId.value = null;
     modal.value = false;
   })
+}
+
+const saveSubtopics = async () => {
+  for (const subtopicChanged of props.subtopicsChanged) {
+    await useCourseStore().updateSubtopic(subtopicChanged, props.course.lessons[props.chosenContent - 1].id);
+    await useCourseStore().loadCourse(props.course.courseId);
+  }
 }
 </script>
 
