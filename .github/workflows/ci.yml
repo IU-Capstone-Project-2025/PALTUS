@@ -65,12 +65,12 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Copy project files to VPS
-        run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/paltus/
+        run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/${{ secrets.SERVER_USER }}/paltus/
 
       - name: Deploy
         run: |
             ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-              cd /home/${{ secrets.SERVER_USER }}/paltus
+              cd /${{ secrets.SERVER_USER }}/paltus
               docker compose --profile prod up --build -d
             EOF
 
