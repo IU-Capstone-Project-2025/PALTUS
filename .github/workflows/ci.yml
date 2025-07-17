@@ -53,19 +53,23 @@ jobs:
 
   deploy:
     needs: build-and-test
-    if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main'
-    runs-on: self-hosted
-    steps:
-      - name: Clone repo
-        run: |
-          rm -rf PALTUS || true
-          git clone https://github.com/IU-Capstone-Project-2025/PALTUS.git
-          cp ~/actions-runner/environment/.env PALTUS/.env
-          cd PALTUS
-          git checkout ${{ github.ref_name }}
+    runs-on: ubuntu-latest
 
-      - name: Docker compose
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Copy project files to VPS
+        run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/${{ secrets.VPS_USER }}/app/
+
+      - name: Deploy
         run: |
-          cd PALTUS/backend
-          docker compose down
-          docker compose --profile prod up -d --build
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            cd /home/${{ secrets.VPS_USER }}/app
+            docker compose --profile prod up --build -d
+          EOF
