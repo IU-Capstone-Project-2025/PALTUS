@@ -67,6 +67,11 @@ jobs:
       - name: Copy project files to VPS
         run: rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/${{ secrets.SERVER_USER }}/paltus/
 
+      - name: Upload .env file
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "mkdir -p /${{ secrets.SERVER_USER }}/paltus"
+          echo "${{ secrets.ENV_FILE }}" | ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "cat > /${{ secrets.SERVER_USER }}/paltus/.env"
+          
       - name: Deploy
         run: |
             ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
