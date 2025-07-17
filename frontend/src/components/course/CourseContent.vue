@@ -13,6 +13,7 @@ import {useCourseStore} from "@/stores/course.js";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import {useQuizStore} from "@/stores/quiz.js";
 import ErrorNotification from "@/components/shared/ErrorNotification.vue";
+import {useAuthStore} from "@/stores/auth.js";
 
 const editMode = reactive({
   id: null,
@@ -116,6 +117,8 @@ const generateQuiz = async () => {
   } catch (err) {
     if (err.statusCode === 406) {
       error.value = true;
+    } else if (err.statusCode === 401) {
+      useAuthStore().logout();
     }
     console.log(error);
   }
