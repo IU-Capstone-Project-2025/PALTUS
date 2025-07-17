@@ -12,6 +12,7 @@ import ChatModal from "@/components/course/ChatModal.vue";
 import {useCourseStore} from "@/stores/course.js";
 import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import {useQuizStore} from "@/stores/quiz.js";
+import ErrorNotification from "@/components/shared/ErrorNotification.vue";
 
 const editMode = reactive({
   id: null,
@@ -22,6 +23,8 @@ const modal = ref(false);
 const modalTopic = ref('');
 const modalId = ref(null);
 const quiz = useQuizStore();
+const waiting = ref(false);
+const error = ref(false);
 
 const props = defineProps({
   course: {
@@ -105,14 +108,15 @@ const saveSubtopics = async () => {
 }
 
 const generateQuiz = async () => {
+  error.value = false;
   const lessonId = props.course.lessons[props.chosenContent - 1].id;
   try {
+    waiting.value = true;
     await quiz.loadQuiz(lessonId);
   } catch (err) {
-    // if (err.statusCode === 406) {
-    //   errorMessage.value = 'Something went wrong';
-    //   error.value = true;
-    // }
+    if (err.statusCode === 406) {
+      error.value = true;
+    }
     console.log(error);
   }
 }
@@ -161,14 +165,28 @@ const generateQuiz = async () => {
           />
         </li>
       </ul>
-      <div
-          v-if="course.lessons[chosenContent - 1].finished"
-          class="quiz-btn"
-      >
-        <ButtonGreen
-            title="Start a quiz"
-            @click="generateQuiz"
-        />
+      <div v-if="course.lessons[chosenContent - 1].finished">
+        <div
+            v-if="!course.lessons[chosenContent - 1].quiz"
+            class="quiz-btn"
+        >
+          <div class="quiz-interaction">
+            <ButtonGreen
+                title="Start a quiz"
+                @click="generateQuiz"
+                v-if="!waiting"
+            />
+            <ButtonGreen
+                title="Start a quiz"
+                class="inactive"
+                v-else
+            />
+            <ErrorNotification error_message="Server error, try again" v-if="error" />
+          </div>
+        </div>
+        <div v-else class="passed">
+          ✓ Quiz is passed
+        </div>
       </div>
     </div>
   </div>
@@ -266,5 +284,24 @@ ul {
   width: 100%;
   display: flex;
   justify-content: flex-end;
+}
+
+.quiz-interaction {
+  display: flex;
+  flex-direction: column;
+}
+
+.inactive {
+  background-color: #BBDEFB;
+  color: #0D47A1;
+  cursor: not-allowed;
+}
+
+.passed {
+  text-align: end;
+  margin-top: 3vh;
+  color: #48CFAD;
+  font-weight: 700;
+  font-size: 1.3rem;
 }
 </style>
