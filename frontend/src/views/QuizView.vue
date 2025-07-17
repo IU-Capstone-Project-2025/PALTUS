@@ -29,7 +29,6 @@ const startTimer = () => {
       time.value--;
     } else {
       checkAnswers();
-      router.back();
       clearInterval(timer.value);
     }
   }, 1000);
