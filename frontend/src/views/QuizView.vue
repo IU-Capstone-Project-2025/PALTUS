@@ -48,7 +48,9 @@ const validation = () => {
 }
 
 const chooseAnswer = (index, questionIndex) => {
-  answers[questionIndex] = index;
+  if (!finished.value) {
+    answers[questionIndex] = index;
+  }
 }
 
 const sendBack = () => {
@@ -66,6 +68,10 @@ const checkAnswers = async () => {
     passed.value = true;
     await axios.put(`lessons/passQuiz/${lessonId.value}`);
   }
+}
+
+const isAnswerWrong = (questionIndex) => {
+  return finished.value && answers[questionIndex] !== quiz.correctAnswers[questionIndex];
 }
 </script>
 
@@ -101,12 +107,17 @@ const checkAnswers = async () => {
                     :value="index"
                     @click="chooseAnswer(index, questionIndex)"
                     :checked="answers[questionIndex] === index"
+                    :disabled="finished"
                 >
                 <label :for="'option_' + questionIndex + '_' + index">{{ option }}</label>
               </div>
             </li>
           </ul>
-          <div class="correct-answer" v-if="finished">
+          <div
+              class="correct-answer"
+              :class="{ 'wrong-answer': isAnswerWrong(questionIndex) }"
+              v-if="finished"
+          >
             Correct answer: {{ quiz.questions[questionIndex].options[quiz.correctAnswers[questionIndex]] }}
           </div>
         </li>
@@ -221,6 +232,11 @@ ul {
   transform: translate(-50%, -50%);
 }
 
+.option input[type="radio"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .option label {
   font-size: 1rem;
   cursor: pointer;
@@ -282,5 +298,9 @@ ul {
   font-size: 0.9rem;
   color: #48CFAD;
   margin-left: 4vw;
+}
+
+.wrong-answer {
+  color: #ed1919;
 }
 </style>
