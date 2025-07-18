@@ -2,7 +2,7 @@
 import ProgressBar from "@/components/shared/ProgressBar.vue";
 
 const props = defineProps({
-  award: {
+  achievement: {
     type: Object,
     required: true
   }
@@ -11,21 +11,19 @@ const props = defineProps({
 
 <template>
   <div class="award-card">
-    <div class="award-badge" style="background-color: #48CFAD" v-if="props.award.finished">
+    <div class="award-badge" style="background-color: #48CFAD" v-if="props.achievement.completed">
       ✓
     </div>
     <div class="award-badge" style="background-color: #BBDEFB" v-else>
       ✗
     </div>
     <div class="award-info">
-      <h3>{{ props.award.name }}</h3>
-      <p>{{ props.award.description }}</p>
+      <h3>{{ achievement.name }}</h3>
+      <p>{{ achievement.description }}</p>
       <div class="award-progress">
-        <ProgressBar fraction_finished="100" v-if="props.award.finished" class="award-progress-bar" />
-        <ProgressBar fraction_finished="0" v-else class="award-progress-bar" />
-        <span v-if="props.award.finished">Completed</span>
-        <span v-if="props.award.finished" class="award-completed">+ {{ props.award.xp }} XP</span>
-        <span v-else>Not completed</span>
+        <ProgressBar :fraction_finished="achievement.progress" v-if="achievement.completed" class="award-progress-bar" />
+        <ProgressBar :fraction_finished="achievement.progress" v-else class="award-progress-bar" />
+        <span>Completed {{ achievement.progress }}%</span>
       </div>
     </div>
   </div>
@@ -89,12 +87,6 @@ const props = defineProps({
   font-size: 0.8rem;
   color: #0D47A1;
   opacity: 0.8;
-}
-
-.award-completed {
-  display: flex;
-  font-size: 1rem;
-  font-weight: bold;
 }
 
 .award-info {

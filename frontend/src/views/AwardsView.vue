@@ -1,5 +1,5 @@
 <script setup>
-import {reactive, ref} from "vue";
+import {onBeforeMount, reactive, ref} from "vue";
 import Logo from "@/components/shared/Logo.vue";
 import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
@@ -7,33 +7,32 @@ import LevelBadge from "@/components/awards/LevelBadge.vue";
 import ProgressBar from "@/components/shared/ProgressBar.vue";
 import AwardCard from "@/components/awards/AwardCard.vue";
 import Streak from "@/components/awards/Streak.vue";
+import {useAuthStore} from "@/stores/auth.js";
+import axios from "@/plugins/axios.js";
 
-const status = ref('BEGINNER PALTUS');
-const level = ref(1);
-const xp = ref(150);
-const next_level_xp = ref(500);
-const awards = reactive([{
-  name: "First steps",
-  description: "Complete your first lesson",
-  finished: true,
-  xp: 50,
-}, {
-  name: "Learner",
-  description: "Complete 5 lessons",
-  finished: false,
-  xp: 100,
-}, {
-  name: "Hot streak",
-  description: "Learn 3 days in a row",
-  finished: true,
-  xp: 30,
-}, {
-  name: "Hot streak",
-  description: "Learn 3 days in a row",
-  finished: true,
-  xp: 30,
-}]);
-const streak = ref(3);
+onBeforeMount(async () => {
+  try {
+    const response = await axios.get('/achievements');
+    level.value = response.level;
+    currentExp.value = response.currentExp;
+    requiredExp.value = response.requiredExp;
+    title.value = response.title;
+    streak.value = response.streak;
+    achievements = response.achievements;
+  } catch (e) {
+    if (e.response.status === 401) {
+      useAuthStore().logout();
+    }
+    console.error(e);
+  }
+})
+
+const streak = ref(null);
+const title = ref('');
+const level = ref(null);
+const currentExp = ref(null);
+const requiredExp = ref(null);
+let achievements = reactive([]);
 </script>
 
 <template>
@@ -44,16 +43,16 @@ const streak = ref(3);
 
     <section class="center">
       <div class="user-level">
-        <LevelBadge :title="status" />
+        <LevelBadge :title="title" />
         <BaseHeader text="Your achievements" class="achievements-header" />
       </div>
 
       <div class="level-progress">
         <div class="progress-info">
           <span>Level {{ level }}</span>
-          <span>{{ xp }}/{{ next_level_xp }} XP</span>
+          <span>{{ currentExp }}/{{ requiredExp }} XP</span>
         </div>
-        <ProgressBar :fraction_finished="xp / next_level_xp * 100" class="progress-fill" />
+        <ProgressBar :fraction_finished="currentExp / requiredExp * 100" class="progress-fill" />
       </div>
       <Streak :streak="streak" v-if="streak" />
     </section>
@@ -66,8 +65,8 @@ const streak = ref(3);
     <div class="awards-section">
       <h2 class="section-title">Available Awards</h2>
       <ul class="awards-grid">
-        <li v-for="award in awards" class="grid-element">
-          <AwardCard :award="award" />
+        <li v-for="achievement in achievements" class="grid-element">
+          <AwardCard :achievement="achievement" />
         </li>
       </ul>
     </div>
