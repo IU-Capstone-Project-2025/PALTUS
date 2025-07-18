@@ -59,7 +59,7 @@ public class User {
     private int level;
 
     private int finishedLessons;
-    private int finishedQuizes;
+    private int finishedQuizzes;
 
     @ManyToOne
     @JoinColumn(name = "title_id")

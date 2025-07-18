@@ -45,7 +45,7 @@ public class LessonService {
             throw new EntityNotFoundException("No subtopic with id " + id);
         }
         lessonRepository.setQuizAsPassed(id);
-        achievementService.updateProgress(AchievementType.COMPLETE_QUIZES);
+        achievementService.updateProgress(AchievementType.COMPLETE_QUIZZES);
     }
 
     public LessonContextDto getLessonContext(Long id) {

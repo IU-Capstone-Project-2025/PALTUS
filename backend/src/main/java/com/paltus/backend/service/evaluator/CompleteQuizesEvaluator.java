@@ -25,14 +25,14 @@ public class CompleteQuizesEvaluator extends AbstractAchievementEvaluator {
 
     @Override
     public void updateProgress(User user) {
-        user.setFinishedQuizes(user.getFinishedQuizes() + 1);
+        user.setFinishedQuizzes(user.getFinishedQuizzes() + 1);
         eventPublisher.publishEvent(new ExpGotEvent(user.getId(), EXP_FOR_QUIZ));
         userRepository.save(user);
-        calculateProgress(user, user.getFinishedQuizes());
+        calculateProgress(user, user.getFinishedQuizzes());
     }
 
     @Override
     public AchievementType getType() {
-        return AchievementType.COMPLETE_QUIZES;
+        return AchievementType.COMPLETE_QUIZZES;
     }
 }

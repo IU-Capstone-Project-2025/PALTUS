@@ -4,8 +4,8 @@ INSERT INTO achievement (name, description, type, target_count, experience) VALU
 ('First Steps', 'Complete your first lesson', 'COMPLETE_LESSONS', 1, 30),
 ('Learner', 'Complete 5 lessons', 'COMPLETE_LESSONS', 5, 30),
 ('Brain Builder', 'Complete 20 lessons', 'COMPLETE_LESSONS', 20, 150),
-('3 Steps Closer', 'Complete 3 quizes', 'COMPLETE_QUIZES', 3, 40),
-('Quiz Expert', 'Complete 10 quizes', 'COMPLETE_QUIZES', 10, 130)
+('3 Steps Closer', 'Complete 3 quizzes', 'COMPLETE_QUIZZES', 3, 40),
+('Quiz Expert', 'Complete 10 quizzes', 'COMPLETE_QUIZZES', 10, 130)
 ON CONFLICT (name) DO NOTHING;
 
 
