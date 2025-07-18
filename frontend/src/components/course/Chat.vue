@@ -1,8 +1,8 @@
 <script setup>
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 import {nextTick, onMounted, reactive, ref} from "vue";
-import UserMessage from "@/components/course/UserMessage.vue";
-import AIMessage from "@/components/course/AIMessage.vue";
+import MessageUser from "@/components/course/MessageUser.vue";
+import MessageAi from "@/components/course/MessageAI.vue";
 import Typing from "@/components/course/Typing.vue";
 import axios from "@/plugins/axios.js";
 import {useAuthStore} from "@/stores/auth.js";
@@ -93,8 +93,8 @@ const scrollToBottom = () => {
   <div class="messages-container" ref="messagesContainer">
     <ul class="messages" v-if="userMessages.length > 0">
       <li class="message" v-for="(msg, index) in userMessages" :key="index">
-        <UserMessage :message="msg" />
-        <AIMessage
+        <MessageUser :message="msg" />
+        <MessageAi
             v-if="aiMessages.length > index"
             :message="aiMessages[index].message"
             v-model="aiMessages[index].added"
