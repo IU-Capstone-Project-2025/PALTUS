@@ -1,7 +1,6 @@
 <script setup>
 import ProgressBar from "@/components/shared/ProgressBar.vue";
 import Logo from "@/components/shared/Logo.vue";
-import LessonsSideBar from "@/components/course/LessonsSideBar.vue";
 
 const props = defineProps({
   course: {
@@ -33,7 +32,32 @@ const emit = defineEmits(['update:modelValue'])
     >
       {{ course.course_name }}
     </div>
-   <LessonsSideBar :lessons="course.lesssons" />
+    <ul class="course-list">
+      <li class="lesson-item" v-for="lesson in course.lessons">
+        <div
+            class="lesson-chosen"
+            @click="emit('update:modelValue', lesson.lesson_number)"
+            v-if="lesson.lesson_number === modelValue"
+        >
+          {{ `${lesson.lesson_number}. ${lesson.title}` }}
+        </div>
+        <div
+            class="lesson"
+            style="opacity: 0.3"
+            @click="emit('update:modelValue', lesson.lesson_number)"
+            v-else-if="lesson.finished"
+        >
+          {{ `${lesson.lesson_number}. ${lesson.title}` }}
+        </div>
+        <div
+            class="lesson"
+            @click="emit('update:modelValue', lesson.lesson_number)"
+            v-else
+        >
+          {{ `${lesson.lesson_number}. ${lesson.title}` }}
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
