@@ -38,6 +38,9 @@ public class AchievementService {
         evaluator.updateProgress(userService.getCurrentUser());
     }
 
+    /**
+     * Returns all achievements along with the user's current progress on each.
+     */
     public List<AchievementWithProgressDto> getAchievementsWithProgress() {
         List<AchievementWithProgressDto> achievemenstWithProgress = new ArrayList<>();
         User user = userService.getCurrentUser();
@@ -46,7 +49,10 @@ public class AchievementService {
             List<Achievement> achievements = achievementRepository.findAllByType(achievementType);
 
             for (Achievement achievement : achievements) {
-                UserAchievement userAchievement = userAchievementRepository.findByUserAndAchievement(user, achievement)
+                // Get the user's progress for this achievement,
+                // or initialize if none exists yet
+                UserAchievement userAchievement = userAchievementRepository
+                        .findByUserAndAchievement(user, achievement)
                         .orElse(new UserAchievement(user, achievement, 0));
 
                 achievemenstWithProgress
@@ -57,6 +63,10 @@ public class AchievementService {
         return achievemenstWithProgress;
     }
 
+    /**
+     * Returns the user's gamification-related stats including level, experience,
+     * and achievements.
+     */
     public UserGameStatsDto getUserGameStats() {
         User user = userService.getCurrentUser();
         return new UserGameStatsDto(userService.getStreak(), user.getLevel(), user.getCurrentExp(),

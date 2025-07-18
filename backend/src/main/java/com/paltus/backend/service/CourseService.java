@@ -38,7 +38,6 @@ public class CourseService {
         course.setupRelationships();
         User user = userService.getCurrentUser();
         course.setUser(user);
-        // course.setLastActivityTime(Instant.now());
         Course newCourse = courseRepository.save(course);
         return newCourse;
     }
@@ -53,17 +52,20 @@ public class CourseService {
         return courseMapper.toCoursePageDto(course);
     }
 
+    /**
+     * Returns the next unfinished lesson for a given course.
+     * Lessons are sorted by ID to determine order.
+     */
     public Lesson getNextLesson(Course course) {
         List<Lesson> lessons = lessonRepository.findUnfinishedLessonsByCourseId(course.getId());
         lessons.sort(Comparator.comparing(Lesson::getId));
         return lessons.get(0);
     }
 
+    /**
+     * Returns the id, name, and next lesson of each course.
+    */
     public List<CourseSummaryDto> getAllCoursesSummaries(List<Course> courses) {
-        // List<Course> courses = courseRepository.findAll();
-        // courses.sort(Comparator.comparing(
-        // Course::getLastActivityTime,
-        // Comparator.nullsLast(Comparator.reverseOrder())));
         List<CourseSummaryDto> coursesDtos = new ArrayList<>();
         for (Course course : courses) {
             coursesDtos.add(courseMapper.toCourseSummaryDto(course, getNextLesson(course).getLesson_number()));
@@ -71,6 +73,10 @@ public class CourseService {
         return coursesDtos;
     }
 
+    /**
+     * Retrieves all courses for the current user.
+     * Sorts them by last activity, with the most recently active first.
+     */
     public List<Course> getAllCourses() {
         User user = userService.getCurrentUser();
         List<Course> courses = courseRepository.findAllByUser(user);
@@ -80,6 +86,9 @@ public class CourseService {
         return courses;
     }
 
+    /**
+     * Builds the dashboard view for the user, including course summaries and the next lesson.
+     */
     public DashboardDto getDashboard() {
         List<Course> courses = getAllCourses();
         Lesson lesson;

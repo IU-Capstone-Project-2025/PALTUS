@@ -25,19 +25,16 @@ public class ActivitytimeAspect {
 
     @After("@annotation(com.paltus.backend.aspect.annotation.UpdateLastActivityTime)")
     public void trackActivity(JoinPoint joinPoint) {
-        // Получаем все аргуементы идущие вместе с методом
-        // В случае с запросом PathVariable и Request body
-
+        // Get all the arguments that go with the method
+        // nn the case of the PathVariable and Request body request
         for (Object arg : joinPoint.getArgs()) {
             if (arg instanceof SubtopicSetStateRequest subtopicSetStateRequest) {
                 handleActivity(subtopicSetStateRequest.getCourseId());
-                // subtopicSetStateRequest
 
             } else if (arg instanceof SaveCourseRequest request) {
                 handleActivity(request.getCourse().getId());
             }  else if (arg instanceof Map map && map.containsKey("courseId")) {
                 handleActivity(Long.parseLong(map.get("courseId").toString()));
-                // Probably dont work properly
             }
         }
     }

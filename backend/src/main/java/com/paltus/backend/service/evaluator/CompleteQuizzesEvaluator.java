@@ -11,18 +11,22 @@ import com.paltus.backend.repository.UserAchievementRepository;
 import com.paltus.backend.repository.UserRepository;
 
 @Component
-public class CompleteQuizesEvaluator extends AbstractAchievementEvaluator {
+public class CompleteQuizzesEvaluator extends AbstractAchievementEvaluator {
     private final UserRepository userRepository;
 
     private final int EXP_FOR_QUIZ = 25;
 
-    public CompleteQuizesEvaluator(AchievementRepository achievementRepository,
+    public CompleteQuizzesEvaluator(AchievementRepository achievementRepository,
             UserAchievementRepository userAchievementRepository, ApplicationEventPublisher eventPublisher,
             UserRepository userRepository) {
         super(achievementRepository, userAchievementRepository, eventPublisher);
         this.userRepository = userRepository;
     }
 
+    /**
+     * Updates the user's quiz completion progress and emits an experience gain event.
+     * Should be called when the user finishes a quiz.
+     */
     @Override
     public void updateProgress(User user) {
         user.setFinishedQuizzes(user.getFinishedQuizzes() + 1);

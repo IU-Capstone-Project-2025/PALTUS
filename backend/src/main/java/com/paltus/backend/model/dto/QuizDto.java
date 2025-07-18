@@ -3,6 +3,9 @@ package com.paltus.backend.model.dto;
 import lombok.Data;
 import java.util.List;
 
+/**
+ * DTO representing a quiz, including its title and list of questions.
+ */
 @Data
 public class QuizDto {
     private String quizTitle;

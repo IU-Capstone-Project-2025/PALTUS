@@ -45,7 +45,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(customuizer -> customuizer.disable());
         httpSecurity.authorizeHttpRequests(request -> request
-                .requestMatchers("/register", "/login", "/resend", "/verify", "/swagger-ui/*")
+                .requestMatchers("/register", "/login", "/resend", "/verify", "/v3/api-docs/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**")
                 .permitAll()
                 .anyRequest().authenticated());
 

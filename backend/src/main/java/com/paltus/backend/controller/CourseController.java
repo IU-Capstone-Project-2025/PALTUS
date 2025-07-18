@@ -1,6 +1,5 @@
 package com.paltus.backend.controller;
 
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,6 @@ import com.paltus.backend.service.CourseService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
@@ -32,18 +30,13 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-
-    @Operation(
-        description = "Retrieve the dashboard data for the user"
-    )
+    @Operation(description = "Retrieve all the user's courses and the user's next lesson.")
     @GetMapping()
     public DashboardDto getDashboardDto() {
         return courseService.getDashboard();
     }
-    
-    @Operation(
-        description = "Retrieve detailed information about a course by its ID"
-    )
+
+    @Operation(description = "Retrieve detailed information about a course by its ID")
     @GetMapping("/{id}")
     public CoursePageDto getCourseById(@PathVariable(name = "id") long id) {
         return courseService.getCourseById(id);

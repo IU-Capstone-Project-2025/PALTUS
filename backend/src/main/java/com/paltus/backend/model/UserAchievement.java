@@ -11,13 +11,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a user's progress towards a specific achievement.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(
-    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "achievement_id"})
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "achievement_id" }))
 public class UserAchievement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

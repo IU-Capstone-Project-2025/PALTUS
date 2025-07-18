@@ -22,16 +22,26 @@ public class AchievementUnlockedListener {
         this.titleRepository = titleRepository;
     }
 
+    /**
+     * Handles achievement unlocked events by adding experience to the user.
+     */
     @EventListener
     public void handleAchievementUnlocked(AchievementUnlockedEvent event) {
         updateLevel(event.getUserId(), event.getAchievement().getExperience());
     }
 
+    /**
+     * Handles experience gained events by adding experience to the user.
+     */
     @EventListener
     public void handleExpGot(ExpGotEvent event) {
         updateLevel(event.getUserId(), event.getExp());
     }
 
+    /**
+     * Updates user's level and experience based on the gained experience points.
+     * If the experience threshold is reached, levels up the user and updates the title.
+     */
     public void updateLevel(long userId, int exp) {
         User user = userRepository.findById(userId).get();
 
@@ -48,10 +58,16 @@ public class AchievementUnlockedListener {
         userRepository.save(user);
     }
 
+    /**
+     * Calculates the next experience required for leveling up.
+     */
     public int getNextRequiredExp(int currentRequiredExp) {
         return (int)(currentRequiredExp * MULTIPLIER / 10) * 10;
     }
 
+    /**
+     * Updates the user's title based on the current level.
+     */
     public void updateTitle(User user, int currentLevel) {
         Optional<Title> optionalTitle = titleRepository.findById(currentLevel);
         if (optionalTitle.isPresent()) {

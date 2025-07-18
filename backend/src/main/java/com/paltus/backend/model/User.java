@@ -50,8 +50,14 @@ public class User {
     @JsonManagedReference
     private List<Course> courses;
 
+    /**
+     * Number of consecutive days the user has completed subtopics.
+     */
     private int streak;
 
+    /**
+     * The date when the user last completed a subtopic.
+     */
     private LocalDate lastActivityTime;
 
     private int currentExp;
@@ -65,6 +71,9 @@ public class User {
     @JoinColumn(name = "title_id")
     private Title title;
 
+    /**
+     * Initialize default values on user creation.
+     */
     @PrePersist
     public void onCreate() {
         if (level == 0) {

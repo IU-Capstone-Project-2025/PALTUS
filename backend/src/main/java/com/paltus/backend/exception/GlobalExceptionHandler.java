@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.paltus.backend.model.dto.ErrorResponse;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -24,8 +25,8 @@ public class GlobalExceptionHandler {
                 request.getRequestURL().toString()));
     }
 
-    @ExceptionHandler(DuplicateCourseException.class)
-    public ResponseEntity<ErrorResponse> handleDuplicateCourse(DuplicateCourseException ex,
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<ErrorResponse> handleEntityExists(EntityExistsException ex,
             HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(
                 LocalDateTime.now().toString(),

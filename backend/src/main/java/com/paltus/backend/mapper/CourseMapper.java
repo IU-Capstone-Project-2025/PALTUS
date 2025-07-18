@@ -17,6 +17,9 @@ import com.paltus.backend.model.dto.SubtopicForNextLessonDto;
 public interface CourseMapper {
     CourseSummaryDto toCourseSummaryDto(Course course, int nextLesson);
 
+    /**
+     * Converts a Course entity to a detailed CoursePageDto including lessons.
+     */
     CoursePageDto toCoursePageDto(Course course);
 
     LessonDto toLessonDto(Lesson lesson);
@@ -25,6 +28,10 @@ public interface CourseMapper {
 
     NextLessonDto toNextLessonDto(Lesson lesson, Course course);
 
+    /**
+     * Maps list of course summaries and optional next lesson to DashboardDto.
+     * If nextLesson is null, DashboardDto will have no next lesson.
+     */
     DashboardDto toDashboardDto(List<CourseSummaryDto> courses, Lesson nextLesson);
 
     SubtopicForNextLessonDto toSubtopicForNextLessonDto(Subtopic subtopic);
