@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import com.paltus.backend.model.Achievement;
 import com.paltus.backend.model.Title;
 import com.paltus.backend.model.User;
 import com.paltus.backend.repository.TitleRepository;
