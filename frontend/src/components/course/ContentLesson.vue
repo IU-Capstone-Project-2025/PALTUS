@@ -1,11 +1,10 @@
 <script setup>
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import Notes from "@/components/course/Notes.vue";
 import NotesEdition from "@/components/course/NotesEdition.vue";
 import BaseCheckbox from "@/components/shared/BaseCheckbox.vue";
 import ErrorNotification from "@/components/shared/ErrorNotification.vue";
-import ButtonDefault from "@/components/shared/ButtonDefault.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 defineProps({
   course: {
@@ -61,7 +60,7 @@ defineEmits(['editNotes', 'submitNotes', 'openChat', 'generateQuiz', 'checkSubto
               @submitNotes="$emit('submitNotes', subtopic.notes)"
               v-else
           />
-          <ButtonDefault
+          <BaseButton
               v-if="editMode.id !== subtopic.id"
               title="Ask PALTUS"
               class="ai-btn"
@@ -75,14 +74,15 @@ defineEmits(['editNotes', 'submitNotes', 'openChat', 'generateQuiz', 'checkSubto
             class="quiz-btn"
         >
           <div class="quiz-interaction">
-            <ButtonGreen
+            <BaseButton
+                color="green"
                 title="Start a quiz"
                 @click="$emit('generateQuiz')"
                 v-if="!waiting"
             />
-            <ButtonGreen
+            <BaseButton
+                color="inactive"
                 title="Start a quiz"
-                class="inactive"
                 v-else
             />
             <ErrorNotification error_message="Server error, try again" v-if="error" />
@@ -154,12 +154,6 @@ ul {
 .quiz-interaction {
   display: flex;
   flex-direction: column;
-}
-
-.inactive {
-  background-color: #BBDEFB;
-  color: #0D47A1;
-  cursor: not-allowed;
 }
 
 .passed {

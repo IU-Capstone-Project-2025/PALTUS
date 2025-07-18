@@ -3,7 +3,6 @@ import Logo from "@/components/shared/Logo.vue";
 import MyCourses from "@/components/shared/MyCourses.vue";
 import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import {onMounted, reactive, ref} from "vue";
 import router from "@/router/index.js";
 import { useRoute } from 'vue-router';
@@ -11,6 +10,7 @@ import axios from "@/plugins/axios.js"
 import EditCourseModal from "@/components/course_creation/EditCourseModal.vue";
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 import ErrorNotification from "@/components/shared/ErrorNotification.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 const route = useRoute();
 const name = ref(route.query.courseName || '');
@@ -187,16 +187,18 @@ const savePrevious = async () => {
         <BaseTextArea placeholder="Lesson duration (in minutes)" v-model="duration"/>
       </div>
       <ErrorNotification v-if="isError" :error_message="error_message" />
-      <ButtonGreen
+      <BaseButton
+          color="green"
           v-if="validation() && !waiting"
           title="GET A COURSE"
           class="increased-size"
           @click="getCourse"
       />
-      <ButtonGreen
+      <BaseButton
+          color="inactive"
           v-if="!validation() && !waiting"
           title="GET A COURSE"
-          class="inactive"
+          class="increased-size"
       />
       <BaseHeader v-if="waiting" text="Waiting for server response..." class="waiting" />
     </section>
@@ -241,14 +243,6 @@ const savePrevious = async () => {
 .increased-size {
   margin: 2.5vh 0;
   padding: 2vh 3vw;
-}
-
-.inactive {
-  margin: 2.5vh 0;
-  padding: 2vh 3vw;
-  background-color: #BBDEFB;
-  color: #0D47A1;
-  cursor: not-allowed;
 }
 
 .waiting {

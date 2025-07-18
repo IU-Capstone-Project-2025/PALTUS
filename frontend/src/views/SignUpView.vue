@@ -2,7 +2,7 @@
 import {computed, onMounted, ref} from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import router from "@/router/index.js";
 import axios from "@/plugins/axios.js";
@@ -79,8 +79,8 @@ onMounted(() => {
           class="custom-input"
       />
       <ErrorNotification :error_message="error_message" v-if="error" />
-      <ButtonGreen v-if="checkFields() && !submitted" type="submit" title="Sign Up" />
-      <ButtonGreen v-else title="Sign Up" class="inactive" />
+      <BaseButton color="green" v-if="checkFields() && !submitted" type="submit" title="Sign Up" />
+      <BaseButton color="inactive" v-else title="Sign Up" />
     </form>
   </div>
 </template>
@@ -114,11 +114,5 @@ form {
   min-height: 5vh;
   font-size: 1rem;
   margin-bottom: 3vh;
-}
-
-.inactive {
-  background-color: #BBDEFB;
-  color: #0D47A1;
-  cursor: not-allowed;
 }
 </style>

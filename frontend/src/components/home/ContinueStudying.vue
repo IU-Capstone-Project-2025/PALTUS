@@ -1,7 +1,7 @@
 <script setup>
 import CourseLink from "@/components/shared/CourseLink.vue";
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import {computed} from "vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 const props = defineProps({
   courseId: {
@@ -39,7 +39,7 @@ const link = computed(() => `course/${props.courseId}`);
   </div>
   <div class="go-to-course">
     <router-link :to="link">
-      <ButtonGreen title="Go to Course" />
+      <BaseButton color="green" title="Go to Course" />
     </router-link>
   </div>
 </div>

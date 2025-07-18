@@ -3,7 +3,7 @@ import {computed, onMounted, ref} from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import ErrorNotification from "@/components/shared/ErrorNotification.vue";
 
@@ -74,16 +74,17 @@ onMounted(() => {
       />
       <ErrorNotification :error_message="error_message" v-if="error" />
 
-      <ButtonGreen
+      <BaseButton
+          color="green"
           type="submit"
           title="Log In"
           v-if="validation() && !submitted"
           id="submit-button"
       />
-      <ButtonGreen title="Log In" class="inactive" v-else />
+      <BaseButton color="inactive" title="Log In" v-else />
       <p class="register-suggest">Don't have an account?</p>
       <router-link to="/sign_up">
-        <ButtonGreen title="Sign Up" />
+        <BaseButton color="green" title="Sign Up" />
       </router-link>
     </form>
   </div>
@@ -125,11 +126,5 @@ form {
   color: #F5F7FA;
   margin-top: 5vh;
   margin-bottom: 1vh;
-}
-
-.inactive {
-  background-color: #BBDEFB;
-  color: #0D47A1;
-  cursor: not-allowed;
 }
 </style>

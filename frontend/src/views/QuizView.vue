@@ -3,7 +3,7 @@ import {useQuizStore} from "@/stores/quiz.js";
 import {onMounted, reactive, ref} from "vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import ErrorNotification from "@/components/shared/ErrorNotification.vue";
-import ButtonDefault from "@/components/shared/ButtonDefault.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 import router from "@/router/index.js";
 import axios from "@/plugins/axios.js";
 import {useRoute} from "vue-router";
@@ -123,14 +123,14 @@ const isAnswerWrong = (questionIndex) => {
         </li>
       </ul>
       <div class="button-container" v-if="validation() && !finished" >
-        <ButtonDefault
+        <BaseButton
             title="Submit"
             type="submit"
             @click="checkAnswers"
         />
       </div>
       <div class="button-container" v-else-if="!validation() && !finished" >
-        <ButtonDefault title="Submit" class="inactive" />
+        <BaseButton title="Submit" color="inactive" />
       </div>
       <div class="passed-result" v-if="passed && finished">
         Your result is {{ Math.round(result * 100) }}%. You passed the quiz!
@@ -139,7 +139,7 @@ const isAnswerWrong = (questionIndex) => {
         Your result is {{ Math.round(result * 100) }}%. You have not passed the quiz
       </div>
       <div class="button-container" v-if="finished">
-        <ButtonDefault
+        <BaseButton
             title="Back to the course"
             @click="sendBack"
         />
@@ -286,12 +286,6 @@ ul {
   justify-content: center;
   align-items: center;
   margin: 2vh 0;
-}
-
-.inactive {
-  background-color: #BBDEFB;
-  color: #0D47A1;
-  cursor: not-allowed;
 }
 
 .correct-answer {

@@ -1,7 +1,7 @@
 <script setup>
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import Chat from "@/components/course/Chat.vue";
-import ButtonDefault from "@/components/shared/ButtonDefault.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 const props = defineProps({
   topic: {
@@ -34,7 +34,7 @@ defineEmits(['closeModal'])
         />
       </div>
       <div class="modal-footer">
-        <ButtonDefault
+        <BaseButton
             title="Finish session"
             @click="$emit('closeModal')"
             class="finish-btn"

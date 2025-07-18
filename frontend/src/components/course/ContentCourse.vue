@@ -1,6 +1,6 @@
 <script setup>
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import ButtonRed from "@/components/shared/ButtonRed.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 defineProps({
   course: {
@@ -38,7 +38,7 @@ defineEmits(['removeCourse'])
       </div>
     </div>
     <div class="navigation" v-if="!chosenContent">
-      <ButtonRed title="REMOVE A COURSE" @click="$emit('removeCourse')" />
+      <BaseButton color="red" title="REMOVE A COURSE" @click="$emit('removeCourse')" />
     </div>
   </section>
 </template>

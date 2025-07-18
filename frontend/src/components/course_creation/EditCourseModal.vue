@@ -1,9 +1,8 @@
 <script setup>
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import {ref} from "vue";
-import ButtonRed from "@/components/shared/ButtonRed.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 const props = defineProps({
   course: {
@@ -16,7 +15,7 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['saveCourse', 'editCourse', 'savePrevious']);
+defineEmits(['saveCourse', 'editCourse', 'savePrevious']);
 const prompt = ref('');
 </script>
 
@@ -40,9 +39,9 @@ const prompt = ref('');
         </ul>
       </div>
       <BaseInput placeholder="Prompt for changing a course" v-model="prompt" class="modal-prompt" />
-      <ButtonGreen title="Edit course" class="modal-btn" @click="$emit('editCourse', prompt)" />
-      <ButtonGreen title="Save Course" class="modal-btn" @click="$emit('saveCourse')" />
-      <ButtonRed title="Cancel edition" class="modal-btn" @click="$emit('savePrevious')" v-if="previous_course" />
+      <BaseButton color="green" title="Edit course" class="modal-btn" @click="$emit('editCourse', prompt)" />
+      <BaseButton color="green" title="Save Course" class="modal-btn" @click="$emit('saveCourse')" />
+      <BaseButton color="red" title="Cancel edition" class="modal-btn" @click="$emit('savePrevious')" v-if="previous_course" />
     </div>
   </div>
 </template>

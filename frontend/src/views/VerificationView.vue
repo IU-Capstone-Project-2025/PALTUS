@@ -3,7 +3,7 @@ import {onMounted, ref} from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import axios from "@/plugins/axios.js";
 import ErrorNotification from "@/components/shared/ErrorNotification.vue";
@@ -87,8 +87,8 @@ onMounted(() => {
           class="custom-input"
       />
       <ErrorNotification :error_message="error_message" v-if="isError" />
-      <ButtonGreen type="submit" title="Submit" v-if="validateCode() && !submitted" />
-      <ButtonGreen title="Submit" class="inactive" v-else />
+      <BaseButton color="green" type="submit" title="Submit" v-if="validateCode() && !submitted" />
+      <BaseButton color="inactive" title="Submit" v-else />
       <p id="send-again" @click="resendCode" v-if="!resent">I did not receive the code</p>
       <p class="resent" v-if="resent">Code was resent, check your email</p>
     </form>
@@ -144,11 +144,5 @@ form {
   margin-top: 5vh;
   margin-bottom: 1vh;
   color: #F5F7FA;
-}
-
-.inactive {
-  background-color: #BBDEFB;
-  color: #0D47A1;
-  cursor: not-allowed;
 }
 </style>

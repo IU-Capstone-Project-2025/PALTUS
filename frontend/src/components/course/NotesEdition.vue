@@ -1,5 +1,5 @@
 <script setup>
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 
 defineProps({
@@ -18,7 +18,12 @@ defineEmits(['submitNotes', 'update:notes'])
         @update:modelValue="(value) => $emit('update:notes', value)"
         placeholder="Add your notes here"
     />
-    <ButtonGreen title="Submit changes" @click="$emit('submitNotes', notes)" class="submit-btn" />
+    <BaseButton
+        title="Submit changes"
+        color="green"
+        @click="$emit('submitNotes', notes)"
+        class="submit-btn"
+    />
   </div>
 </template>
 
