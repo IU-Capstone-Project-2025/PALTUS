@@ -29,7 +29,6 @@ const startTimer = () => {
       time.value--;
     } else {
       checkAnswers();
-      router.back();
       clearInterval(timer.value);
     }
   }, 1000);
@@ -50,6 +49,10 @@ const validation = () => {
 
 const chooseAnswer = (index, questionIndex) => {
   answers[questionIndex] = index;
+}
+
+const sendBack = () => {
+  router.back();
 }
 
 const checkAnswers = async () => {
@@ -123,6 +126,12 @@ const checkAnswers = async () => {
       </div>
       <div class="not-passed-result" v-else-if="!passed && finished">
         Your result is {{ Math.round(result * 100) }}%. You have not passed the quiz
+      </div>
+      <div class="button-container" v-if="finished">
+        <ButtonDefault
+            title="Back to the course"
+            @click="sendBack"
+        />
       </div>
     </div>
   </div>

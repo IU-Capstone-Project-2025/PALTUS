@@ -5,6 +5,7 @@ import UserMessage from "@/components/course/UserMessage.vue";
 import AIMessage from "@/components/course/AIMessage.vue";
 import Typing from "@/components/course/Typing.vue";
 import axios from "@/plugins/axios.js";
+import {useAuthStore} from "@/stores/auth.js";
 
 onMounted(() => {
   scrollToBottom();
@@ -52,6 +53,9 @@ const askAI = async () => {
     scrollToBottom();
   } catch (e) {
     console.err(e)
+    if (e.statusCode === 401) {
+      useAuthStore().logout();
+    }
   }
 }
 

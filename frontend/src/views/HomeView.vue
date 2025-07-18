@@ -6,6 +6,7 @@ import ContinueStudying from "@/components/home/ContinueStudying.vue";
 import Account from "@/components/shared/Account.vue";
 import {onMounted, reactive, ref} from "vue";
 import axios from "@/plugins/axios.js";
+import {useAuthStore} from "@/stores/auth.js";
 
 const courses = ref([]);
 const courseName = ref('');
@@ -18,6 +19,9 @@ const refreshCourses = setInterval(async () => {
     Object.assign(nextLesson, response.nextLesson);
   } catch (err) {
     console.error('Request failed:', err);
+    if (err.statusCode === 401) {
+      useAuthStore().logout();
+    }
   }
 }, 100);
 
@@ -28,6 +32,9 @@ onMounted(async () => {
     Object.assign(nextLesson, response.nextLesson);
   } catch (err) {
     console.error('Request failed:', err);
+    if (err.statusCode === 401) {
+      useAuthStore().logout();
+    }
   }
   setTimeout(() => {
     clearInterval(refreshCourses);
