@@ -27,7 +27,6 @@ const messagesContainer = ref(null);
 const query = ref('');
 const waiting = ref(false);
 const sessionId = ref('');
-
 const userMessages = ref([])
 const aiMessages = reactive([])
 
@@ -84,8 +83,6 @@ const scrollToBottom = () => {
     }
   });
 };
-
-
 </script>
 
 <template>
@@ -114,6 +111,7 @@ const scrollToBottom = () => {
         class="submit-msg"
         @click="askAI"
         v-if="!waiting && query.length"
+        type="submit"
     >
       ↑
     </div>
