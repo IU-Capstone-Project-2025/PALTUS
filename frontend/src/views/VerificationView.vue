@@ -25,7 +25,7 @@ const validateCode = () => {
 
 const resendCode = async () => {
   try {
-    const response = await axios.post('/resend', email, {
+    await axios.post('/resend', email, {
       headers: {"Content-Type": "text/plain"}
     });
     resent.value = true;
