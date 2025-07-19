@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * BaseInput.vue - component for custom input
+ */
 defineProps({
   modelValue: {
     type: String,

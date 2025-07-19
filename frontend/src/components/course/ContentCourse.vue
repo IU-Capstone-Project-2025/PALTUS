@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * ContentCourse.vue - component for overall course information,
+ * used in Course page from Content page component
+ */
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import BaseButton from "@/components/shared/BaseButton.vue";
 

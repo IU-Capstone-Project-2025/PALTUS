@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * AwardsView.vue - achievements page,
+ * available only with authorization, shows user achievements, level, and title
+ */
 import {onBeforeMount, reactive, ref} from "vue";
 import Logo from "@/components/shared/Logo.vue";
 import Account from "@/components/shared/Account.vue";

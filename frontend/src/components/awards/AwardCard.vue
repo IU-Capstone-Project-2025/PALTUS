@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * AwardCard.vue - component for achievement card,
+ * used in Awards page with Achievements.vue component
+ */
 import ProgressBar from "@/components/shared/ProgressBar.vue";
 
 const props = defineProps({

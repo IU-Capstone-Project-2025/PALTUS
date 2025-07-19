@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * AccountLink.vue - component for links in AccountTab,
+ * used in Home, Achievements, and Course Creation page from an Account component
+ */
 defineProps({
   title: {
     type: String,

@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * NotesEdition.vue - component for notes editing,
+ * used in Course page from Content Course component
+ */
 import BaseButton from "@/components/shared/BaseButton.vue";
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 

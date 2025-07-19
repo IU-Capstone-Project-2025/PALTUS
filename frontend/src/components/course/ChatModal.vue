@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * ChatModal.vue - component for modal page of a chat with LLM inside the lesson,
+ * used in Course page from the ContentLesson.vue component
+ * Shows Chat Modal and closes it
+ */
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import Chat from "@/components/course/Chat.vue";
 import BaseButton from "@/components/shared/BaseButton.vue";

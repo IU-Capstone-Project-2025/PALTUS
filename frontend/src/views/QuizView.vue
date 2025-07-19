@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * QuizView.vue - quiz page,
+ * available only with authorization, shows quiz content
+ */
 import {useQuizStore} from "@/stores/quiz.js";
 import {onMounted, reactive, ref} from "vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
@@ -35,7 +39,6 @@ onMounted(() => {
   if (!quiz.quizTitle) {
     router.back();
   }
-  console.log(quiz);
   startTimer();
 })
 
@@ -58,8 +61,6 @@ const checkAnswers = async () => {
   result.value = quiz.checkAnswers(submittedAnswers);
   finished.value = true;
   clearInterval(timer.value);
-  console.log(submittedAnswers);
-  console.log(result.value)
   if (result.value > 0.5) {
     passed.value = true;
     await axios.put(`lessons/passQuiz/${lessonId.value}`);

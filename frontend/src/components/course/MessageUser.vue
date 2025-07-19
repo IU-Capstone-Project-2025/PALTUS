@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * MessageUser.vue - component for sent user message,
+ * used in Chat modal page with Chat component
+ */
 defineProps({
   message: {
     type: String,

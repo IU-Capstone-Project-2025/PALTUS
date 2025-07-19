@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * ContinueStudying.vue - component for central block on a home page,
+ * used in Home page to navigate to the current lesson of a course with recent activity
+ */
 import CourseLink from "@/components/shared/CourseLink.vue";
 import {computed} from "vue";
 import BaseButton from "@/components/shared/BaseButton.vue";
@@ -19,8 +23,8 @@ const props = defineProps({
 });
 
 const link = computed(() => ({
-    path: `course/${props.courseId}`,
-    query: { lessonTitle: props.lessonTitle }
+  path: `course/${props.courseId}`,
+  query: {lessonTitle: props.lessonTitle}
 }));
 </script>
 
@@ -31,8 +35,8 @@ const link = computed(() => ({
       <CourseLink
           v-if="props.courseId"
           :id="props.courseId"
-          :title="props.lessonTitle"
           :link="link"
+          :title="props.lessonTitle"
           class="course-link"
       />
       <ul class="subtopics">

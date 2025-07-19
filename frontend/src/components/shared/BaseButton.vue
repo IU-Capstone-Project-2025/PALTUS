@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * BaseButton.vue - component for custom button component,
+ * Has only 3 main colors
+ */
 defineProps({
   title: {
     type: String,

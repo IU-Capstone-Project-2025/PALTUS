@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Timer.vue - component for quiz timer,
+ * used in Quiz page but may be reused for other pages in the future
+ */
 defineProps({
   time: Number,
   required: true

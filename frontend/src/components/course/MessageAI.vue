@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * MessageAI.vue - component for answers from LLM,
+ * used in Chat modal page with Chat component
+ */
 defineProps({
   message: {
     type: String,

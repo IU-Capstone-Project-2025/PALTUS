@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * CourseLink.vue - component for course link inside courses tab
+ */
 const props = defineProps({
   title: {
     type: String,
@@ -13,8 +16,7 @@ const props = defineProps({
     required: true
   },
   link: {
-    type: Object,
-    default: `course/`,
+    default: () => `course/`,
   }
 })
 
@@ -25,7 +27,7 @@ const id = props.id;
   <div class="course">
     <router-link
         v-if="link === 'course/'"
-        :to="link + id"
+        :to="`${link}${id}`"
     >
       <h3>
         {{ props.title }}

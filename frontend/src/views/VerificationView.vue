@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Verification.vue - verification page,
+ * redirects to the Home page if form is correct
+ */
 import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {useAuthStore} from '@/stores/auth';
@@ -25,13 +29,12 @@ const validateCode = () => {
 
 const resendCode = async () => {
   try {
-    const response = await axios.post('/resend', email, {
+    await axios.post('/resend', email, {
       headers: {"Content-Type": "text/plain"}
     });
     resent.value = true;
-    console.log(response);
   } catch (error) {
-    console.log(error);
+    console.err(error);
   }
 }
 

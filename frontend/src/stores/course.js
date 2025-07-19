@@ -1,3 +1,7 @@
+/**
+ * course.js - store for the course
+ * Used to encapsulate logic of course requests and store its state
+ */
 import {defineStore} from "pinia";
 import axios from "@/plugins/axios.js";
 

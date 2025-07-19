@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * QuizContent.vue - component for quiz content,
+ * used in Quiz page
+ */
 defineProps({
   quiz: {
     type: Object,

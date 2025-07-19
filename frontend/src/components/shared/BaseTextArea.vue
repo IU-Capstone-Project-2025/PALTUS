@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * BaseTextArea.vue - component for input with auto-resizing
+ */
 import {onMounted, ref, watch} from 'vue';
 
 const props = defineProps({

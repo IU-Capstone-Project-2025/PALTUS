@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * LoginView.vue - login page,
+ * used to log in to the app
+ */
 import {computed, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {useAuthStore} from '@/stores/auth';
@@ -17,7 +21,6 @@ const error_message = ref('');
 
 async function loginUser() {
   submitted.value = true;
-  console.log("Trying login with:", email.value, password.value);
   try {
     await auth.login(email.value, password.value, null);
     await router.push('/');

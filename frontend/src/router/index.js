@@ -5,8 +5,6 @@ import LoginView from '../views/LoginView.vue';
 import SignUpView from "@/views/SignUpView.vue";
 import VerificationView from "@/views/VerificationView.vue";
 import CourseCreationView from "@/views/CourseCreationView.vue";
-import AccountView from "@/views/AccountView.vue";
-import SettingsView from "@/views/SettingsView.vue";
 import CourseView from "@/views/CourseView.vue";
 import AwardsView from "@/views/AwardsView.vue";
 import QuizView from "@/views/QuizView.vue";
@@ -25,16 +23,6 @@ const routes = [
         path: '/create_course',
         component: CourseCreationView,
         meta: {requiresAuth: true},
-    },
-    {
-        path: '/account',
-        component: AccountView,
-        meta: {requiresAuth: true}
-    },
-    {
-        path: '/settings',
-        component: SettingsView,
-        meta: {requiresAuth: true}
     },
     {
         path: '/course/:id',
