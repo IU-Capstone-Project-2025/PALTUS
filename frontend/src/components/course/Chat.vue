@@ -56,7 +56,7 @@ const askAI = async () => {
     aiMessages.push(newMessage);
     scrollToBottom();
   } catch (e) {
-    console.err(e)
+    console.error(e)
     if (e.statusCode === 401) {
       useAuthStore().logout();
     }

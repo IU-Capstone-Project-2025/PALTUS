@@ -34,7 +34,7 @@ const resendCode = async () => {
     });
     resent.value = true;
   } catch (error) {
-    console.err(error);
+    console.error(error);
   }
 }
 

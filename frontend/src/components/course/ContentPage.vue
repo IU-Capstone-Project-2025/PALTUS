@@ -119,7 +119,7 @@ const generateQuiz = async () => {
     } else if (err.statusCode === 401) {
       useAuthStore().logout();
     }
-    console.err(error);
+    console.error(error);
   }
 }
 </script>

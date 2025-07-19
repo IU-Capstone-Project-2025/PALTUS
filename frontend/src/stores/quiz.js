@@ -35,7 +35,7 @@ export const useQuizStore = defineStore('quiz', {
                 this.correctAnswers = correct;
                 await router.push(`/quiz/${lessonId}`);
             } catch (err) {
-                console.err(err);
+                console.error(err);
             }
         },
         checkAnswers(answers) {

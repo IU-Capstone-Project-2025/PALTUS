@@ -21,7 +21,7 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(response => {
     return response.data;
 }, error => {
-    console.err('Axios Error: ', error);
+    console.error('Axios Error: ', error);
     return Promise.reject(error);
 })
 
