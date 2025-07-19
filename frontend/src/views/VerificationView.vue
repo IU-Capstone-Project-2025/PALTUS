@@ -29,9 +29,8 @@ const resendCode = async () => {
       headers: {"Content-Type": "text/plain"}
     });
     resent.value = true;
-    console.log(response);
   } catch (error) {
-    console.log(error);
+    console.err(error);
   }
 }
 

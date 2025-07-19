@@ -33,7 +33,6 @@ onBeforeMount(async () => {
   if (route.query.lessonTitle) {
     chosenContent.value = course.lessons.find(lesson => lesson.title === route.query.lessonTitle).lesson_number;
   }
-  console.log(course);
 });
 
 const chosenContent = ref(0);

@@ -116,7 +116,7 @@ const saveCourse = async () => {
     axios.post('courses/saveCourse', response)
         .then((router.push('/')));
   } catch (error) {
-    console.log(error);
+    console.err(error);
   }
 }
 
@@ -154,7 +154,7 @@ const savePrevious = async () => {
       axios.post('courses/saveCourse', response)
           .then((router.push('/')));
     } catch (error) {
-      console.log(error);
+      console.err(error);
     }
   }
 }

@@ -17,7 +17,6 @@ const error_message = ref('');
 
 async function loginUser() {
   submitted.value = true;
-  console.log("Trying login with:", email.value, password.value);
   try {
     await auth.login(email.value, password.value, null);
     await router.push('/');

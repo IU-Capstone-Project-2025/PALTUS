@@ -19,8 +19,8 @@ const props = defineProps({
 });
 
 const link = computed(() => ({
-    path: `course/${props.courseId}`,
-    query: { lessonTitle: props.lessonTitle }
+  path: `course/${props.courseId}`,
+  query: {lessonTitle: props.lessonTitle}
 }));
 </script>
 
@@ -31,8 +31,8 @@ const link = computed(() => ({
       <CourseLink
           v-if="props.courseId"
           :id="props.courseId"
-          :title="props.lessonTitle"
           :link="link"
+          :title="props.lessonTitle"
           class="course-link"
       />
       <ul class="subtopics">

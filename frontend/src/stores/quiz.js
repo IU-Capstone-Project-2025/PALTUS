@@ -12,7 +12,6 @@ export const useQuizStore = defineStore('quiz', {
         async loadQuiz(lessonId) {
             try {
                 const quizData = await axios.get(`/quiz/${lessonId}`);
-                console.log(quizData);
                 this.quizTitle = quizData.quizTitle;
                 const newQuestions = [];
                 const correct = [];
@@ -32,7 +31,7 @@ export const useQuizStore = defineStore('quiz', {
                 this.correctAnswers = correct;
                 await router.push(`/quiz/${lessonId}`);
             } catch (err) {
-                console.log(err);
+                console.err(err);
             }
         },
         checkAnswers(answers) {
@@ -42,7 +41,6 @@ export const useQuizStore = defineStore('quiz', {
                     correctCount++;
                 }
             }
-            console.log(correctCount);
             return answers.length > 0 ? correctCount / this.questions.length : 0;
         }
     },
