@@ -11,18 +11,18 @@ const props = defineProps({
 
 <template>
   <div class="award-card">
-    <div class="award-badge" style="background-color: #48CFAD" v-if="props.achievement.completed">
+    <div v-if="props.achievement.completed" class="award-badge" style="background-color: #48CFAD">
       ✓
     </div>
-    <div class="award-badge" style="background-color: #BBDEFB" v-else>
+    <div v-else class="award-badge" style="background-color: #BBDEFB">
       ✗
     </div>
     <div class="award-info">
       <h3>{{ achievement.name }}</h3>
       <p>{{ achievement.description }}</p>
       <div class="award-progress">
-        <ProgressBar :fraction_finished="achievement.progress" v-if="achievement.completed" class="award-progress-bar" />
-        <ProgressBar :fraction_finished="achievement.progress" v-else class="award-progress-bar" />
+        <ProgressBar v-if="achievement.completed" :fraction_finished="achievement.progress" class="award-progress-bar"/>
+        <ProgressBar v-else :fraction_finished="achievement.progress" class="award-progress-bar"/>
         <span>Completed {{ achievement.progress }}%</span>
       </div>
     </div>

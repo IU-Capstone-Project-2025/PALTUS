@@ -1,7 +1,7 @@
 <script setup>
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import Chat from "@/components/course/Chat.vue";
-import ButtonDefault from "@/components/shared/ButtonDefault.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 const props = defineProps({
   topic: {
@@ -25,7 +25,7 @@ defineEmits(['closeModal'])
   <div class="modal-overlay">
     <div class="modal-content">
       <div class="modal-head">
-        <BaseHeader :text="props.topic" style="margin-bottom: 2vh" />
+        <BaseHeader :text="props.topic" style="margin-bottom: 2vh"/>
       </div>
       <div class="modal-body">
         <Chat
@@ -34,10 +34,10 @@ defineEmits(['closeModal'])
         />
       </div>
       <div class="modal-footer">
-        <ButtonDefault
+        <BaseButton
+            class="finish-btn"
             title="Finish session"
             @click="$emit('closeModal')"
-            class="finish-btn"
         />
         <p class="warning">Chat will be deleted after you leave</p>
       </div>
@@ -48,9 +48,11 @@ defineEmits(['closeModal'])
 <style scoped>
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;

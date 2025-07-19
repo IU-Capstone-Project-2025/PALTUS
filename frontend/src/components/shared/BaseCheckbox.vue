@@ -20,10 +20,10 @@ const toggleCheckbox = (event) => {
 <template>
   <div class="checkbox-container">
     <input
-        type="checkbox"
         :id="id"
-        class="custom-checkbox"
         :checked="modelValue"
+        class="custom-checkbox"
+        type="checkbox"
         @change="toggleCheckbox"
     />
     <label :for="id" class="checkbox-label"></label>

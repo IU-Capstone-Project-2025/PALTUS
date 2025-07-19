@@ -45,31 +45,32 @@ onMounted(async () => {
 <template>
   <div class="main">
     <section class="left">
-      <Logo />
+      <Logo/>
       <MyCourses :courses="courses"/>
     </section>
     <section class="center">
       <div class="new-course">
         <BaseInput
             v-model="courseName"
-            placeholder="Course topic..." />
+            placeholder="Course topic..."/>
         <div class="create-course-link">
           <router-link
               :to="{ path: '/create_course',
               query: {
                 courseName: courseName
               } }"
-          > >> Create a new course</router-link>
+          > >> Create a new course
+          </router-link>
         </div>
       </div>
-      <ContinueStudying :courseId="nextLesson.courseId"
+      <ContinueStudying v-if="courses.length > 0"
+                        :courseId="nextLesson.courseId"
                         :lessonTitle="nextLesson.lessonTitle"
                         :subtopics="nextLesson.subtopics"
-                        v-if="courses.length > 0"
       />
     </section>
     <section class="right">
-      <Account />
+      <Account/>
     </section>
   </div>
 </template>
@@ -80,6 +81,7 @@ a {
   color: #42A5F5;
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
   cursor: pointer;

@@ -3,14 +3,14 @@ import Logo from "@/components/shared/Logo.vue";
 import MyCourses from "@/components/shared/MyCourses.vue";
 import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import {onMounted, reactive, ref} from "vue";
 import router from "@/router/index.js";
-import { useRoute } from 'vue-router';
+import {useRoute} from 'vue-router';
 import axios from "@/plugins/axios.js"
 import EditCourseModal from "@/components/course_creation/EditCourseModal.vue";
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 import ErrorNotification from "@/components/shared/ErrorNotification.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 const route = useRoute();
 const name = ref(route.query.courseName || '');
@@ -161,7 +161,7 @@ const savePrevious = async () => {
 </script>
 
 <template>
-  <div class="modal-container" v-if="showModal">
+  <div v-if="showModal" class="modal-container">
     <EditCourseModal
         :course="course.value"
         :previous_course="!!previous_course.value"
@@ -172,36 +172,38 @@ const savePrevious = async () => {
   </div>
   <div class="main">
     <section class="left">
-      <Logo />
+      <Logo/>
       <MyCourses :courses="courses"/>
     </section>
     <section class="center">
       <div
-          class="question"
           v-for="inp in inputs"
+          class="question"
       >
         <BaseHeader :text="inp.question" class="header"/>
-        <BaseTextArea :placeholder="inp.placeholder" v-model="inp.model"/>
+        <BaseTextArea v-model="inp.model" :placeholder="inp.placeholder"/>
       </div>
       <div class="question" style="margin-top: 1vh">
-        <BaseTextArea placeholder="Lesson duration (in minutes)" v-model="duration"/>
+        <BaseTextArea v-model="duration" placeholder="Lesson duration (in minutes)"/>
       </div>
-      <ErrorNotification v-if="isError" :error_message="error_message" />
-      <ButtonGreen
+      <ErrorNotification v-if="isError" :error_message="error_message"/>
+      <BaseButton
           v-if="validation() && !waiting"
-          title="GET A COURSE"
           class="increased-size"
+          color="green"
+          title="GET A COURSE"
           @click="getCourse"
       />
-      <ButtonGreen
+      <BaseButton
           v-if="!validation() && !waiting"
+          class="increased-size"
+          color="inactive"
           title="GET A COURSE"
-          class="inactive"
       />
-      <BaseHeader v-if="waiting" text="Waiting for server response..." class="waiting" />
+      <BaseHeader v-if="waiting" class="waiting" text="Waiting for server response..."/>
     </section>
     <section class="right">
-      <Account />
+      <Account/>
     </section>
   </div>
 </template>
@@ -241,14 +243,6 @@ const savePrevious = async () => {
 .increased-size {
   margin: 2.5vh 0;
   padding: 2vh 3vw;
-}
-
-.inactive {
-  margin: 2.5vh 0;
-  padding: 2vh 3vw;
-  background-color: #BBDEFB;
-  color: #0D47A1;
-  cursor: not-allowed;
 }
 
 .waiting {

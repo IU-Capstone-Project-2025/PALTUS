@@ -3,7 +3,7 @@ import SideBar from "@/components/course/SideBar.vue";
 import {computed, onBeforeMount, reactive, ref, watch} from "vue";
 import {useCourseStore} from "@/stores/course.js";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
-import CourseContent from "@/components/course/CourseContent.vue";
+import ContentPage from "@/components/course/ContentPage.vue";
 
 
 const route = useRoute();
@@ -58,14 +58,14 @@ onBeforeRouteLeave(async (to, from, next) => {
 <template>
   <div class="main">
     <section class="left">
-      <SideBar :course="course" :progress="progress" v-model="chosenContent" />
+      <SideBar v-model="chosenContent" :course="course" :progress="progress"/>
     </section>
     <section class="center">
-      <CourseContent
-        :course="course"
-        :chosenContent="chosenContent"
-        :subtopicsChanged="subtopicsChanged"
-        class="course-content"
+      <ContentPage
+          :chosenContent="chosenContent"
+          :course="course"
+          :subtopicsChanged="subtopicsChanged"
+          class="course-content"
       />
     </section>
   </div>

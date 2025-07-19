@@ -5,8 +5,8 @@ import Account from "@/components/shared/Account.vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import LevelBadge from "@/components/awards/LevelBadge.vue";
 import ProgressBar from "@/components/shared/ProgressBar.vue";
-import AwardCard from "@/components/awards/AwardCard.vue";
 import Streak from "@/components/awards/Streak.vue";
+import Achievements from "@/components/awards/Achievements.vue";
 import {useAuthStore} from "@/stores/auth.js";
 import axios from "@/plugins/axios.js";
 
@@ -38,13 +38,13 @@ let achievements = reactive([]);
 <template>
   <div class="main">
     <section class="left">
-      <Logo />
+      <Logo/>
     </section>
 
     <section class="center">
       <div class="user-level">
-        <LevelBadge :title="title" />
-        <BaseHeader text="Your achievements" class="achievements-header" />
+        <LevelBadge :title="title"/>
+        <BaseHeader class="achievements-header" text="Your achievements"/>
       </div>
 
       <div class="level-progress">
@@ -52,25 +52,16 @@ let achievements = reactive([]);
           <span>Level {{ level }}</span>
           <span>{{ currentExp }}/{{ requiredExp }} XP</span>
         </div>
-        <ProgressBar :fraction_finished="currentExp / requiredExp * 100" class="progress-fill" />
+        <ProgressBar :fraction_finished="currentExp / requiredExp * 100" class="progress-fill"/>
       </div>
-      <Streak :streak="streak" v-if="streak" />
+      <Streak v-if="streak" :streak="streak"/>
     </section>
     <section class="right">
-      <Account />
+      <Account/>
     </section>
   </div>
 
-  <section class="awards-container">
-    <div class="awards-section">
-      <h2 class="section-title">Available Awards</h2>
-      <ul class="awards-grid">
-        <li v-for="achievement in achievements" class="grid-element">
-          <AwardCard :achievement="achievement" />
-        </li>
-      </ul>
-    </div>
-  </section>
+  <Achievements :achievements="achievements" class="awards-container"/>
 </template>
 
 
@@ -100,9 +91,9 @@ let achievements = reactive([]);
 
 .awards-container {
   width: 80vw;
-  margin: 0 auto;
+  margin: 0 auto 5vh;
   border-radius: 16px;
-  padding: 30px;
+  padding: 2rem 1rem 3rem;
 }
 
 .user-level {
@@ -138,32 +129,5 @@ let achievements = reactive([]);
   height: 1vh;
   border-radius: 4px;
   width: 100%;
-}
-
-.awards-section {
-  background: white;
-  border-radius: 12px;
-  padding: 2vw;
-}
-
-.section-title {
-  color: #42A5F5;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 25px;
-  text-align: center;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.awards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr));
-  gap: 1vh;
-  justify-items: center;
-}
-
-ul {
-  list-style-type: none;
 }
 </style>

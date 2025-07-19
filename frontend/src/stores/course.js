@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import {defineStore} from "pinia";
 import axios from "@/plugins/axios.js";
 
 export const useCourseStore = defineStore("course", {
@@ -22,7 +22,7 @@ export const useCourseStore = defineStore("course", {
                 console.error(error);
             }
         },
-        async updateSubtopic(subtopicChanged, lesson_id){
+        async updateSubtopic(subtopicChanged, lesson_id) {
             try {
                 await axios.put(`lessons/${lesson_id}/subtopics/setFinished/${subtopicChanged.id}`, {
                     courseId: this.courseId,

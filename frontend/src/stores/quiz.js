@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
 

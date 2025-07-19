@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-<p>{{ props.error_message }}</p>
+  <p>{{ props.error_message }}</p>
 </template>
 
 <style scoped>
