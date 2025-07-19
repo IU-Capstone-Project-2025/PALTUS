@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a user's login record with the date of login.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

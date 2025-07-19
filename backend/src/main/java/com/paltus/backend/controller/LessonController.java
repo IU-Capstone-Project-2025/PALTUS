@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paltus.backend.service.LessonService;
-import org.springframework.web.bind.annotation.PutMapping;
 
+import io.swagger.v3.oas.annotations.Operation;
+
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/lessons")
@@ -17,8 +19,9 @@ public class LessonController {
         this.lessonService = lessonService;
     }
 
+    @Operation(summary = "Mark quiz as passed", description = "Mark the quiz as passed for the lesson with the given ID")
     @PutMapping("/passQuiz/{id}")
-    public void putMethodName(@PathVariable Long id) {
+    public void markQuizAsPassed(@PathVariable Long id) {
         lessonService.setQuizAsPassed(id);
     }
 }

@@ -23,6 +23,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a learning course with lessons, books, and metadata.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -38,6 +41,7 @@ public class Course {
     @Column(columnDefinition = "text")
     private List<String> books;
 
+    /** Last time the user studied the course */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Moscow")
     private Instant lastActivityTime;
 
@@ -52,6 +56,10 @@ public class Course {
     private User user;
 
 
+    /**
+     * Set bidirectional relationships between course, lessons, and subtopics.
+     * Should be called after generating a new course.
+     */
     public void setupRelationships() {
         for (Lesson lesson : lessons) {
             lesson.setCourse(this);

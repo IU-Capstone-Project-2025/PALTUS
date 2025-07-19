@@ -56,6 +56,10 @@ public class SubtopicService {
                 .getNotes();
     }
 
+    /**
+     * Get detailed context of the subtopic including
+     * course name, lesson title, topic, and notes.
+     */
     public SubtopicContextDto getContext(Long id) {
         Subtopic subtopic = subtopicRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("No subtopic with id " + id));

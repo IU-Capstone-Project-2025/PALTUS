@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a user title based on required experience points.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

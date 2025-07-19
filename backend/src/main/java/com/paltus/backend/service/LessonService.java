@@ -31,6 +31,10 @@ public class LessonService {
         return this.courseMapper.toLessonDto(lesson);
     }
 
+    /**
+     * Updates lesson finished state depending on whether all subtopics are finished.
+     * Also updates achievement progress if lesson is completed.
+     */
     public void handleSubtopicFinished(long id) {
         if (lessonRepository.isFinished(id)) {
             lessonRepository.updateLessonFinishedState(id, true);
@@ -40,14 +44,24 @@ public class LessonService {
         }
     }
 
+    /**
+     * Marks the quiz for the given lesson ID as passed.
+     * Updates achievement progress for quizzes.
+     * Throws EntityNotFoundException if lesson does not exist.
+     */
     public void setQuizAsPassed(long id) {
         if (!lessonRepository.existsById(id)) {
             throw new EntityNotFoundException("No subtopic with id " + id);
         }
         lessonRepository.setQuizAsPassed(id);
-        achievementService.updateProgress(AchievementType.COMPLETE_QUIZES);
+        achievementService.updateProgress(AchievementType.COMPLETE_QUIZZES);
     }
 
+    /**
+     * Retrieves lesson context including course name, lesson title,
+     * and a list of subtopics.
+     * Throws RuntimeException if lesson not found.
+     */
     public LessonContextDto getLessonContext(Long id) {
         Lesson lesson = this.lessonRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Lesson not found with id: " + id));

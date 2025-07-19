@@ -23,6 +23,11 @@ public class LoginStreakEvaluator extends AbstractAchievementEvaluator {
         this.userLoginRepository = userLoginRepository;
     }
 
+    /**
+     * Updates the login streak progress based on the number of consecutive
+     * logged-in days of the user.
+     * Should be called the user logs in
+     */
     @Override
     public void updateProgress(User user) {
         LocalDate today = LocalDate.now();
