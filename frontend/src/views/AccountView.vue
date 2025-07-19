@@ -4,7 +4,7 @@ import Logo from "@/components/shared/Logo.vue";
 </script>
 
 <template>
-<Logo />
+  <Logo/>
 </template>
 
 <style scoped>

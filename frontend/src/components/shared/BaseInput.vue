@@ -37,6 +37,7 @@ input {
 textarea:focus, input:focus {
   outline: none;
 }
+
 ::placeholder {
   color: #abd4f6;
 }

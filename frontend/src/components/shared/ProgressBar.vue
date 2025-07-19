@@ -28,8 +28,8 @@ watch(
 <template>
   <div class="progress-bar">
     <div
-        class="progress"
         :style="{ width: currentProgress + '%' }"
+        class="progress"
     ></div>
   </div>
 </template>

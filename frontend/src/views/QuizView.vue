@@ -12,7 +12,7 @@ import QuizContent from "@/components/quiz/QuizContent.vue";
 
 const quiz = useQuizStore();
 const answers = reactive([]);
-const time = ref(5*60);
+const time = ref(5 * 60);
 const timer = ref(null);
 const result = ref(0);
 const finished = ref(false);
@@ -73,13 +73,13 @@ const isAnswerWrong = (questionIndex) => {
 
 <template>
   <ErrorNotification
-      error_message="Quiz was not generated"
-      class="error"
       v-if="!quiz.quizTitle"
+      class="error"
+      error_message="Quiz was not generated"
   />
-  <div class="quiz-view" v-else>
+  <div v-else class="quiz-view">
     <div class="quiz-header">
-      <BaseHeader :text="quiz.quizTitle" />
+      <BaseHeader :text="quiz.quizTitle"/>
     </div>
     <div class="timer-container">
       <Timer
@@ -90,29 +90,29 @@ const isAnswerWrong = (questionIndex) => {
 
     <div>
       <QuizContent
-          :quiz="quiz"
-          :finished="finished"
           :answers="answers"
+          :finished="finished"
+          :quiz="quiz"
           @chooseAnswer="chooseAnswer"
           @isAnswerWrong="isAnswerWrong"
       />
-      <div class="button-container" v-if="validation() && !finished" >
+      <div v-if="validation() && !finished" class="button-container">
         <BaseButton
             title="Submit"
             type="submit"
             @click="checkAnswers"
         />
       </div>
-      <div class="button-container" v-else-if="!validation() && !finished" >
-        <BaseButton title="Submit" color="inactive" />
+      <div v-else-if="!validation() && !finished" class="button-container">
+        <BaseButton color="inactive" title="Submit"/>
       </div>
-      <div class="passed-result" v-if="passed && finished">
+      <div v-if="passed && finished" class="passed-result">
         Your result is {{ Math.round(result * 100) }}%. You passed the quiz!
       </div>
-      <div class="not-passed-result" v-else-if="!passed && finished">
+      <div v-else-if="!passed && finished" class="not-passed-result">
         Your result is {{ Math.round(result * 100) }}%. You have not passed the quiz
       </div>
-      <div class="button-container" v-if="finished">
+      <div v-if="finished" class="button-container">
         <BaseButton
             title="Back to the course"
             @click="sendBack"

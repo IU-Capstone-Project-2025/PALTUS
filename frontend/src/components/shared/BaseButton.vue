@@ -63,6 +63,7 @@ button {
 .default {
   background-color: #42A5F5;
 }
+
 .default:hover {
   background-color: #BBDEFB;
   color: #0D47A1;
@@ -71,6 +72,7 @@ button {
 .green {
   background-color: #48CFAD;
 }
+
 .green:hover {
   background-color: #BBDEFB;
   color: #0D47A1;
@@ -79,6 +81,7 @@ button {
 .red {
   background-color: #CF4848;
 }
+
 .red:hover {
   background-color: #ff0000;
 }

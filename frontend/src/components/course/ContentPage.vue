@@ -41,7 +41,7 @@ const checkSubtopic = (id, finished) => {
   if (index > -1) {
     props.subtopicsChanged.splice(index, 1);
   } else {
-    props.subtopicsChanged.push({ id, finished });
+    props.subtopicsChanged.push({id, finished});
   }
   if (props.course.lessons[props.chosenContent - 1].subtopics.every(subtopic => subtopic.finished &&
       props.subtopicsChanged.every(subtopic => subtopic.finished))) {
@@ -51,7 +51,7 @@ const checkSubtopic = (id, finished) => {
 
 const removeCourse = async () => {
   try {
-      axios.delete(`courses/${props.course.courseId}`).then(() => {
+    axios.delete(`courses/${props.course.courseId}`).then(() => {
       router.push('/');
     });
   } catch (error) {
@@ -70,7 +70,7 @@ const submitNotes = (notes) => {
         `lessons/${props.course.lessons[props.chosenContent - 1].id}/subtopics/setNotes/${editMode.id}`,
         notes,
         {
-          headers:{ "Content-Type": "text/plain"}
+          headers: {"Content-Type": "text/plain"}
         }
     );
     editMode.edit = false;
@@ -122,29 +122,29 @@ const generateQuiz = async () => {
 <template>
   <ChatModal
       v-if="modal"
-      :topic="modalTopic"
       :id="modalId"
       :lesson="props.course.lessons[props.chosenContent - 1].id"
+      :topic="modalTopic"
       @close-modal="finishChat"
   />
   <ContentLesson
       v-if="chosenContent"
-      :course="course"
       :chosenContent="chosenContent"
-      :waiting="waiting"
+      :course="course"
       :editMode="editMode"
       :error="error"
-      @editNotes="editNotes"
-      @submitNotes="submitNotes"
-      @openChat="openChat"
-      @generateQuiz="generateQuiz"
+      :waiting="waiting"
       @checkSubtopic="checkSubtopic"
+      @editNotes="editNotes"
+      @generateQuiz="generateQuiz"
+      @openChat="openChat"
+      @submitNotes="submitNotes"
   />
 
   <ContentCourse
       v-else
-      :course="course"
       :chosenContent="chosenContent"
+      :course="course"
       @removeCourse="removeCourse"
   />
 </template>

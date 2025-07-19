@@ -1,6 +1,6 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue';
-import { useAuthStore } from '@/stores/auth';
+import {useAuthStore} from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import BaseButton from "@/components/shared/BaseButton.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
@@ -57,30 +57,30 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <Logo />
+    <Logo/>
     <form @submit.prevent="signUp">
       <h3>Sign Up</h3>
       <BaseInput
           v-model="email"
-          placeholder="Email"
           class="custom-input"
+          placeholder="Email"
       />
 
       <BaseInput
           v-model="name"
-          placeholder="Your Name"
           class="custom-input"
+          placeholder="Your Name"
       />
 
       <BaseInput
           v-model="password"
+          class="custom-input"
           placeholder="Password"
           type="password"
-          class="custom-input"
       />
-      <ErrorNotification :error_message="error_message" v-if="error" />
-      <BaseButton color="green" v-if="checkFields() && !submitted" type="submit" title="Sign Up" />
-      <BaseButton color="inactive" v-else title="Sign Up" />
+      <ErrorNotification v-if="error" :error_message="error_message"/>
+      <BaseButton v-if="checkFields() && !submitted" color="green" title="Sign Up" type="submit"/>
+      <BaseButton v-else color="inactive" title="Sign Up"/>
     </form>
   </div>
 </template>
@@ -92,6 +92,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
 }
+
 h3 {
   font-size: 1.75rem;
   font-weight: 700;
@@ -99,6 +100,7 @@ h3 {
   text-align: center;
   margin-bottom: 5vh;
 }
+
 form {
   display: flex;
   box-sizing: border-box;
@@ -109,6 +111,7 @@ form {
   margin-top: 10vh;
   border-radius: 16px;
 }
+
 .custom-input {
   height: 5vh;
   min-height: 5vh;

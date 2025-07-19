@@ -1,7 +1,7 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import {useRouter} from 'vue-router';
+import {useAuthStore} from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import BaseButton from "@/components/shared/BaseButton.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
@@ -51,40 +51,40 @@ const validation = () => {
 onMounted(() => {
   if (auth.isAuthenticated()) {
     router.push('/');
-  } 
+  }
 })
 </script>
 
 <template>
   <div class="container">
-    <Logo />
+    <Logo/>
     <form @submit.prevent="loginUser">
       <h3>Log In</h3>
       <BaseInput
           v-model="email"
-          placeholder="Email"
           class="custom-input"
+          placeholder="Email"
       />
 
       <BaseInput
           v-model="password"
+          class="custom-input"
           placeholder="Password"
           type="password"
-          class="custom-input"
       />
-      <ErrorNotification :error_message="error_message" v-if="error" />
+      <ErrorNotification v-if="error" :error_message="error_message"/>
 
       <BaseButton
-          color="green"
-          type="submit"
-          title="Log In"
           v-if="validation() && !submitted"
           id="submit-button"
+          color="green"
+          title="Log In"
+          type="submit"
       />
-      <BaseButton color="inactive" title="Log In" v-else />
+      <BaseButton v-else color="inactive" title="Log In"/>
       <p class="register-suggest">Don't have an account?</p>
       <router-link to="/sign_up">
-        <BaseButton color="green" title="Sign Up" />
+        <BaseButton color="green" title="Sign Up"/>
       </router-link>
     </form>
   </div>
@@ -97,6 +97,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
 }
+
 h3 {
   font-size: 1.75rem;
   font-weight: 700;
@@ -104,6 +105,7 @@ h3 {
   text-align: center;
   margin-bottom: 5vh;
 }
+
 form {
   display: flex;
   box-sizing: border-box;
@@ -114,6 +116,7 @@ form {
   margin-top: 10vh;
   border-radius: 16px;
 }
+
 .custom-input {
   height: 5vh;
   min-height: 5vh;

@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, ref} from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import {useRouter} from 'vue-router';
+import {useAuthStore} from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'
 import BaseButton from "@/components/shared/BaseButton.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
@@ -26,7 +26,7 @@ const validateCode = () => {
 const resendCode = async () => {
   try {
     const response = await axios.post('/resend', email, {
-      headers:{ "Content-Type": "text/plain"}
+      headers: {"Content-Type": "text/plain"}
     });
     resent.value = true;
     console.log(response);
@@ -78,19 +78,19 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <Logo />
+    <Logo/>
     <form @submit.prevent="checkCode">
       <h3>Check your email</h3>
       <BaseInput
           v-model="ver_code"
-          placeholder="Enter your verification code"
           class="custom-input"
+          placeholder="Enter your verification code"
       />
-      <ErrorNotification :error_message="error_message" v-if="isError" />
-      <BaseButton color="green" type="submit" title="Submit" v-if="validateCode() && !submitted" />
-      <BaseButton color="inactive" title="Submit" v-else />
-      <p id="send-again" @click="resendCode" v-if="!resent">I did not receive the code</p>
-      <p class="resent" v-if="resent">Code was resent, check your email</p>
+      <ErrorNotification v-if="isError" :error_message="error_message"/>
+      <BaseButton v-if="validateCode() && !submitted" color="green" title="Submit" type="submit"/>
+      <BaseButton v-else color="inactive" title="Submit"/>
+      <p v-if="!resent" id="send-again" @click="resendCode">I did not receive the code</p>
+      <p v-if="resent" class="resent">Code was resent, check your email</p>
     </form>
   </div>
 </template>
@@ -102,6 +102,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
 }
+
 h3 {
   font-size: 1.75rem;
   font-weight: 700;
@@ -109,6 +110,7 @@ h3 {
   text-align: center;
   margin-bottom: 5vh;
 }
+
 form {
   display: flex;
   box-sizing: border-box;
@@ -119,6 +121,7 @@ form {
   margin-top: 10vh;
   border-radius: 16px;
 }
+
 .custom-input {
   height: 8vh;
   font-size: 1.2rem;
@@ -135,6 +138,7 @@ form {
   text-decoration: underline;
   display: none;
 }
+
 #send-again:hover {
   color: #F5F7FA;
 }

@@ -14,7 +14,7 @@ defineProps({
     <h2 class="section-title">Available Awards</h2>
     <ul class="awards-grid">
       <li v-for="achievement in achievements" class="grid-element">
-        <AwardCard :achievement="achievement" />
+        <AwardCard :achievement="achievement"/>
       </li>
     </ul>
   </div>

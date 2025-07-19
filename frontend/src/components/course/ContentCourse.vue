@@ -18,8 +18,8 @@ defineEmits(['removeCourse'])
 
 <template>
   <section class="main-content">
-    <div class="lesson-content" v-if="!chosenContent">
-      <BaseHeader :text="course.course_name" class="uppercase" />
+    <div v-if="!chosenContent" class="lesson-content">
+      <BaseHeader :text="course.course_name" class="uppercase"/>
       <div class="description">
         <h1 class="field-name">
           Description:
@@ -37,8 +37,8 @@ defineEmits(['removeCourse'])
         </ul>
       </div>
     </div>
-    <div class="navigation" v-if="!chosenContent">
-      <BaseButton color="red" title="REMOVE A COURSE" @click="$emit('removeCourse')" />
+    <div v-if="!chosenContent" class="navigation">
+      <BaseButton color="red" title="REMOVE A COURSE" @click="$emit('removeCourse')"/>
     </div>
   </section>
 </template>

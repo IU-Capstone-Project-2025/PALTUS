@@ -15,14 +15,14 @@ defineEmits(['submitNotes', 'update:notes'])
   <div class="editing">
     <BaseTextArea
         :modelValue="notes"
-        @update:modelValue="(value) => $emit('update:notes', value)"
         placeholder="Add your notes here"
+        @update:modelValue="(value) => $emit('update:notes', value)"
     />
     <BaseButton
-        title="Submit changes"
-        color="green"
-        @click="$emit('submitNotes', notes)"
         class="submit-btn"
+        color="green"
+        title="Submit changes"
+        @click="$emit('submitNotes', notes)"
     />
   </div>
 </template>

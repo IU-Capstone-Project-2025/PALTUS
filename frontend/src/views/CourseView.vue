@@ -58,14 +58,14 @@ onBeforeRouteLeave(async (to, from, next) => {
 <template>
   <div class="main">
     <section class="left">
-      <SideBar :course="course" :progress="progress" v-model="chosenContent" />
+      <SideBar v-model="chosenContent" :course="course" :progress="progress"/>
     </section>
     <section class="center">
       <ContentPage
-        :course="course"
-        :chosenContent="chosenContent"
-        :subtopicsChanged="subtopicsChanged"
-        class="course-content"
+          :chosenContent="chosenContent"
+          :course="course"
+          :subtopicsChanged="subtopicsChanged"
+          class="course-content"
       />
     </section>
   </div>

@@ -23,8 +23,8 @@ const emit = defineEmits(['update:modelValue'])
 <template>
   <div class="side-bar">
     <div style="position: sticky; top: 0;">
-      <Logo class="courses-logo" />
-      <ProgressBar :fraction_finished="progress * 100" class="side-progress" />
+      <Logo class="courses-logo"/>
+      <ProgressBar :fraction_finished="progress * 100" class="side-progress"/>
     </div>
     <div
         class="course-name"
@@ -33,26 +33,26 @@ const emit = defineEmits(['update:modelValue'])
       {{ course.course_name }}
     </div>
     <ul class="course-list">
-      <li class="lesson-item" v-for="lesson in course.lessons">
+      <li v-for="lesson in course.lessons" class="lesson-item">
         <div
+            v-if="lesson.lesson_number === modelValue"
             class="lesson-chosen"
             @click="emit('update:modelValue', lesson.lesson_number)"
-            v-if="lesson.lesson_number === modelValue"
         >
           {{ `${lesson.lesson_number}. ${lesson.title}` }}
         </div>
         <div
+            v-else-if="lesson.finished"
             class="lesson"
             style="opacity: 0.3"
             @click="emit('update:modelValue', lesson.lesson_number)"
-            v-else-if="lesson.finished"
         >
           {{ `${lesson.lesson_number}. ${lesson.title}` }}
         </div>
         <div
+            v-else
             class="lesson"
             @click="emit('update:modelValue', lesson.lesson_number)"
-            v-else
         >
           {{ `${lesson.lesson_number}. ${lesson.title}` }}
         </div>
@@ -98,6 +98,7 @@ ul {
   cursor: pointer;
   transition: 0.2s;
 }
+
 .course-name:hover {
   background-color: #0D47A1;
 }
@@ -110,6 +111,7 @@ ul {
   cursor: pointer;
   transition: 0.2s;
 }
+
 .lesson:hover {
   background-color: #0D47A1;
 }

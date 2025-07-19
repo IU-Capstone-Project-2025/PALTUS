@@ -22,10 +22,10 @@ const prompt = ref('');
 <template>
   <div class="modal-overlay">
     <div class="modal-content">
-      <BaseHeader text="You can edit a course by adding a new lesson or a subtopic" />
+      <BaseHeader text="You can edit a course by adding a new lesson or a subtopic"/>
       <div class="modal-body">
         <div class="course-name">
-          <BaseHeader :text="props.course.course_name" style="margin-bottom: 2vh" />
+          <BaseHeader :text="props.course.course_name" style="margin-bottom: 2vh"/>
         </div>
         <ul>
           <li v-for="lesson in props.course.lessons">
@@ -38,10 +38,11 @@ const prompt = ref('');
           </li>
         </ul>
       </div>
-      <BaseInput placeholder="Prompt for changing a course" v-model="prompt" class="modal-prompt" />
-      <BaseButton color="green" title="Edit course" class="modal-btn" @click="$emit('editCourse', prompt)" />
-      <BaseButton color="green" title="Save Course" class="modal-btn" @click="$emit('saveCourse')" />
-      <BaseButton color="red" title="Cancel edition" class="modal-btn" @click="$emit('savePrevious')" v-if="previous_course" />
+      <BaseInput v-model="prompt" class="modal-prompt" placeholder="Prompt for changing a course"/>
+      <BaseButton class="modal-btn" color="green" title="Edit course" @click="$emit('editCourse', prompt)"/>
+      <BaseButton class="modal-btn" color="green" title="Save Course" @click="$emit('saveCourse')"/>
+      <BaseButton v-if="previous_course" class="modal-btn" color="red" title="Cancel edition"
+                  @click="$emit('savePrevious')"/>
     </div>
   </div>
 </template>
@@ -49,9 +50,11 @@ const prompt = ref('');
 <style scoped>
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;

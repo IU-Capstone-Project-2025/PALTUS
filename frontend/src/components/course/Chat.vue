@@ -64,7 +64,7 @@ const addToNotes = async (message) => {
         `/lessons/${props.lesson}/subtopics/addNotes/${props.id}`,
         message.message,
         {
-          headers:{ "Content-Type": "text/plain"}
+          headers: {"Content-Type": "text/plain"}
         }
     );
     message.added = true;
@@ -86,40 +86,40 @@ const scrollToBottom = () => {
 </script>
 
 <template>
-<div class="chat">
-  <div class="messages-container" ref="messagesContainer">
-    <ul class="messages" v-if="userMessages.length > 0">
-      <li class="message" v-for="(msg, index) in userMessages" :key="index">
-        <MessageUser :message="msg" />
-        <MessageAi
-            v-if="aiMessages.length > index"
-            :message="aiMessages[index].message"
-            v-model="aiMessages[index].added"
-            @add="addToNotes(aiMessages[index])"
-        />
-        <Typing v-else />
-      </li>
-    </ul>
-  </div>
-  <div class="query-input">
-    <BaseTextArea
-        placeholder="Ask your question"
-        v-model="query"
-        class="message-input"
-    />
-    <div
-        class="submit-msg"
-        @click="askAI"
-        v-if="!waiting && query.length"
-        type="submit"
-    >
-      ↑
+  <div class="chat">
+    <div ref="messagesContainer" class="messages-container">
+      <ul v-if="userMessages.length > 0" class="messages">
+        <li v-for="(msg, index) in userMessages" :key="index" class="message">
+          <MessageUser :message="msg"/>
+          <MessageAi
+              v-if="aiMessages.length > index"
+              v-model="aiMessages[index].added"
+              :message="aiMessages[index].message"
+              @add="addToNotes(aiMessages[index])"
+          />
+          <Typing v-else/>
+        </li>
+      </ul>
     </div>
-    <div class="submit-inactive" v-else>
-      ↑
+    <div class="query-input">
+      <BaseTextArea
+          v-model="query"
+          class="message-input"
+          placeholder="Ask your question"
+      />
+      <div
+          v-if="!waiting && query.length"
+          class="submit-msg"
+          type="submit"
+          @click="askAI"
+      >
+        ↑
+      </div>
+      <div v-else class="submit-inactive">
+        ↑
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <style scoped>
@@ -166,6 +166,7 @@ ul {
   cursor: pointer;
   transition: 0.3s;
 }
+
 .submit-msg:hover {
   height: 3rem;
   width: 3rem;

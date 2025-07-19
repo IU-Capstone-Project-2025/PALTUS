@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import axios from "@/plugins/axios.js";
 
 export const useAuthStore = defineStore('auth', {

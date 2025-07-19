@@ -8,11 +8,11 @@ defineProps({
 </script>
 
 <template>
-<div class="msg-container">
-  <div class="msg">
-    {{ message }}
+  <div class="msg-container">
+    <div class="msg">
+      {{ message }}
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped>

@@ -22,27 +22,27 @@ const link = computed(() => `course/${props.courseId}`);
 </script>
 
 <template>
-<div class="continue-course">
-  <h3>Continue studying:</h3>
-  <div class="course-info">
-    <CourseLink
-        v-if="props.courseId"
-        :title="props.lessonTitle"
-        :id="props.courseId"
-        class="course-link"
-    />
-    <ul class="subtopics">
-      <li v-for="subtopic in props.subtopics">
-        {{ subtopic.topicName }}
-      </li>
-    </ul>
+  <div class="continue-course">
+    <h3>Continue studying:</h3>
+    <div class="course-info">
+      <CourseLink
+          v-if="props.courseId"
+          :id="props.courseId"
+          :title="props.lessonTitle"
+          class="course-link"
+      />
+      <ul class="subtopics">
+        <li v-for="subtopic in props.subtopics">
+          {{ subtopic.topicName }}
+        </li>
+      </ul>
+    </div>
+    <div class="go-to-course">
+      <router-link :to="link">
+        <BaseButton color="green" title="Go to Course"/>
+      </router-link>
+    </div>
   </div>
-  <div class="go-to-course">
-    <router-link :to="link">
-      <BaseButton color="green" title="Go to Course" />
-    </router-link>
-  </div>
-</div>
 </template>
 
 <style scoped>

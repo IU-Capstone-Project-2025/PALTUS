@@ -18,31 +18,31 @@ defineEmits(['chooseAnswer', 'isAnswerWrong'])
 </script>
 
 <template>
-  <ul class="quiz-content" >
+  <ul class="quiz-content">
     <li v-for="(question, questionIndex) in quiz.questions" class="question-container">
       <h3 class="question-title">Question {{ questionIndex + 1 }}</h3>
       <p class="question-text">{{ question.questionText }}</p>
 
       <ul>
-        <li class="options-container" v-for="(option, index) in question.options">
+        <li v-for="(option, index) in question.options" class="options-container">
           <div class="option">
             <input
-                type="radio"
-                :name="'question_' + questionIndex"
                 :id="'option_' + questionIndex + '_' + index"
-                :value="index"
-                @click="$emit('chooseAnswer', index, questionIndex)"
                 :checked="answers[questionIndex] === index"
                 :disabled="finished"
+                :name="'question_' + questionIndex"
+                :value="index"
+                type="radio"
+                @click="$emit('chooseAnswer', index, questionIndex)"
             >
             <label :for="'option_' + questionIndex + '_' + index">{{ option }}</label>
           </div>
         </li>
       </ul>
       <div
-          class="correct-answer"
-          :class="{ 'wrong-answer': $emit('isAnswerWrong', questionIndex) }"
           v-if="finished"
+          :class="{ 'wrong-answer': $emit('isAnswerWrong', questionIndex) }"
+          class="correct-answer"
       >
         Correct answer: {{ quiz.questions[questionIndex].options[quiz.correctAnswers[questionIndex]] }}
       </div>

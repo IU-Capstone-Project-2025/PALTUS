@@ -38,13 +38,13 @@ let achievements = reactive([]);
 <template>
   <div class="main">
     <section class="left">
-      <Logo />
+      <Logo/>
     </section>
 
     <section class="center">
       <div class="user-level">
-        <LevelBadge :title="title" />
-        <BaseHeader text="Your achievements" class="achievements-header" />
+        <LevelBadge :title="title"/>
+        <BaseHeader class="achievements-header" text="Your achievements"/>
       </div>
 
       <div class="level-progress">
@@ -52,16 +52,16 @@ let achievements = reactive([]);
           <span>Level {{ level }}</span>
           <span>{{ currentExp }}/{{ requiredExp }} XP</span>
         </div>
-        <ProgressBar :fraction_finished="currentExp / requiredExp * 100" class="progress-fill" />
+        <ProgressBar :fraction_finished="currentExp / requiredExp * 100" class="progress-fill"/>
       </div>
-      <Streak :streak="streak" v-if="streak" />
+      <Streak v-if="streak" :streak="streak"/>
     </section>
     <section class="right">
-      <Account />
+      <Account/>
     </section>
   </div>
 
-  <Achievements :achievements="achievements" class="awards-container" />
+  <Achievements :achievements="achievements" class="awards-container"/>
 </template>
 
 

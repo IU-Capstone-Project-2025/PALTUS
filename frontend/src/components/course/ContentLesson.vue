@@ -33,8 +33,8 @@ defineEmits(['editNotes', 'submitNotes', 'openChat', 'generateQuiz', 'checkSubto
 </script>
 
 <template>
-  <div class="lesson-content" v-if="chosenContent">
-    <BaseHeader :text="course.lessons[chosenContent - 1].title + ':'" class="uppercase" />
+  <div v-if="chosenContent" class="lesson-content">
+    <BaseHeader :text="course.lessons[chosenContent - 1].title + ':'" class="uppercase"/>
     <div class="subtopics">
       <div class="field-name">
         Subtopics:
@@ -51,19 +51,19 @@ defineEmits(['editNotes', 'submitNotes', 'openChat', 'generateQuiz', 'checkSubto
           </div>
           <Notes
               v-if="editMode.id !== subtopic.id"
-              :notes="subtopic.notes"
               :id="subtopic.id"
+              :notes="subtopic.notes"
               @editNotes="$emit('editNotes', subtopic.id)"
           />
           <NotesEdition
+              v-else
               v-model:notes="subtopic.notes"
               @submitNotes="$emit('submitNotes', subtopic.notes)"
-              v-else
           />
           <BaseButton
               v-if="editMode.id !== subtopic.id"
-              title="Ask PALTUS"
               class="ai-btn"
+              title="Ask PALTUS"
               @click="$emit('openChat', subtopic.topic, subtopic.id)"
           />
         </li>
@@ -75,17 +75,17 @@ defineEmits(['editNotes', 'submitNotes', 'openChat', 'generateQuiz', 'checkSubto
         >
           <div class="quiz-interaction">
             <BaseButton
+                v-if="!waiting"
                 color="green"
                 title="Start a quiz"
                 @click="$emit('generateQuiz')"
-                v-if="!waiting"
             />
             <BaseButton
+                v-else
                 color="inactive"
                 title="Start a quiz"
-                v-else
             />
-            <ErrorNotification error_message="Server error, try again" v-if="error" />
+            <ErrorNotification v-if="error" error_message="Server error, try again"/>
           </div>
         </div>
         <div v-else class="passed">

@@ -18,15 +18,15 @@ const link = `course/${props.id}`;
 </script>
 
 <template>
-    <div class="course">
-      <router-link :to="link">
-        <h3>
-          {{ props.title }}
-        </h3>
-        <p v-if="next_lesson">Lesson {{ props.next_lesson }}</p>
-        <p v-else >Next Lesson</p>
-      </router-link>
-    </div>
+  <div class="course">
+    <router-link :to="link">
+      <h3>
+        {{ props.title }}
+      </h3>
+      <p v-if="next_lesson">Lesson {{ props.next_lesson }}</p>
+      <p v-else>Next Lesson</p>
+    </router-link>
+  </div>
 </template>
 
 <style scoped>
@@ -59,6 +59,7 @@ a {
   color: inherit;
   cursor: pointer;
 }
+
 a:hover {
   text-decoration: none;
 }
