@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * EditCourseModal.vue - component for modal for editing a course created,
+ * used in Course Creation page after a course is generated
+ */
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import {ref} from "vue";

@@ -1,3 +1,10 @@
+<script setup>
+/**
+ * Typing.vue - style component for displaying waiting of LLM answer,
+ * used in Chat modal page with Chat component
+ */
+</script>
+
 <template>
   <div class="typing-indicator">
     <span class="dot dot-1">.</span>

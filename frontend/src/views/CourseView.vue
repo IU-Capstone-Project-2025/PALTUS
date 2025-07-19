@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * CourseView.vue - course page,
+ * available only with authorization, shows all the lessons content and course information
+ */
 import SideBar from "@/components/course/SideBar.vue";
 import {computed, onBeforeMount, reactive, ref, watch} from "vue";
 import {useCourseStore} from "@/stores/course.js";

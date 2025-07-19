@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * SignUpView.vue - sign up page,
+ * redirects to Verification page after the submission
+ */
 import {computed, onMounted, ref} from 'vue';
 import {useAuthStore} from '@/stores/auth';
 import Logo from '../components/shared/Logo.vue'

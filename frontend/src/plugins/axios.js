@@ -1,3 +1,6 @@
+/**
+ * axios.js - instance of an axios to define basic behavior of requests
+ */
 import axios from "axios";
 
 const instance = axios.create({

@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * ErrorNotification.vue - component for error displaying
+ */
 const props = defineProps({
   error_message: {
     type: String,

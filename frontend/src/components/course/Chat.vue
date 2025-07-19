@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * Chat.vue - component for chat with LLM inside the lesson,
+ * used in Chat Modal page
+ * Sends messages to LLM, adds info to the notes
+ */
 import BaseTextArea from "@/components/shared/BaseTextArea.vue";
 import {nextTick, onMounted, reactive, ref} from "vue";
 import MessageUser from "@/components/course/MessageUser.vue";

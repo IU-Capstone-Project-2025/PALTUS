@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Notes.vue - component for notes displaying,
+ * used in Course page from Content Course component
+ */
 defineProps({
   notes: {
     type: String,

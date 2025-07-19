@@ -1,3 +1,7 @@
+/**
+ * auth.js - store for authorization
+ * Used for log in, log out and check authentication
+ */
 import {defineStore} from 'pinia';
 import axios from "@/plugins/axios.js";
 

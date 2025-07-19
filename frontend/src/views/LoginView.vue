@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * LoginView.vue - login page,
+ * used to log in to the app
+ */
 import {computed, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {useAuthStore} from '@/stores/auth';

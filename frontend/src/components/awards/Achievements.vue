@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Achievements.vue - component for achievement,
+ * used in Awards page
+ */
 import AwardCard from "@/components/awards/AwardCard.vue";
 
 defineProps({

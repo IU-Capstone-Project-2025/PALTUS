@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * SideBar.vue - component for course sidebar,
+ * used in Course page
+ */
 import ProgressBar from "@/components/shared/ProgressBar.vue";
 import Logo from "@/components/shared/Logo.vue";
 

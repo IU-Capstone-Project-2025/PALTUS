@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * HomeView.vue - achievements page,
+ * available only with authorization, navigates user to all the other main pages
+ */
 import Logo from "@/components/shared/Logo.vue";
 import MyCourses from "@/components/shared/MyCourses.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";

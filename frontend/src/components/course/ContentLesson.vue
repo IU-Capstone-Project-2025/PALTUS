@@ -1,8 +1,12 @@
 <script setup>
+/**
+ * ContentLesson.vue - component for lesson information,
+ * used in Course page from Content page component
+ */
 import BaseHeader from "@/components/shared/BaseHeader.vue";
 import Notes from "@/components/course/Notes.vue";
 import NotesEdition from "@/components/course/NotesEdition.vue";
-import BaseCheckbox from "@/components/shared/BaseCheckbox.vue";
+import BaseCheckbox from "@/components/course/BaseCheckbox.vue";
 import ErrorNotification from "@/components/shared/ErrorNotification.vue";
 import BaseButton from "@/components/shared/BaseButton.vue";
 

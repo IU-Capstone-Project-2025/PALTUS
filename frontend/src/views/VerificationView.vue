@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Verification.vue - verification page,
+ * redirects to the Home page if form is correct
+ */
 import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {useAuthStore} from '@/stores/auth';

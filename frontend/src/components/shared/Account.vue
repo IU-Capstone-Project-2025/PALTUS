@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * Account.vue - component for account tab,
+ * used in Home, Achievements, and Course Creation page
+ * Allow to logout with special function and show animation after clicking on a Profile
+ */
 import AccountLink from "@/components/shared/AccountLink.vue";
 import {accountLinks} from "@/constants/accountLinks.js";
 import ProfileTab from "@/components/shared/ProfileTab.vue";

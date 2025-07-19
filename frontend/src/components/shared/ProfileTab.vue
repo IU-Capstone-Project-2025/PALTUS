@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * ProfileTab.vue - component for the head of Account tab,
+ * used in Home, Achievements, and Course Creation page from Account tab component
+ */
 import {useAuthStore} from "@/stores/auth.js";
 </script>
 

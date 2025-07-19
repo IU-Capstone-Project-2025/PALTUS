@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * QuizView.vue - quiz page,
+ * available only with authorization, shows quiz content
+ */
 import {useQuizStore} from "@/stores/quiz.js";
 import {onMounted, reactive, ref} from "vue";
 import BaseHeader from "@/components/shared/BaseHeader.vue";

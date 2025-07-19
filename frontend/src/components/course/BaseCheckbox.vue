@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * BaseCheckbox.vue - component for custom checkbox,
+ * used in CourseView from a Content Lesson component
+ */
 defineProps({
   id: {
     type: String,

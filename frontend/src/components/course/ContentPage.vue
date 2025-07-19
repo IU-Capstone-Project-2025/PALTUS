@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * ContentPage.vue - component for course content,
+ * used in Course page
+ * Sends requests to mark subtopics, edit notes, generate quizzes
+ */
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";
 import {nextTick, reactive, ref} from "vue";

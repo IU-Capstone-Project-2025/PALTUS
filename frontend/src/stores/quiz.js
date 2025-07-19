@@ -1,3 +1,7 @@
+/**
+ * quiz.js - store for the quiz
+ * Used to store quiz information and answers
+ */
 import {defineStore} from 'pinia';
 import axios from "@/plugins/axios.js";
 import router from "@/router/index.js";

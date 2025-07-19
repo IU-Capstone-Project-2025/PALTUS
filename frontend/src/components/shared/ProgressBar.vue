@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * ProgressBar.vue - component for the custom animated progress bar,
+ */
 import {onMounted, ref, watch} from "vue";
 
 const props = defineProps({

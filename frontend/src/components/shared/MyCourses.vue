@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * MyCourses.vue - component for courses tab,
+ * used in Home, Achievements, and Course Creation page
+ */
 import CourseLink from "@/components/shared/CourseLink.vue";
 
 const props = defineProps({
