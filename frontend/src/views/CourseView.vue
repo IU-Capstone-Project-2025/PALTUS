@@ -26,9 +26,13 @@ let progress = computed(() => {
   return lessons_passed.value > 0 ? lessons_passed.value / lessons_num.value : lessons_passed.value;
 });
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   const course_id = route.params.id;
-  course.loadCourse(course_id);
+  await course.loadCourse(course_id);
+
+  if (route.query.lessonTitle) {
+    chosenContent.value = course.lessons.find(lesson => lesson.title === route.query.lessonTitle).lesson_number;
+  }
   console.log(course);
 });
 

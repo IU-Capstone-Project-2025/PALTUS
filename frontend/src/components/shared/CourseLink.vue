@@ -11,15 +11,33 @@ const props = defineProps({
   id: {
     type: Number,
     required: true
+  },
+  link: {
+    type: Object,
+    default: `course/`,
   }
 })
 
-const link = `course/${props.id}`;
+const id = props.id;
 </script>
 
 <template>
   <div class="course">
-    <router-link :to="link">
+    <router-link
+        v-if="link === 'course/'"
+        :to="link + id"
+    >
+      <h3>
+        {{ props.title }}
+      </h3>
+      <p v-if="next_lesson">Lesson {{ props.next_lesson }}</p>
+      <p v-else>Next Lesson</p>
+    </router-link>
+
+    <router-link
+        v-else
+        :to="link"
+    >
       <h3>
         {{ props.title }}
       </h3>
