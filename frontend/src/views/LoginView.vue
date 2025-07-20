@@ -22,7 +22,7 @@ const error_message = ref('');
 async function loginUser() {
   submitted.value = true;
   try {
-    await auth.login(email.value, password.value, null);
+    await auth.login(email.value, password.value);
     await router.push('/');
   } catch (err) {
     if (err.statusCode === 500) {
