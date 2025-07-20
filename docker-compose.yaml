@@ -35,8 +35,8 @@ services:
       - "443:443"
     volumes:
       - /app/node_modules
-      - /var/www/letsencrypt:/var/www/letsencrypt
-      - ./certs:/etc/nginx/certs:ro
+      - /etc/letsencrypt/archive/paltus-edu.ru/fullchain1.pem:/etc/nginx/certs/fullchain.pem:ro
+      - /etc/letsencrypt/archive/paltus-edu.ru/privkey1.pem:/etc/nginx/certs/privkey.pem:ro
     depends_on:
       - backend-app
 
