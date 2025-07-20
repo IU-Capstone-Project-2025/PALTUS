@@ -36,12 +36,12 @@ public class AuthenticationController {
                 .body("Registration successful. Please check your email for the verification code.");
     }
 
-    @Operation(description = "Authenticate user and returns a JWT token")
+    @Operation(description = "Authenticate user and returns a JWT token and the username")
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
         User authenticatedUser = authenticationService.login(loginUserDto);
         String jwtToken = jwtService.generateToken(authenticatedUser.getEmail());
-        LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
+        LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime(), authenticatedUser.getUsername());
         return ResponseEntity.ok(loginResponse);
     }
 
