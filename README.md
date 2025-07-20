@@ -2,6 +2,11 @@
   <h1> 🧠📅 PALTUS - Personalized Adaptive Learning & Time Utilization System</h1>
   <p><strong>AI-Powered Self-Learning Planner</strong></p>
 </div>
+<p align="center">
+  <a href="http://paltus-edu.ru" target="_blank">
+    <img src="https://img.shields.io/badge/Demo-Visit-blue?style=for-the-badge&logo=vercel" />
+  </a>
+</p>
 
 ---
 An AI-powered self-learning planner that helps users create personalized study plans for any topic, using AI-model to generate lessons, mantain notes to them, and track progress with gamification to maintain engagement. User can add a course using AI-model interaction: user writes that he wants to learn some discipline, adds amount of lessons and available time, then AI-model generates a full course depending on user’s preferences and requested topic. The main goal - courses are built to fit user’s comfort and free time. Lessons include an option to edit the course model or lesson topics, add notes on each lesson, ask AI about the topic, and check the knowledge with quiz generated.
@@ -92,7 +97,21 @@ An AI-powered self-learning planner that helps users create personalized study p
 
 - 🎨 [Figma Design](https://www.figma.com/design/rvNoC6oOC2Xe5y7yWIhLuN/Demo-visuals?node-id=0-1&p=f&t=3HySqTnuZp6DQNiC-0)  
 - 🖥️ [Demo](#)  
-- 🖼️ Screenshots:
+- 🖼️ **Screenshots**:
+  - Login page
+     ![Login page](frontend/docs/images/login.png)
+  - Home page
+    ![Home page](frontend/docs/images/home.png)
+  - Course page
+    ![Course page](frontend/docs/images/course.png)
+  - Quiz page
+    ![Quiz page](frontend/docs/images/quiz.png)
+  - Ask AI modal
+    ![Ask AI modal](frontend/docs/images/askAI.png)
+  - Course creation page
+    ![Course creation page](frontend/docs/images/courseCreation.png)
+  - Achievements page
+    ![Achievements page](frontend/docs/images/achievements.png)
 
 ---
 
