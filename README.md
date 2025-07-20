@@ -1,69 +1,115 @@
-# PALTUS - AI-Powered Self-Learning Planner 
+<div align="center">
+  <h1> 🧠📅 PALTUS - Personalized Adaptive Learning & Time Utilization System</h1>
+  <p><strong>AI-Powered Self-Learning Planner</strong></p>
+</div>
 
-An AI-powered self-learning planner that helps users create personalized study plans for any topic, using AI-model to generate lessons, structure schedules, and track progress with gamification to maintain engagement. User can add a course using AI-model interaction: user writes that he wants to learn some discipline, adds amount of lessons and available time, then AI-model generates a full course depending on user’s preferences and requested topic. The main goal - courses are built to fit user’s comfort and free time. Lessons include an option to edit the course model or lesson topics, add notes on each lesson and see the description of the generated course. Everything is customisable individually, starting from lesson amount and lesson duration, ending with calendar dates and time. There will be an option to give feedback to in a chat with AI-model after lesson or a course.
+---
+An AI-powered self-learning planner that helps users create personalized study plans for any topic, using AI-model to generate lessons, mantain notes to them, and track progress with gamification to maintain engagement. User can add a course using AI-model interaction: user writes that he wants to learn some discipline, adds amount of lessons and available time, then AI-model generates a full course depending on user’s preferences and requested topic. The main goal - courses are built to fit user’s comfort and free time. Lessons include an option to edit the course model or lesson topics, add notes on each lesson, ask AI about the topic, and check the knowledge with quiz generated.
 
-## Implemented Features
-- **User Authentication**:
-  - Email verification system
-  - JWT-based authorization
-  - Password encryption
-- **Course Management**:
-  - AI-generated courses via GigaChat API
-  - Course editing/saving/deletion
-  - Lesson/subtopic hierarchy
-- **Learning System**:
-  - Subtopic completion tracking
-  - Notes management
-  - Quiz generation
-  - Session based chat for asking question about lesson
-- **Progress Tracking**:
-  - Last activity monitoring
-  - Achievement system
-  - XP and level progression
-##  Getting Started
+> 🧩 Everything is fully customizable: lesson titles, durations, and more. For each subtopic, users can interact with the AI for feedback, clarification, or course updates.
 
-### Prerequisites
-- Node.js v18+
-- Java JDK 17
-- PostgreSQL 14+
+---
 
-### Running
 
-Run project via `docker compose --profile prod up --build -d`. You should get [GigaChat API key](https://developers.sber.ru/portal/gigachat-and-api) to run the application. See [.env.example](https://github.com/IU-Capstone-Project-2025/PALTUS/tree/main/.env.example) for configuration.
+## ✨ Features
 
-## Technology Stack
-- **Frontend**:
-  - Framework: Vue 3 + Composition API
-  - State Management: Pinia
-  - Styling: CSS
-  - HTTP Requests: Axios
-- **Backend**:
-  - Language: Java 17
-  - Framework: Spring Boot 3
-  - Database: PostgreSQL
-  - AI Integration: GigaChat API
-  - Security: Spring Security + JWT
-  - Build: Maven
-  - Utilities: Lombok, MapStruct, Jsonrepair
-  - API docs: Springdoc-openapi
-- **DevOps & Infrastructure**:
-  - Containerization: Docker
-  - CI/CD: GitHub Actions (build, test, deploy)
-- **Testing**:
-  - JUnit 5
-  - Spring Boot Test
-  - Integration tests
+### 🔐 User Authentication
+- Email verification system  
+- JWT-based authorization  
+- Password encryption
 
-## Team Members 
+### 📚 Course Management
+- AI-powered course generation via **GigaChat API**  
+- Course editing, saving, and deletion  
+- Hierarchical structure of the course: Lessons → Subtopics  
 
-| Team Member             | Telegram Alias   | Email Address                     | Track                       |
-|-------------------------|------------------|-----------------------------------|-----------------------------|
-| Sergey Knyazkin (Lead)  | @poeticlama      | s.knyazkin@innopolis.university   | Frontend/Design/DevOps      |
-| Aidar Sarvartdinov      | @aidar_sar       | a.sarvardinov@innopolis.university| Backend                     |
-| Amir Fayzullin          | @HoriFa7z        | a.fayzullin@innopolis.university  | Fullstack                   |
-| Ramazan Gizamov         | @ramzeuus        | r.gizamov@innopolis.university    | Frontend/Tech communication |
-| Igor Dubrovsky          | @chomosuce       | i.dubrovsky@innopolis.university  | Backend/DevOps              |
+### 🧠 Learning System
+- Subtopic completion tracking  
+- In-lesson note-taking  
+- Quiz generation per topic  
+- Session-based chat with AI  
 
-##  License
+### 📈 Progress Tracking
+- Last activity tracking  
+- Achievement system  
+- XP and level-up mechanics  
 
-This project is licensed under the **MIT License**
+---
+ 
+
+## 🚀 Getting Started
+
+### 📋 Prerequisites
+- **Node.js** `v18+`
+- **Java JDK** `17`
+- **PostgreSQL** `14+`
+
+### 🛠️ Setup
+
+1. Get a [GigaChat API key](https://developers.sber.ru/portal/gigachat-and-api)
+2. You will need a password for the email to register.
+3. Copy and configure the environment file:  
+   ```bash
+   cp .env.example .env
+   ```
+4. Run the application:
+   ```bash
+   docker compose --profile prod up --build -d
+   ```
+
+---
+
+## 🧪 Tech Stack
+
+### Frontend
+- **Vue 3** + Composition API  
+- **Pinia** (state management)  
+- **Axios** (HTTP requests)  
+- **CSS** (styling)
+
+### Backend
+- **Java 17**, **Spring Boot 3**
+- **Spring Security**, **JWT**
+- **PostgreSQL**
+- **GigaChat API** (AI integration)
+- **Lombok**, **MapStruct**, **Jsonrepair**
+- **Springdoc-openapi** (API docs)
+- **Maven** (build)
+
+### DevOps & Infrastructure
+- **Docker**
+- **Docker profiles** (to mantain dev and prod version of frontend)
+- **GitHub Actions** (CI/CD: build, test, deploy)
+
+### Testing
+- **JUnit 5**
+- **Spring Boot Test**
+- **Integration Tests**
+
+---
+
+## 📸 UI / Demo / Screenshots
+
+- 🎨 [Figma Design](https://www.figma.com/design/rvNoC6oOC2Xe5y7yWIhLuN/Demo-visuals?node-id=0-1&p=f&t=3HySqTnuZp6DQNiC-0)  
+- 🖥️ [Demo](#)  
+- 🖼️ Screenshots:
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.  
+See [LICENSE](./LICENSE) for details.
+
+---
+
+<div align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" height="40" alt="Vue" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" height="40" alt="Java" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" height="40" alt="Spring" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" height="40" alt="PostgreSQL" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" height="40" alt="Docker" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" height="40" alt="GitHub" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" height="40" alt="JavaScript" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original.svg" height="40" alt="Maven" />
+</div>
