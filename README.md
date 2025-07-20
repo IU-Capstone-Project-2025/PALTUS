@@ -9,9 +9,7 @@
 </p>
 
 ---
-An AI-powered self-learning planner that helps users create personalized study plans for any topic, using AI-model to generate lessons, mantain notes to them, and track progress with gamification to maintain engagement. User can add a course using AI-model interaction: user writes that he wants to learn some discipline, adds amount of lessons and available time, then AI-model generates a full course depending on user’s preferences and requested topic. The main goal - courses are built to fit user’s comfort and free time. Lessons include an option to edit the course model or lesson topics, add notes on each lesson, ask AI about the topic, and check the knowledge with quiz generated.
-
-> 🧩 Everything is fully customizable: lesson titles, durations, and more. For each subtopic, users can interact with the AI for feedback, clarification, or course updates.
+> 🧩 An AI-powered self-learning planner that helps users create personalized study plans for any topic, using AI-model to generate lessons, mantain notes to them, and track progress with gamification to maintain engagement. User can add a course using AI-model interaction: user writes that he wants to learn some discipline, adds amount of lessons and available time, then AI-model generates a full course depending on user’s preferences and requested topic. The main goal - courses are built to fit user’s comfort and free time. Lessons include an option to edit the course model or lesson topics, add notes on each lesson, ask AI about the topic, and check the knowledge with quiz generated.
 
 ---
 
