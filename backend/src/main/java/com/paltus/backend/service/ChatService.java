@@ -280,7 +280,7 @@ public class ChatService {
                 .build();
 
         CompletionRequest request = CompletionRequest.builder()
-                .model(ModelName.GIGA_CHAT_2)
+                .model(ModelName. GIGA_CHAT_MAX_2)
                 .message(userMessage)
                 .build();
 
