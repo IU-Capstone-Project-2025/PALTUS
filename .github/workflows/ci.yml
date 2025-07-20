@@ -76,6 +76,7 @@ jobs:
         run: |
             ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
               cd /${{ secrets.SERVER_USER }}/paltus
+              docker compose --profile prod down
               docker compose --profile prod up --build -d
             EOF
 
