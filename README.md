@@ -94,7 +94,7 @@
 ## 📸 UI / Demo / Screenshots
 
 - 🎨 [Figma Design](https://www.figma.com/design/rvNoC6oOC2Xe5y7yWIhLuN/Demo-visuals?node-id=0-1&p=f&t=3HySqTnuZp6DQNiC-0)  
-- 🖥️ [Demo](#)  
+- 🖥️ [Demo](https://drive.google.com/file/d/1ntjJiWKdZ4M6fLnfgKrc5X86aNmgJj2O/view?usp=sharing)  
 - 🖼️ **Screenshots**:
   - Login page
      ![Login page](frontend/docs/images/login.png)
