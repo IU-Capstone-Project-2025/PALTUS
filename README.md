@@ -3,7 +3,7 @@
   <p><strong>AI-Powered Self-Learning Planner</strong></p>
 </div>
 <p align="center">
-  <a href="http://paltus-edu.ru" target="_blank">
+  <a href="https://paltus-edu.ru" target="_blank">
     <img src="https://img.shields.io/badge/Demo-Visit-blue?style=for-the-badge&logo=vercel" />
   </a>
 </p>
