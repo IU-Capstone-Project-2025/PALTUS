@@ -11,6 +11,7 @@ import Account from "@/components/shared/Account.vue";
 import {onMounted, reactive, ref} from "vue";
 import axios from "@/plugins/axios.js";
 import {useAuthStore} from "@/stores/auth.js";
+import BaseHeader from "@/components/shared/BaseHeader.vue";
 
 const courses = ref([]);
 const courseName = ref('');
@@ -72,6 +73,8 @@ onMounted(async () => {
                         :lessonTitle="nextLesson.lessonTitle"
                         :subtopics="nextLesson.subtopics"
       />
+      <BaseHeader v-else :text="`You have no courses available now. Add your first course!`"
+                  style="margin-top: 24vh; font-size: 1.7rem; text-align: center; width: 35vw"/>
     </section>
     <section class="right">
       <Account/>
