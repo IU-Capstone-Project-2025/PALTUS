@@ -69,37 +69,53 @@ public class ChatService {
     /**
      * Attempts to repair malformed JSON using the external `jsonrepair` tool.
      */
-    private String repairJson(String rawJson) throws IOException, InterruptedException {
-        Process process = new ProcessBuilder("jsonrepair").start();
-
+    private String repairJson(String rawJson) throws InvalidResponseException {
+        Process process;
+        try {
+            process = new ProcessBuilder("jsonrepair").start();
+        } catch (IOException e) {
+            throw new InvalidResponseException("Failed to start jsonrepair process: " + e.getMessage());
+        }
+    
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()))) {
             writer.write(rawJson);
+        } catch (IOException e) {
+            throw new InvalidResponseException("Failed to write to jsonrepair process: " + e.getMessage());
         }
-        process.getOutputStream().close();
-
+    
         StringBuilder errorOutput = new StringBuilder();
         try (BufferedReader errReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
             String line;
             while ((line = errReader.readLine()) != null) {
                 errorOutput.append(line).append("\n");
             }
+        } catch (IOException e) {
+            throw new InvalidResponseException("Failed to read error stream from jsonrepair: " + e.getMessage());
         }
-
+    
         StringBuilder repairedJson = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 repairedJson.append(line);
             }
+        } catch (IOException e) {
+            throw new InvalidResponseException("Failed to read output from jsonrepair: " + e.getMessage());
         }
-
-        int exitCode = process.waitFor();
-        if (exitCode != 0) {
-            throw new IOException("jsonrepair exited with code " + exitCode + ": " + errorOutput.toString());
+    
+        try {
+            int exitCode = process.waitFor();
+            if (exitCode != 0) {
+                throw new InvalidResponseException("jsonrepair exited with code " + exitCode + ": " + errorOutput.toString());
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new InvalidResponseException("jsonrepair was interrupted: " + e.getMessage());
         }
-
+    
         return repairedJson.toString();
     }
+    
 
     private String trySilentRepair(String rawJson) {
         try {
@@ -112,26 +128,35 @@ public class ChatService {
     /**
      * Tries multiple times to parse JSON, attempting repairs on failure.
      */
-    private <T> T parseWithRepair(String rawJson, Class<T> clazz) throws IOException, InterruptedException {
+    private <T> T parseWithRepair(String rawJson, Class<T> clazz) throws InvalidResponseException {
         int maxAttempts = 3;
-        IOException lastException = null;
-
+        Exception lastException = null;
+    
         for (int attempt = 1; attempt <= maxAttempts; attempt++) {
             try {
                 String repairedJson = repairJson(rawJson);
                 log.info("Attempt {}: Repaired JSON: {}", attempt, repairedJson);
                 return new ObjectMapper().readValue(repairedJson, clazz);
             } catch (JsonProcessingException ex) {
-                lastException = new IOException("JSON parsing failed at attempt " + attempt + ": " + ex.getMessage(), ex);
+                lastException = new InvalidResponseException("JSON parsing failed at attempt " + attempt + ": " + ex.getMessage());
                 log.warn("Attempt {}: JSON parsing failed: {}", attempt, ex.getMessage());
                 rawJson = trySilentRepair(rawJson);
-            } catch (IOException ex) {
+            } catch (InvalidResponseException ex) {
                 lastException = ex;
                 log.warn("Attempt {}: jsonrepair failed: {}", attempt, ex.getMessage());
+                break;
+            } catch (Exception ex) {
+                lastException = ex;
+                log.warn("Attempt {}: Unexpected error: {}", attempt, ex.getMessage());
             }
         }
-        throw lastException != null ? lastException : new IOException("Unknown error during JSON repair and parsing");
+    
+        if (lastException instanceof InvalidResponseException) {
+            throw (InvalidResponseException) lastException;
+        }
+        throw new InvalidResponseException("Unknown error during JSON repair and parsing");
     }
+    
 
     /**
      * Generates a new course based on user input.
@@ -183,22 +208,22 @@ public class ChatService {
         CompletionRequest.CompletionRequestBuilder builder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2)
                 .messages(messages);
-
+    
         try {
             CompletionRequest request = builder.build();
             CompletionResponse response = client.completions(request);
-
+    
             ChatMessage assistantMessage = ChatMessage.builder()
                     .role(response.choices().get(0).message().role())
                     .content(response.choices().get(0).message().content())
                     .build();
             messages.add(assistantMessage);
-
+    
             String json = assistantMessage.content();
             log.info("LLM output: {}", json);
             Course course = parseWithRepair(json, Course.class);
             return courseMapper.toCourseResponceDto(course, sessionId);
-        } catch (JsonProcessingException ex) {
+        } catch (InvalidResponseException ex) {
             deleteSession(sessionId);
             throw new InvalidResponseException(ex.getMessage());
         } catch (HttpClientException ex) {
@@ -208,6 +233,7 @@ public class ChatService {
             throw new RuntimeException(ex);
         }
     }
+    
 
     /**
      * Gets content related to a subtopic by querying the LLM with context.
@@ -289,8 +315,6 @@ public class ChatService {
             String json = response.choices().get(0).message().content();
             log.info("LLM output: {}", json);
             return parseWithRepair(json, QuizDto.class);
-        } catch (JsonProcessingException ex) {
-            throw new InvalidResponseException(ex.getMessage());
         } catch (HttpClientException ex) {
             throw new RuntimeException(ex.statusCode() + " " + ex.bodyAsString(), ex);
         } catch (Exception ex) {
