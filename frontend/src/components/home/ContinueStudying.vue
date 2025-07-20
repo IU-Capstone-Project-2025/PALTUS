@@ -1,7 +1,11 @@
 <script setup>
+/**
+ * ContinueStudying.vue - component for central block on a home page,
+ * used in Home page to navigate to the current lesson of a course with recent activity
+ */
 import CourseLink from "@/components/shared/CourseLink.vue";
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import {computed} from "vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 const props = defineProps({
   courseId: {
@@ -18,31 +22,35 @@ const props = defineProps({
   }
 });
 
-const link = computed(() => `course/${props.courseId}`);
+const link = computed(() => ({
+  path: `course/${props.courseId}`,
+  query: {lessonTitle: props.lessonTitle}
+}));
 </script>
 
 <template>
-<div class="continue-course">
-  <h3>Continue studying:</h3>
-  <div class="course-info">
-    <CourseLink
-        v-if="props.courseId"
-        :title="props.lessonTitle"
-        :id="props.courseId"
-        class="course-link"
-    />
-    <ul class="subtopics">
-      <li v-for="subtopic in props.subtopics">
-        {{ subtopic.topicName }}
-      </li>
-    </ul>
+  <div class="continue-course">
+    <h3>Continue studying:</h3>
+    <div class="course-info">
+      <CourseLink
+          v-if="props.courseId"
+          :id="props.courseId"
+          :link="link"
+          :title="props.lessonTitle"
+          class="course-link"
+      />
+      <ul class="subtopics">
+        <li v-for="subtopic in props.subtopics">
+          {{ subtopic.topicName }}
+        </li>
+      </ul>
+    </div>
+    <div class="go-to-course">
+      <router-link :to="link">
+        <BaseButton color="green" title="Go to Course"/>
+      </router-link>
+    </div>
   </div>
-  <div class="go-to-course">
-    <router-link :to="link">
-      <ButtonGreen title="Go to Course" />
-    </router-link>
-  </div>
-</div>
 </template>
 
 <style scoped>

@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * BaseInput.vue - component for custom input
+ */
 defineProps({
   modelValue: {
     type: String,
@@ -37,6 +40,7 @@ input {
 textarea:focus, input:focus {
   outline: none;
 }
+
 ::placeholder {
   color: #abd4f6;
 }

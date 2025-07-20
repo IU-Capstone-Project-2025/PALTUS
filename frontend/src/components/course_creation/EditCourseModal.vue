@@ -1,9 +1,12 @@
 <script setup>
+/**
+ * EditCourseModal.vue - component for modal for editing a course created,
+ * used in Course Creation page after a course is generated
+ */
 import BaseHeader from "@/components/shared/BaseHeader.vue";
-import ButtonGreen from "@/components/shared/ButtonGreen.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
 import {ref} from "vue";
-import ButtonRed from "@/components/shared/ButtonRed.vue";
+import BaseButton from "@/components/shared/BaseButton.vue";
 
 const props = defineProps({
   course: {
@@ -16,17 +19,17 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['saveCourse', 'editCourse', 'savePrevious']);
+defineEmits(['saveCourse', 'editCourse', 'savePrevious']);
 const prompt = ref('');
 </script>
 
 <template>
   <div class="modal-overlay">
     <div class="modal-content">
-      <BaseHeader text="You can edit a course by adding a new lesson or a subtopic" />
+      <BaseHeader text="You can edit a course by adding a new lesson or a subtopic"/>
       <div class="modal-body">
         <div class="course-name">
-          <BaseHeader :text="props.course.course_name" style="margin-bottom: 2vh" />
+          <BaseHeader :text="props.course.course_name" style="margin-bottom: 2vh"/>
         </div>
         <ul>
           <li v-for="lesson in props.course.lessons">
@@ -39,10 +42,11 @@ const prompt = ref('');
           </li>
         </ul>
       </div>
-      <BaseInput placeholder="Prompt for changing a course" v-model="prompt" class="modal-prompt" />
-      <ButtonGreen title="Edit course" class="modal-btn" @click="$emit('editCourse', prompt)" />
-      <ButtonGreen title="Save Course" class="modal-btn" @click="$emit('saveCourse')" />
-      <ButtonRed title="Cancel edition" class="modal-btn" @click="$emit('savePrevious')" v-if="previous_course" />
+      <BaseInput v-model="prompt" class="modal-prompt" placeholder="Prompt for changing a course"/>
+      <BaseButton class="modal-btn" color="green" title="Edit course" @click="$emit('editCourse', prompt)"/>
+      <BaseButton class="modal-btn" color="green" title="Save Course" @click="$emit('saveCourse')"/>
+      <BaseButton v-if="previous_course" class="modal-btn" color="red" title="Cancel edition"
+                  @click="$emit('savePrevious')"/>
     </div>
   </div>
 </template>
@@ -50,9 +54,11 @@ const prompt = ref('');
 <style scoped>
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;

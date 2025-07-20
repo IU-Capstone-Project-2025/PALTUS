@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Notes.vue - component for notes displaying,
+ * used in Course page from Content Course component
+ */
 defineProps({
   notes: {
     type: String,
@@ -17,8 +21,8 @@ defineEmits(['editNotes'])
   <div class="notes">
     <p class="instruction">Click inside to add notes</p>
     <div class="notes-container" @click="$emit('editNotes', id)">
-      <a class="edit-notes" v-if="notes">{{ notes }}</a>
-      <a class="add-notes" v-else>Add your notes here</a>
+      <a v-if="notes" class="edit-notes">{{ notes }}</a>
+      <a v-else class="add-notes">Add your notes here</a>
     </div>
   </div>
 </template>

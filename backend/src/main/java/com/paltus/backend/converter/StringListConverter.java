@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
+/**
+ * JPA converter that transforms a list of strings to a single string (for database storage)
+ * and back. Uses "|||" as a separator.
+ */
 @Converter
 public class StringListConverter implements AttributeConverter<List<String>, String> {
     private static final String SPLIT_CHAR = "\\|\\|\\|";

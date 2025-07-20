@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Controller for AI-based course and content generation using LLM.
+ */
 @RestController
 public class GptController {
     private final ChatService chatService;
@@ -33,19 +36,19 @@ public class GptController {
 
     @Operation(description = "Update course data based on the provided request")
     @PostMapping("/editCourse")
-    public CourseResponceDto postMethodName(@RequestBody EditCourseRequest request) {
+    public CourseResponceDto editCourse(@RequestBody EditCourseRequest request) {
         return chatService.editCourse(request);
     }
 
     @Operation(description = "Generate content using LLM for the specified subtopic ID")
     @PostMapping("/subtopicAskLLM/{id}")
-    public LLMResponseDTO postMethodName(@RequestBody GenerateContentRequest request, @PathVariable Long id) {
+    public LLMResponseDTO generateSubtopicContent(@RequestBody GenerateContentRequest request, @PathVariable Long id) {
         return chatService.getContent(request, id);
     }
 
     @Operation(description = "Generate a quiz for the course with the specified ID")
     @GetMapping("/quiz/{id}")
-    public QuizDto getMethodName(@PathVariable long id) {
+    public QuizDto generateQuiz(@PathVariable long id) {
         return chatService.generateQuiz(id);
     }
 }

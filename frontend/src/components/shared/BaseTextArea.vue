@@ -1,5 +1,8 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+/**
+ * BaseTextArea.vue - component for input with auto-resizing
+ */
+import {onMounted, ref, watch} from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -32,9 +35,9 @@ onMounted(autoResize);
       ref="textareaRef"
       :placeholder="placeholder"
       :value="modelValue"
-      @input="event => emit('update:modelValue', event.target.value)"
       class="input-textarea"
       rows="1"
+      @input="event => emit('update:modelValue', event.target.value)"
   />
 </template>
 

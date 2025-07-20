@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * BaseCheckbox.vue - component for custom checkbox,
+ * used in CourseView from a Content Lesson component
+ */
 defineProps({
   id: {
     type: String,
@@ -20,10 +24,10 @@ const toggleCheckbox = (event) => {
 <template>
   <div class="checkbox-container">
     <input
-        type="checkbox"
         :id="id"
-        class="custom-checkbox"
         :checked="modelValue"
+        class="custom-checkbox"
+        type="checkbox"
         @change="toggleCheckbox"
     />
     <label :for="id" class="checkbox-label"></label>

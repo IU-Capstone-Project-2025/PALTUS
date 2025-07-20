@@ -23,6 +23,10 @@ public class CompleteLessonsEvaluator extends AbstractAchievementEvaluator {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Updates the user's lesson progress and emits an experience gain event.
+     * Should be called when the user completes a lesson.
+     */
     @Override
     public void updateProgress(User user) {
         user.setFinishedLessons(user.getFinishedLessons() + 1);

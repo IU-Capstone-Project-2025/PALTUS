@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * BaseHeader.vue - component for custom header
+ */
 defineProps({
   text: {
     type: String,

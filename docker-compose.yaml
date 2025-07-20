@@ -32,8 +32,11 @@ services:
     profiles: [prod]
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - /app/node_modules
+      - /etc/letsencrypt/archive/paltus-edu.ru/fullchain1.pem:/etc/nginx/certs/fullchain.pem:ro
+      - /etc/letsencrypt/archive/paltus-edu.ru/privkey1.pem:/etc/nginx/certs/privkey.pem:ro
     depends_on:
       - backend-app
 

@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * AccountLink.vue - component for links in AccountTab,
+ * used in Home, Achievements, and Course Creation page from an Account component
+ */
 defineProps({
   title: {
     type: String,
@@ -18,10 +22,10 @@ defineEmits(['logout'])
 </script>
 
 <template>
-  <div class="setting" v-if="isFunc" @click="$emit('logout')">
+  <div v-if="isFunc" class="setting" @click="$emit('logout')">
     {{ title }}
   </div>
-  <router-link :to="link" v-else>
+  <router-link v-else :to="link">
     <div class="setting">
       {{ title }}
     </div>
@@ -49,6 +53,7 @@ a {
   color: inherit;
   cursor: pointer;
 }
+
 a:hover {
   text-decoration: none;
 }

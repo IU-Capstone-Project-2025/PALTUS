@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * MessageUser.vue - component for sent user message,
+ * used in Chat modal page with Chat component
+ */
 defineProps({
   message: {
     type: String,
@@ -8,11 +12,11 @@ defineProps({
 </script>
 
 <template>
-<div class="msg-container">
-  <div class="msg">
-    {{ message }}
+  <div class="msg-container">
+    <div class="msg">
+      {{ message }}
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped>

@@ -28,6 +28,10 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Returns the current number of consecutive days when the user completed the
+     * subtopics
+     */
     public int getStreak() {
         User user = getCurrentUser();
         LocalDate lastActivityTime = user.getLastActivityTime();
@@ -39,6 +43,10 @@ public class UserService {
         return user.getStreak();
     }
 
+    /**
+     * Updates the user's streak based on last activity.
+     * Should be called when the user finishes a subtopic
+     */
     public void updateStreak() {
         User user = getCurrentUser();
 

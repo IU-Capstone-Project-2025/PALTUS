@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * MyCourses.vue - component for courses tab,
+ * used in Home, Achievements, and Course Creation page
+ */
 import CourseLink from "@/components/shared/CourseLink.vue";
 
 const props = defineProps({
@@ -15,13 +19,13 @@ const props = defineProps({
   </div>
   <ul class="courses">
     <li v-for="course in props.courses">
-      <CourseLink :title="course.course_name" :next_lesson="course.nextLesson" :id="course.id"/>
+      <CourseLink :id="course.id" :next_lesson="course.nextLesson" :title="course.course_name"/>
     </li>
   </ul>
 </template>
 
 <style scoped>
-ul{
+ul {
   list-style-type: none;
   padding: 0;
 }

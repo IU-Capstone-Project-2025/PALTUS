@@ -44,6 +44,7 @@ public class ChatService {
 
     private static final Logger log = LoggerFactory.getLogger(ChatService.class);
 
+    // Stores ongoing conversation history per session
     private final Map<String, List<ChatMessage>> chatHistory = new ConcurrentHashMap<>();
 
     public ChatService(PromptProperties properties, PromptBuilder promptBuilder, CourseMapper courseMapper,
@@ -65,6 +66,9 @@ public class ChatService {
                 .build();
     }
 
+    /**
+     * Attempts to repair malformed JSON using the external `jsonrepair` tool.
+     */
     private String repairJson(String rawJson) throws IOException, InterruptedException {
         Process process = new ProcessBuilder("jsonrepair").start();
 
@@ -105,6 +109,9 @@ public class ChatService {
         }
     }
 
+    /**
+     * Tries multiple times to parse JSON, attempting repairs on failure.
+     */
     private <T> T parseWithRepair(String rawJson, Class<T> clazz) throws IOException, InterruptedException {
         int maxAttempts = 3;
         IOException lastException = null;
@@ -126,6 +133,9 @@ public class ChatService {
         throw lastException != null ? lastException : new IOException("Unknown error during JSON repair and parsing");
     }
 
+    /**
+     * Generates a new course based on user input.
+     */
     public CourseResponceDto generateInitialCourse(CourseRequest courseRequest) {
         log.info("User input: {}", courseRequest.toString());
 
@@ -146,6 +156,9 @@ public class ChatService {
         return sendToGigaChatAndGetCourse(messages, sessionId);
     }
 
+    /**
+     * Updates an existing course using LLM interaction and previous session context.
+     */
     public CourseResponceDto editCourse(EditCourseRequest editCourseRequest) {
         log.info("User input: {}", editCourseRequest.toString());
         String sessionId = editCourseRequest.getSessionId();
@@ -163,6 +176,9 @@ public class ChatService {
         return sendToGigaChatAndGetCourse(messages, sessionId);
     }
 
+    /**
+     * Sends message history to LLM and parses the course response.
+     */
     private CourseResponceDto sendToGigaChatAndGetCourse(List<ChatMessage> messages, String sessionId) {
         CompletionRequest.CompletionRequestBuilder builder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2)
@@ -193,6 +209,9 @@ public class ChatService {
         }
     }
 
+    /**
+     * Gets content related to a subtopic by querying the LLM with context.
+     */
     public LLMResponseDTO getContent(GenerateContentRequest request, Long subtopicId) {
         String sessionId = request.getSessionId();
         if (sessionId == null || sessionId.isEmpty() || !chatHistory.containsKey(sessionId)) {
@@ -217,6 +236,9 @@ public class ChatService {
         return new LLMResponseDTO(sendToGigaChatAndGetNotes(messages), sessionId);
     }
 
+    /**
+     * Sends conversation history to GigaChat and returns the assistant’s response.
+     */
     private String sendToGigaChatAndGetNotes(List<ChatMessage> messages) {
         CompletionRequest.CompletionRequestBuilder builder = CompletionRequest.builder()
                 .model(ModelName.GIGA_CHAT_2)
@@ -246,6 +268,9 @@ public class ChatService {
         }
     }
 
+    /**
+     * Generates a quiz for a given lesson using its context.
+     */
     public QuizDto generateQuiz(Long lessonId) {
         String context = "Context: " + lessonService.getLessonContext(lessonId);
         log.info("Context for llm: {}", context);
@@ -255,7 +280,7 @@ public class ChatService {
                 .build();
 
         CompletionRequest request = CompletionRequest.builder()
-                .model(ModelName.GIGA_CHAT_2)
+                .model(ModelName. GIGA_CHAT_MAX_2)
                 .message(userMessage)
                 .build();
 

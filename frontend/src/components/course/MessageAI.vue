@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * MessageAI.vue - component for answers from LLM,
+ * used in Chat modal page with Chat component
+ */
 defineProps({
   message: {
     type: String,
@@ -18,10 +22,10 @@ defineEmits(['update:modelValue', 'add'])
     <div class="msg">
       {{ message }}
     </div>
-    <p class="added" v-if="modelValue">
+    <p v-if="modelValue" class="added">
       Added successfully
     </p>
-    <a class="add-to-notes" @click="$emit('add')" v-else>
+    <a v-else class="add-to-notes" @click="$emit('add')">
       Add to notes
     </a>
   </div>
@@ -54,6 +58,7 @@ defineEmits(['update:modelValue', 'add'])
   margin-left: 1vw;
   cursor: pointer;
 }
+
 .add-to-notes:hover {
   color: #42A5F5;
   text-decoration: underline;

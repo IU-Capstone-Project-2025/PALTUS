@@ -18,26 +18,32 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * Service responsible for generating, parsing, and validating JWT tokens.
+ */
 @Service
 public class JWTService {
 
+    // Base64-encoded secret key used for signing and verifying JWT tokens
     private String secretKey = "";
+
     private long expirationTime = 1000*60*60*2; // 2 hours
 
     public JWTService() throws NoSuchAlgorithmException {
+        // generates a secret key randomly
         KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
         SecretKey key = keyGen.generateKey();
         secretKey = Base64.getEncoder().encodeToString(key.getEncoded());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String email) {
         // claims - user information
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder()
                 .claims()
                 .add(claims)
-                .subject(username)
+                .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .and()
@@ -46,6 +52,9 @@ public class JWTService {
 
     }
 
+    /**
+     * Decodes the Base64-encoded secret key and returns a SecretKey for signing/verifying tokens.
+     */
     private SecretKey getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -55,7 +64,9 @@ public class JWTService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // extract different data from JWT token based on resolver 
+    /**
+     * Extracts a specific data from the JWT token using a resolver function.
+     */ 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -70,8 +81,8 @@ public class JWTService {
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractEmail(token); //email as username
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String email = extractEmail(token);
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {

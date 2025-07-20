@@ -1,4 +1,9 @@
 <script setup>
+/**
+ * Account.vue - component for account tab,
+ * used in Home, Achievements, and Course Creation page
+ * Allow to logout with special function and show animation after clicking on a Profile
+ */
 import AccountLink from "@/components/shared/AccountLink.vue";
 import {accountLinks} from "@/constants/accountLinks.js";
 import ProfileTab from "@/components/shared/ProfileTab.vue";
@@ -19,8 +24,7 @@ const hideLinks = () => {
   links.forEach((link, index) => {
     if (showLinks) {
       link.style.top = `${(index + 1) * -10}vh`
-    }
-    else {
+    } else {
       link.style.top = '0';
     }
   })
@@ -33,19 +37,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <ProfileTab @click="hideLinks" class="profileTab" />
+  <ProfileTab class="profileTab" @click="hideLinks"/>
   <ul>
     <li v-for="accountLink in accountLinks">
       <AccountLink
-          :title="accountLink.title"
-          :link="accountLink.link"
           v-if="accountLink.link"
+          :link="accountLink.link"
+          :title="accountLink.title"
       />
       <AccountLink
-          :title="accountLink.title"
-          :isFunc="true"
-          @logout="logout_func"
           v-else
+          :isFunc="true"
+          :title="accountLink.title"
+          @logout="logout_func"
       />
     </li>
   </ul>
@@ -56,11 +60,13 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   position: relative;
   transition: 300ms;
   top: 0;
 }
+
 .profileTab {
   z-index: 2;
 }

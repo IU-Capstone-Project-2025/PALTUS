@@ -1,4 +1,8 @@
-import { defineStore } from 'pinia';
+/**
+ * auth.js - store for authorization
+ * Used for log in, log out and check authentication
+ */
+import {defineStore} from 'pinia';
 import axios from "@/plugins/axios.js";
 
 export const useAuthStore = defineStore('auth', {
@@ -15,16 +19,15 @@ export const useAuthStore = defineStore('auth', {
             this.user = username;
             this.password = password;
         },
-        async login(email, password, username) {
+        async login(email, password) {
             const login_data = {
                 email: email,
                 password: password,
             }
-            console.log(`${username} trying to log in`)
             try {
                 const response = await axios.post('/login', login_data);
                 console.log(response);
-                this.user = username
+                this.user = response.userName;
                 this.password = '';
 
                 if (!this.user) {

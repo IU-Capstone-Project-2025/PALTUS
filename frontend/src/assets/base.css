@@ -1,7 +1,7 @@
 /* semantic color variables for this project */
 :root {
-  --color-background: #E3F2FD;
-  --color-heading: #42A5F5;
+    --color-background: #E3F2FD;
+    --color-heading: #42A5F5;
 }
 
 /*@media (prefers-color-scheme: dark) {*/
@@ -21,69 +21,67 @@
 *,
 *::before,
 *::after {
-  margin: 0;
-  font-weight: normal;
+    margin: 0;
+    font-weight: normal;
 }
 
 body {
-  min-height: 100vh;
-  background: var(--color-background);
-  transition:
-    color 0.5s,
+    min-height: 100vh;
+    background: var(--color-background);
+    transition: color 0.5s,
     background-color 0.5s;
-  /*line-height: 1.6;*/
-  font-family:
-    Montserrat,
+    /*line-height: 1.6;*/
+    font-family: Montserrat,
     Inter,
     sans-serif;
-  text-rendering: optimizeLegibility;
-  /*-webkit-font-smoothing: antialiased;*/
-  /*-moz-osx-font-smoothing: grayscale;*/
+    text-rendering: optimizeLegibility;
+    /*-webkit-font-smoothing: antialiased;*/
+    /*-moz-osx-font-smoothing: grayscale;*/
 }
 
 
 html {
-  font-size: 16px;
-  line-height: 1.5;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 @media (min-height: 600px) and (max-height: 900px) {
-  html {
-    font-size: calc(14px + (16 - 14) * ((100vh - 600px) / (900 - 600)));
-  }
+    html {
+        font-size: calc(14px + (16 - 14) * ((100vh - 600px) / (900 - 600)));
+    }
 }
 
 @media (min-height: 901px) and (max-height: 1200px) {
-  html {
-    font-size: calc(16px + (18 - 16) * ((100vh - 900px) / (1200 - 900)));
-  }
+    html {
+        font-size: calc(16px + (18 - 16) * ((100vh - 900px) / (1200 - 900)));
+    }
 }
 
 @media (min-height: 1201px) {
-  html {
-    font-size: 18px;
-  }
+    html {
+        font-size: 18px;
+    }
 }
 
 @media (max-height: 599px) {
-  html {
-    font-size: 11px;
-  }
+    html {
+        font-size: 11px;
+    }
 }
 
 @media (min-height: 2000px) {
-  html {
-    font-size: 20px;
-  }
+    html {
+        font-size: 20px;
+    }
 
-  body {
-    max-height: 2000px;
-    margin: 0 auto;
-  }
+    body {
+        max-height: 2000px;
+        margin: 0 auto;
+    }
 }
 
 @media print {
-  html {
-    font-size: 12pt;
-  }
+    html {
+        font-size: 12pt;
+    }
 }

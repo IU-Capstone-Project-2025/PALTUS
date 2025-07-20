@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * HomeView.vue - achievements page,
+ * available only with authorization, navigates user to all the other main pages
+ */
 import Logo from "@/components/shared/Logo.vue";
 import MyCourses from "@/components/shared/MyCourses.vue";
 import BaseInput from "@/components/shared/BaseInput.vue";
@@ -6,6 +10,8 @@ import ContinueStudying from "@/components/home/ContinueStudying.vue";
 import Account from "@/components/shared/Account.vue";
 import {onMounted, reactive, ref} from "vue";
 import axios from "@/plugins/axios.js";
+import {useAuthStore} from "@/stores/auth.js";
+import BaseHeader from "@/components/shared/BaseHeader.vue";
 
 const courses = ref([]);
 const courseName = ref('');
@@ -18,6 +24,9 @@ const refreshCourses = setInterval(async () => {
     Object.assign(nextLesson, response.nextLesson);
   } catch (err) {
     console.error('Request failed:', err);
+    if (err.statusCode === 401) {
+      useAuthStore().logout();
+    }
   }
 }, 100);
 
@@ -28,6 +37,9 @@ onMounted(async () => {
     Object.assign(nextLesson, response.nextLesson);
   } catch (err) {
     console.error('Request failed:', err);
+    if (err.statusCode === 401) {
+      useAuthStore().logout();
+    }
   }
   setTimeout(() => {
     clearInterval(refreshCourses);
@@ -38,31 +50,34 @@ onMounted(async () => {
 <template>
   <div class="main">
     <section class="left">
-      <Logo />
+      <Logo/>
       <MyCourses :courses="courses"/>
     </section>
     <section class="center">
       <div class="new-course">
         <BaseInput
             v-model="courseName"
-            placeholder="Course topic..." />
+            placeholder="Course topic..."/>
         <div class="create-course-link">
           <router-link
               :to="{ path: '/create_course',
               query: {
                 courseName: courseName
               } }"
-          > >> Create a new course</router-link>
+          > >> Create a new course
+          </router-link>
         </div>
       </div>
-      <ContinueStudying :courseId="nextLesson.courseId"
+      <ContinueStudying v-if="courses.length > 0"
+                        :courseId="nextLesson.courseId"
                         :lessonTitle="nextLesson.lessonTitle"
                         :subtopics="nextLesson.subtopics"
-                        v-if="courses.length > 0"
       />
+      <BaseHeader v-else :text="`You have no courses available now. Add your first course!`"
+                  style="margin-top: 24vh; font-size: 1.7rem; text-align: center; width: 35vw"/>
     </section>
     <section class="right">
-      <Account />
+      <Account/>
     </section>
   </div>
 </template>
@@ -73,6 +88,7 @@ a {
   color: #42A5F5;
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
   cursor: pointer;

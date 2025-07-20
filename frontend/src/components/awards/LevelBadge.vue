@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * LevelBadge.vue - component for user title,
+ * used in Awards page
+ */
 const props = defineProps({
   title: {
     type: String,

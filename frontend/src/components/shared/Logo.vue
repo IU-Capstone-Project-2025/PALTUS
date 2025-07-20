@@ -1,5 +1,10 @@
 <script setup>
+/**
+ * Logo.vue - component for Logo of a project,
+ * used to return to the Home page
+ */
 import router from "@/router/index.js";
+
 const goHome = () => {
   router.push("/");
 }
@@ -24,6 +29,7 @@ a {
   color: inherit;
   cursor: pointer;
 }
+
 a:hover {
   text-decoration: none;
 }

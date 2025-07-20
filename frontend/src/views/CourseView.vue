@@ -1,9 +1,13 @@
 <script setup>
+/**
+ * CourseView.vue - course page,
+ * available only with authorization, shows all the lessons content and course information
+ */
 import SideBar from "@/components/course/SideBar.vue";
 import {computed, onBeforeMount, reactive, ref, watch} from "vue";
 import {useCourseStore} from "@/stores/course.js";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
-import CourseContent from "@/components/course/CourseContent.vue";
+import ContentPage from "@/components/course/ContentPage.vue";
 
 
 const route = useRoute();
@@ -26,10 +30,13 @@ let progress = computed(() => {
   return lessons_passed.value > 0 ? lessons_passed.value / lessons_num.value : lessons_passed.value;
 });
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   const course_id = route.params.id;
-  course.loadCourse(course_id);
-  console.log(course);
+  await course.loadCourse(course_id);
+
+  if (route.query.lessonTitle) {
+    chosenContent.value = course.lessons.find(lesson => lesson.title === route.query.lessonTitle).lesson_number;
+  }
 });
 
 const chosenContent = ref(0);
@@ -58,14 +65,14 @@ onBeforeRouteLeave(async (to, from, next) => {
 <template>
   <div class="main">
     <section class="left">
-      <SideBar :course="course" :progress="progress" v-model="chosenContent" />
+      <SideBar v-model="chosenContent" :course="course" :progress="progress"/>
     </section>
     <section class="center">
-      <CourseContent
-        :course="course"
-        :chosenContent="chosenContent"
-        :subtopicsChanged="subtopicsChanged"
-        class="course-content"
+      <ContentPage
+          :chosenContent="chosenContent"
+          :course="course"
+          :subtopicsChanged="subtopicsChanged"
+          class="course-content"
       />
     </section>
   </div>

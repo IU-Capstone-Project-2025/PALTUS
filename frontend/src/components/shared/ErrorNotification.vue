@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * ErrorNotification.vue - component for error displaying
+ */
 const props = defineProps({
   error_message: {
     type: String,
@@ -8,7 +11,7 @@ const props = defineProps({
 </script>
 
 <template>
-<p>{{ props.error_message }}</p>
+  <p>{{ props.error_message }}</p>
 </template>
 
 <style scoped>

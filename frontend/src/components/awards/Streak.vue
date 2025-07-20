@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * Streak.vue - component for user streak (number of days learning in a row),
+ * used in Awards page
+ */
 defineProps({
   streak: {
     type: Number,

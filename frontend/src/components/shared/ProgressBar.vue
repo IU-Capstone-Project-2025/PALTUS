@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * ProgressBar.vue - component for the custom animated progress bar,
+ */
 import {onMounted, ref, watch} from "vue";
 
 const props = defineProps({
@@ -28,8 +31,8 @@ watch(
 <template>
   <div class="progress-bar">
     <div
-        class="progress"
         :style="{ width: currentProgress + '%' }"
+        class="progress"
     ></div>
   </div>
 </template>
